@@ -1,0 +1,414 @@
+/**
+ * =============================================================================
+ * BITGARD WEBSITE - GLOBAL STYLES
+ * =============================================================================
+ * 
+ * Premium dark theme with shadcn-style design tokens.
+ * 
+ * @author Bitgard Development Team
+ * @version 1.0.0
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =============================================================================
+   CSS CUSTOM PROPERTIES - shadcn-style Design Tokens (Dark Theme Default)
+   ============================================================================= */
+
+:root {
+  /* -------------------------------------------------------------------------
+     Modern Dark Theme - Slate Gray Primary (#6A6E79) & Near Black (#040504)
+     ------------------------------------------------------------------------- */
+
+  /* Background layers - Near black base */
+  --background: 120 11% 2%;
+  --foreground: 210 5% 95%;
+
+  /* Card/surface colors - Slightly lighter than background */
+  --card: 120 8% 5%;
+  --card-foreground: 210 5% 95%;
+
+  /* Popover/dropdown colors */
+  --popover: 120 10% 4%;
+  --popover-foreground: 210 5% 95%;
+
+  /* Primary brand color - Slate Gray #6A6E79 -> Platinum Steel */
+  --primary: 215 5% 50%;
+  --primary-foreground: 0 0% 100%;
+
+  /* Secondary color - Darker slate */
+  --secondary: 220 8% 25%;
+  --secondary-foreground: 210 5% 95%;
+
+  /* Muted/subtle colors */
+  --muted: 220 8% 15%;
+  --muted-foreground: 210 5% 60%;
+
+  /* Accent color - Lighter slate for highlights */
+  --accent: 222 6% 50%;
+  --accent-foreground: 0 0% 100%;
+
+  /* Destructive/error colors */
+  --destructive: 0 62% 35%;
+  --destructive-foreground: 0 0% 98%;
+
+  /* Border and input colors */
+  --border: 220 8% 18%;
+  --input: 220 8% 12%;
+  --ring: 222 6% 45%;
+
+  /* Chart colors - Slate palette variations */
+  --chart-1: 222 6% 45%;
+  --chart-2: 200 15% 40%;
+  --chart-3: 250 10% 50%;
+  --chart-4: 180 10% 45%;
+  --chart-5: 280 8% 45%;
+
+  /* Radius */
+  --radius: 0.75rem;
+
+  /* -------------------------------------------------------------------------
+     Brand Colors - Slate Gray Palette
+     ------------------------------------------------------------------------- */
+  --color-primary-50: #f0f1f2;
+  --color-primary-100: #d9dbde;
+  --color-primary-200: #c2c5ca;
+  --color-primary-300: #a9adb4;
+  --color-primary-400: #8f949d;
+  --color-primary-500: #6a6e79;
+  --color-primary-600: #5a5e67;
+  --color-primary-700: #4a4d55;
+  --color-primary-800: #3a3d43;
+  --color-primary-900: #2a2c31;
+
+  /* Near Black Palette */
+  --color-dark-50: #1a1b1c;
+  --color-dark-100: #141515;
+  --color-dark-200: #0f1010;
+  --color-dark-300: #0a0b0b;
+  --color-dark-400: #060707;
+  --color-dark-500: #040504;
+  --color-dark-600: #030403;
+  --color-dark-700: #020302;
+  --color-dark-800: #010201;
+  --color-dark-900: #000100;
+
+  /* -------------------------------------------------------------------------
+     Effects - Subtle slate glow
+     ------------------------------------------------------------------------- */
+  --shadow-glow: 0 0 40px rgba(106, 110, 121, 0.2);
+  --shadow-glow-strong: 0 0 60px rgba(106, 110, 121, 0.35);
+  --glass-blur: 20px;
+}
+
+/* =============================================================================
+   BASE STYLES
+   ============================================================================= */
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply antialiased;
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-outfit), system-ui, sans-serif;
+    @apply font-bold tracking-tight;
+  }
+
+  ::selection {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+}
+
+/* =============================================================================
+   COMPONENT STYLES - shadcn-inspired Premium Design
+   ============================================================================= */
+
+@layer components {
+
+  /* Glass morphism effect - premium blur */
+  .glass {
+    @apply backdrop-blur-xl border;
+    background: hsl(var(--card) / 0.7);
+    border-color: hsl(var(--border) / 0.5);
+  }
+
+  /* Gradient text effect */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent;
+  }
+
+  /* Section styling */
+  .section {
+    @apply py-20 md:py-32 relative overflow-hidden;
+  }
+
+  /* -------------------------------------------------------------------------
+     Button styles - Premium shadcn-style
+     ------------------------------------------------------------------------- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap;
+    @apply text-sm font-medium ring-offset-background transition-all;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+    @apply disabled:pointer-events-none disabled:opacity-50;
+    @apply px-6 py-3 rounded-xl cursor-pointer;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary-500 to-primary-600 text-white;
+    @apply shadow-lg shadow-primary-500/25;
+    @apply hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary-500/35;
+    @apply active:translate-y-0;
+  }
+
+  .btn-secondary {
+    @apply bg-transparent border-2 border-primary-500/70 text-primary-400;
+    @apply hover:bg-primary-500/10 hover:border-primary-500 hover:text-primary-300;
+  }
+
+  .btn-ghost {
+    @apply hover:bg-accent hover:text-accent-foreground;
+  }
+
+  .btn-outline {
+    @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground;
+  }
+
+  /* -------------------------------------------------------------------------
+     Card styles - Premium shadcn-style with glow
+     ------------------------------------------------------------------------- */
+  .card {
+    @apply rounded-2xl p-6 transition-all duration-300;
+    background: hsl(var(--card) / 0.5);
+    border: 1px solid hsl(var(--border) / 0.5);
+    backdrop-filter: blur(var(--glass-blur));
+  }
+
+  .card:hover {
+    @apply -translate-y-1;
+    border-color: hsl(var(--primary) / 0.5);
+    box-shadow: 0 20px 40px -12px hsl(var(--primary) / 0.15);
+  }
+
+  /* Dashboard card style */
+  .dashboard-card {
+    @apply rounded-xl p-6;
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+  }
+
+  /* -------------------------------------------------------------------------
+     Input styles - shadcn-style
+     ------------------------------------------------------------------------- */
+  .input {
+    @apply flex h-10 w-full rounded-md border px-3 py-2 text-sm;
+    @apply ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium;
+    @apply placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2;
+    @apply focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+    background: hsl(var(--input));
+    border-color: hsl(var(--border));
+  }
+
+  /* -------------------------------------------------------------------------
+     Badge styles
+     ------------------------------------------------------------------------- */
+  .badge {
+    @apply inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors;
+    @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
+  }
+
+  .badge-primary {
+    @apply border-transparent text-primary-foreground;
+    background: hsl(var(--primary));
+  }
+
+  .badge-secondary {
+    @apply border-transparent;
+    background: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+  }
+
+  .badge-outline {
+    @apply text-foreground;
+  }
+}
+
+/* =============================================================================
+   UTILITY STYLES
+   ============================================================================= */
+
+@layer utilities {
+  .glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .glow-strong {
+    box-shadow: var(--shadow-glow-strong);
+  }
+
+  /* Text balance for headings */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Animated gradient background */
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 8s ease infinite;
+  }
+
+  @keyframes gradient {
+
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  /* Staggered fade in animation for lists */
+  .stagger-fade-up>* {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fade-up 0.5s ease-out forwards;
+  }
+
+  .stagger-fade-up>*:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+
+  .stagger-fade-up>*:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .stagger-fade-up>*:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  .stagger-fade-up>*:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+
+  .stagger-fade-up>*:nth-child(5) {
+    animation-delay: 0.5s;
+  }
+
+  /* Light Pillar Animations */
+  @keyframes pillar-reveal {
+    0% {
+      opacity: 0;
+      transform: scaleY(0);
+    }
+
+    100% {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+  }
+
+  @keyframes pillar-pulse {
+    0% {
+      opacity: 0;
+    }
+
+    50% {
+      opacity: 0.5;
+    }
+
+    100% {
+      opacity: 0.3;
+    }
+  }
+
+  .animate-pillar-reveal {
+    animation-name: pillar-reveal;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .animate-pillar-pulse {
+    animation-name: pillar-pulse;
+    animation-timing-function: ease-in-out;
+  }
+
+  /* Shimmer effect - refined */
+  .shimmer {
+    background: linear-gradient(-45deg,
+        rgba(255, 255, 255, 0) 40%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0) 60%);
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: 150% 0;
+    }
+
+    100% {
+      background-position: -150% 0;
+    }
+  }
+}
+
+/* =============================================================================
+   SCROLLBAR STYLING - Premium Dark
+   ============================================================================= */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 9999px;
+  border: 2px solid hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary));
+}
+
+/* =============================================================================
+   FOCUS VISIBLE STYLES - Accessibility
+   ============================================================================= */
+
+:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* =============================================================================
+   SMOOTH SCROLL BEHAVIOR
+   ============================================================================= */
+
+/* Native smooth scroll is handled by scroll-behavior: smooth on html */

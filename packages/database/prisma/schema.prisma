@@ -1,0 +1,151 @@
+// Prisma Schema for Bitgard Website
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== AUTH ====================
+model Admin {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         Role     @default(EDITOR)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+}
+
+// ==================== HERO SECTION ====================
+model HeroContent {
+  id          String   @id @default(cuid())
+  headline    String
+  subheadline String
+  ctaText     String
+  ctaLink     String
+  backgroundImage String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ==================== PRODUCTS ====================
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  tagline     String
+  description String   @db.Text
+  features    Json     // Array of feature objects
+  icon        String   // Icon identifier or URL
+  image       String?  // Hero image URL
+  demoUrl     String?
+  pricingTiers Json?   // Array of pricing objects
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ==================== SERVICES ====================
+model Service {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String   @db.Text
+  icon        String
+  features    Json     // Array of feature strings
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ==================== TEAM ====================
+model TeamMember {
+  id          String   @id @default(cuid())
+  name        String
+  position    String
+  bio         String?  @db.Text
+  image       String?
+  linkedin    String?
+  twitter     String?
+  github      String?
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ==================== TESTIMONIALS ====================
+model Testimonial {
+  id          String   @id @default(cuid())
+  clientName  String
+  clientTitle String
+  company     String
+  content     String   @db.Text
+  image       String?
+  rating      Int      @default(5)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ==================== BLOG ====================
+model BlogPost {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  excerpt     String
+  content     String   @db.Text
+  coverImage  String?
+  author      String
+  tags        String[]
+  isPublished Boolean  @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ==================== CONTACT SUBMISSIONS ====================
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  company   String?
+  subject   String
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+// ==================== SITE SETTINGS ====================
+model SiteSettings {
+  id              String  @id @default("main")
+  siteName        String  @default("Bitgard")
+  tagline         String  @default("Dreams Forged in Code")
+  email           String?
+  phone           String?
+  address         String?
+  socialFacebook  String?
+  socialTwitter   String?
+  socialLinkedin  String?
+  socialGithub    String?
+  socialInstagram String?
+  metaTitle       String?
+  metaDescription String?
+  favicon         String?
+  logo            String?
+  logoDark        String?
+}
