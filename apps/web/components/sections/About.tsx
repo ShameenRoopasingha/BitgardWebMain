@@ -221,9 +221,9 @@ export function About() {
                         </p>
                         <p className="text-muted-foreground leading-relaxed">
                             What started as a small team of passionate developers has grown into a
-                            full-service software company. We've helped startups scale, enterprises
+                            full-service software company. We&apos;ve helped startups scale, enterprises
                             modernize, and countless businesses transform their operations through
-                            innovative technology solutions. Our tagline, "Dreams Forged in Code,"
+                            innovative technology solutions. Our tagline, &quot;Dreams Forged in Code,&quot;
                             reflects our commitment to turning ambitious visions into digital reality.
                         </p>
                     </div>

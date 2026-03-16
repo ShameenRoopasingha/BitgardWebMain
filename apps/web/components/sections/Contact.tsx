@@ -360,10 +360,10 @@ export function Contact() {
                         Get In Touch
                     </span>
                     <h2 id="contact-heading" className="text-4xl md:text-5xl font-bold text-white mb-6">
-                        Let's <span className="gradient-text">Build Something Great</span>
+                        Let&apos;s <span className="gradient-text">Build Something Great</span>
                     </h2>
                     <p className="text-lg text-muted-foreground">
-                        Ready to transform your business? Drop us a message and we'll get back
+                        Ready to transform your business? Drop us a message and we&apos;ll get back
                         to you within 24 hours.
                     </p>
                 </div>
@@ -380,7 +380,7 @@ export function Contact() {
                         {submitStatus === "success" && (
                             <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/30 flex items-center gap-3">
                                 <FiCheckCircle className="w-5 h-5 text-green-400" />
-                                <p className="text-green-400">Message sent successfully! We'll be in touch soon.</p>
+                                <p className="text-green-400">Message sent successfully! We&apos;ll be in touch soon.</p>
                             </div>
                         )}
 

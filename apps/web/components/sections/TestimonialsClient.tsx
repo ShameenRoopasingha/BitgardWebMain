@@ -73,7 +73,7 @@ function TestimonialCard({ testimonial }: TestimonialCardProps) {
         <div className="testimonial-card group relative p-6 rounded-2xl bg-card border border-border hover:border-primary-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/10">
             {/* Quote mark */}
             <div className="absolute top-4 right-4 text-6xl font-serif text-primary-500/10 leading-none">
-                "
+                &quot;
             </div>
 
             {/* Rating */}
@@ -83,7 +83,7 @@ function TestimonialCard({ testimonial }: TestimonialCardProps) {
 
             {/* Quote content */}
             <blockquote className="text-muted-foreground leading-relaxed mb-6 relative z-10">
-                "{testimonial.content}"
+                &quot;{testimonial.content}&quot;
             </blockquote>
 
             {/* Client info */}
@@ -181,7 +181,7 @@ export function TestimonialsClient({ testimonials }: TestimonialsClientProps) {
                         What Our <span className="gradient-text">Clients Say</span>
                     </h2>
                     <p className="text-lg text-muted-foreground">
-                        Don't just take our word for it. Here's what businesses have achieved
+                        Don&apos;t just take our word for it. Here&apos;s what businesses have achieved
                         with Bitgard solutions.
                     </p>
                 </div>
