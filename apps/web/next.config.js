@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     // Transpile packages if needed
-    transpilePackages: [],
+    transpilePackages: ["@bitgard/database"],
 
     // Experimental features
     experimental: {
