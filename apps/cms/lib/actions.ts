@@ -441,3 +441,45 @@ export async function getRecentActivity() {
     activities.sort((a, b) => b.time.getTime() - a.time.getTime());
     return activities.slice(0, 6);
 }
+
+// =============================================================================
+// SITE SETTINGS ACTIONS
+// =============================================================================
+
+export async function getSiteSettings() {
+    let settings = await prisma.siteSettings.findUnique({
+        where: { id: "main" },
+    });
+    if (!settings) {
+        settings = await prisma.siteSettings.create({
+            data: { id: "main" },
+        });
+    }
+    return settings;
+}
+
+export async function upsertSiteSettings(data: {
+    siteName?: string;
+    tagline?: string;
+    email?: string | null;
+    phone?: string | null;
+    address?: string | null;
+    socialFacebook?: string | null;
+    socialTwitter?: string | null;
+    socialLinkedin?: string | null;
+    socialGithub?: string | null;
+    socialInstagram?: string | null;
+    metaTitle?: string | null;
+    metaDescription?: string | null;
+    favicon?: string | null;
+    logo?: string | null;
+    logoDark?: string | null;
+}) {
+    const settings = await prisma.siteSettings.upsert({
+        where: { id: "main" },
+        update: data,
+        create: { id: "main", ...data },
+    });
+    revalidatePath("/dashboard/settings");
+    return settings;
+}

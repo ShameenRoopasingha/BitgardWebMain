@@ -21,13 +21,19 @@ export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
                 return;
             }
 
+            const supabase = getSupabase();
+            if (!supabase) {
+                toast.error("Image uploads are not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.");
+                return;
+            }
+
             setIsUploading(true);
             const file = e.target.files[0];
             const fileExt = file.name.split(".").pop();
             const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
             const filePath = `${fileName}`;
 
-            const { error: uploadError } = await getSupabase().storage
+            const { error: uploadError } = await supabase.storage
                 .from("bitgard-images")
                 .upload(filePath, file);
 
@@ -35,7 +41,7 @@ export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
                 throw uploadError;
             }
 
-            const { data: publicUrlData } = getSupabase().storage
+            const { data: publicUrlData } = supabase.storage
                 .from("bitgard-images")
                 .getPublicUrl(filePath);
 
