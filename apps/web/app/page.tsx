@@ -18,6 +18,8 @@
  * @version 1.0.0
  */
 
+export const dynamic = "force-dynamic";
+
 import { Hero } from "@/components/sections/Hero";
 import { Products } from "@/components/sections/Products";
 import { Services } from "@/components/sections/Services";
