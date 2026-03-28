@@ -79,7 +79,7 @@ export async function createService(data: ServiceInput) {
         },
     });
     revalidatePath("/dashboard/services");
-    revalidateWebsite();
+    await revalidateWebsite();
     return service;
 }
 
@@ -89,7 +89,7 @@ export async function updateService(id: string, data: Partial<ServiceInput>) {
         data,
     });
     revalidatePath("/dashboard/services");
-    revalidateWebsite();
+    await revalidateWebsite();
     return service;
 }
 
@@ -98,7 +98,7 @@ export async function deleteService(id: string) {
         where: { id },
     });
     revalidatePath("/dashboard/services");
-    revalidateWebsite();
+    await revalidateWebsite();
 }
 
 export async function toggleServiceStatus(id: string) {
@@ -110,7 +110,7 @@ export async function toggleServiceStatus(id: string) {
         data: { isActive: !service.isActive },
     });
     revalidatePath("/dashboard/services");
-    revalidateWebsite();
+    await revalidateWebsite();
     return updated;
 }
 
@@ -151,7 +151,7 @@ export async function createTeamMember(data: TeamMemberInput) {
         },
     });
     revalidatePath("/dashboard/team");
-    revalidateWebsite();
+    await revalidateWebsite();
     return member;
 }
 
@@ -161,7 +161,7 @@ export async function updateTeamMember(id: string, data: Partial<TeamMemberInput
         data,
     });
     revalidatePath("/dashboard/team");
-    revalidateWebsite();
+    await revalidateWebsite();
     return member;
 }
 
@@ -170,7 +170,7 @@ export async function deleteTeamMember(id: string) {
         where: { id },
     });
     revalidatePath("/dashboard/team");
-    revalidateWebsite();
+    await revalidateWebsite();
 }
 
 export async function toggleTeamMemberStatus(id: string) {
@@ -182,7 +182,7 @@ export async function toggleTeamMemberStatus(id: string) {
         data: { isActive: !member.isActive },
     });
     revalidatePath("/dashboard/team");
-    revalidateWebsite();
+    await revalidateWebsite();
     return updated;
 }
 
@@ -219,7 +219,7 @@ export async function createTestimonial(data: TestimonialInput) {
         },
     });
     revalidatePath("/dashboard/testimonials");
-    revalidateWebsite();
+    await revalidateWebsite();
     return testimonial;
 }
 
@@ -229,7 +229,7 @@ export async function updateTestimonial(id: string, data: Partial<TestimonialInp
         data,
     });
     revalidatePath("/dashboard/testimonials");
-    revalidateWebsite();
+    await revalidateWebsite();
     return testimonial;
 }
 
@@ -238,7 +238,7 @@ export async function deleteTestimonial(id: string) {
         where: { id },
     });
     revalidatePath("/dashboard/testimonials");
-    revalidateWebsite();
+    await revalidateWebsite();
 }
 
 export async function toggleTestimonialStatus(id: string) {
@@ -250,7 +250,7 @@ export async function toggleTestimonialStatus(id: string) {
         data: { isActive: !testimonial.isActive },
     });
     revalidatePath("/dashboard/testimonials");
-    revalidateWebsite();
+    await revalidateWebsite();
     return updated;
 }
 
@@ -297,7 +297,7 @@ export async function createProduct(data: ProductInput) {
         },
     });
     revalidatePath("/dashboard/products");
-    revalidateWebsite();
+    await revalidateWebsite();
     return product;
 }
 
@@ -307,7 +307,7 @@ export async function updateProduct(id: string, data: Partial<ProductInput>) {
         data,
     });
     revalidatePath("/dashboard/products");
-    revalidateWebsite();
+    await revalidateWebsite();
     return product;
 }
 
@@ -316,7 +316,7 @@ export async function deleteProduct(id: string) {
         where: { id },
     });
     revalidatePath("/dashboard/products");
-    revalidateWebsite();
+    await revalidateWebsite();
 }
 
 export async function toggleProductStatus(id: string) {
@@ -328,7 +328,7 @@ export async function toggleProductStatus(id: string) {
         data: { isActive: !product.isActive },
     });
     revalidatePath("/dashboard/products");
-    revalidateWebsite();
+    await revalidateWebsite();
     return updated;
 }
 
@@ -394,7 +394,7 @@ export async function createBlogPost(data: BlogPostInput) {
         },
     });
     revalidatePath("/dashboard/blog");
-    revalidateWebsite();
+    await revalidateWebsite();
     return post;
 }
 
@@ -409,7 +409,7 @@ export async function updateBlogPost(id: string, data: Partial<BlogPostInput>) {
         },
     });
     revalidatePath("/dashboard/blog");
-    revalidateWebsite();
+    await revalidateWebsite();
     return post;
 }
 
@@ -418,7 +418,7 @@ export async function deleteBlogPost(id: string) {
         where: { id },
     });
     revalidatePath("/dashboard/blog");
-    revalidateWebsite();
+    await revalidateWebsite();
 }
 
 export async function toggleBlogPostPublish(id: string) {
@@ -433,7 +433,7 @@ export async function toggleBlogPostPublish(id: string) {
         },
     });
     revalidatePath("/dashboard/blog");
-    revalidateWebsite();
+    await revalidateWebsite();
     return updated;
 }
 
