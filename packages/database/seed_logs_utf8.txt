@@ -1,0 +1,61 @@
+﻿
+> @bitgard/database@0.0.1 db:seed
+> tsx prisma/seed.ts
+
+Seeding database with default Products and Services...
+node.exe : Error seeding database: 
+PrismaClientInitializationError: 
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" 
+"C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Er 
+   ror seeding d...lizationError: :String) [],  
+   RemoteException
+    + FullyQualifiedErrorId : NativeCommandErro 
+   r
+ 
+Invalid `prisma.product.upsert()` invocation in
+E:\projects\BitgardWeb\packages\database\prisma\
+seed.ts:27:26
+
+  24 ];
+  25 
+  26 for (const product of products) {
+ΓåÆ 27   await prisma.product.upsert(
+Authentication failed against database server 
+at `aws-1-ap-southeast-2.pooler.supabase.com`, 
+the provided database credentials for 
+`postgres` are not valid.
+
+Please make sure to provide valid database 
+credentials for the database server at 
+`aws-1-ap-southeast-2.pooler.supabase.com`.
+    at $n.handleRequestError (E:\projects\Bitgar
+dWeb\node_modules\@prisma\client\runtime\library
+.js:121:7615)
+    at $n.handleAndLogRequestError (E:\projects\
+BitgardWeb\node_modules\@prisma\client\runtime\l
+ibrary.js:121:6623)
+    at $n.request (E:\projects\BitgardWeb\node_m
+odules\@prisma\client\runtime\library.js:121:630
+7)
+    at async l (E:\projects\BitgardWeb\node_modu
+les\@prisma\client\runtime\library.js:130:9633)
+    at async main (E:\projects\BitgardWeb\packag
+es\database\prisma\seed.ts:27:5) {
+  clientVersion: '5.22.0',
+  errorCode: undefined
+}
+npm error Lifecycle script `db:seed` failed 
+with error:
+npm error code 1
+npm error path 
+E:\projects\BitgardWeb\packages\database
+npm error workspace @bitgard/database@0.0.1
+npm error location 
+E:\projects\BitgardWeb\packages\database
+npm error command failed
+npm error command C:\Windows\system32\cmd.exe 
+/d /s /c tsx prisma/seed.ts
