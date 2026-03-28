@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { FiUploadCloud, FiTrash2, FiImage } from "react-icons/fi";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 import toast from "react-hot-toast";
 
 interface ImageUploadProps {
@@ -27,7 +27,7 @@ export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
             const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
             const filePath = `${fileName}`;
 
-            const { error: uploadError } = await supabase.storage
+            const { error: uploadError } = await getSupabase().storage
                 .from("bitgard-images")
                 .upload(filePath, file);
 
@@ -35,7 +35,7 @@ export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
                 throw uploadError;
             }
 
-            const { data: publicUrlData } = supabase.storage
+            const { data: publicUrlData } = getSupabase().storage
                 .from("bitgard-images")
                 .getPublicUrl(filePath);
 
