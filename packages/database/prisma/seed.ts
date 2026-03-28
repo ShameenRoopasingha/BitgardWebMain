@@ -5,6 +5,16 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('Seeding database with default Products and Services...');
 
+  // Remove the old 'Cloud Migration' service since we don't offer it
+  try {
+    await prisma.service.deleteMany({
+      where: { slug: 'cloud-architecture' }
+    });
+    console.log('Removed old Cloud Migration service');
+  } catch (e) {
+    // Ignore if it doesn't exist
+  }
+
   // --- PRODUCTS ---
   const products = [
     {
@@ -44,11 +54,11 @@ async function main() {
       order: 1,
     },
     {
-      name: 'Cloud Migration & Architecture',
-      slug: 'cloud-architecture',
-      description: 'Future-proof your business by migrating to the cloud. We design robust cloud architectures that ensure 99.9% uptime, infinite scalability, and top-tier security.',
-      features: ['AWS & Azure Deployment', 'Serverless Architecture', 'Database Optimization'],
-      icon: 'FiGlobe',
+      name: 'Custom Website Development',
+      slug: 'custom-websites',
+      description: 'Stunning, fast, and fully responsive websites that turn visitors into customers. Built with cutting-edge technology for maximum performance and SEO ranking.',
+      features: ['Responsive UI/UX Design', 'SEO Optimization', 'Lightning Fast Performance'],
+      icon: 'FiMonitor',
       isActive: true,
       order: 2,
     }
