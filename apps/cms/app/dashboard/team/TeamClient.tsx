@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardHeader } from "@/components/dashboard/Header";
+import { ImageUpload } from "@/components/ui/ImageUpload";
 import {
     FiPlus, FiSearch, FiEdit2, FiTrash2, FiUsers, FiLinkedin, FiTwitter, FiGithub,
 } from "react-icons/fi";
@@ -38,6 +39,7 @@ export default function TeamClient({ initialTeam }: Props) {
     const [name, setName] = useState("");
     const [position, setPosition] = useState("");
     const [bio, setBio] = useState("");
+    const [image, setImage] = useState("");
     const [linkedin, setLinkedin] = useState("");
     const [twitter, setTwitter] = useState("");
     const [github, setGithub] = useState("");
@@ -51,13 +53,13 @@ export default function TeamClient({ initialTeam }: Props) {
 
     const openCreate = () => {
         setSelectedMember(null);
-        setName(""); setPosition(""); setBio(""); setLinkedin(""); setTwitter(""); setGithub(""); setOrder(initialTeam.length + 1);
+        setName(""); setPosition(""); setBio(""); setImage(""); setLinkedin(""); setTwitter(""); setGithub(""); setOrder(initialTeam.length + 1);
         setError(null); setIsModalOpen(true);
     };
 
     const openEdit = (member: MemberData) => {
         setSelectedMember(member);
-        setName(member.name); setPosition(member.position); setBio(member.bio || "");
+        setName(member.name); setPosition(member.position); setBio(member.bio || ""); setImage(member.image || "");
         setLinkedin(member.linkedin || ""); setTwitter(member.twitter || ""); setGithub(member.github || ""); setOrder(member.order);
         setError(null); setIsModalOpen(true);
     };
@@ -68,6 +70,7 @@ export default function TeamClient({ initialTeam }: Props) {
             try {
                 const payload = {
                     name: name.trim(), position: position.trim(), bio: bio.trim() || undefined,
+                    image: image || undefined,
                     linkedin: linkedin.trim() || undefined, twitter: twitter.trim() || undefined, github: github.trim() || undefined, order,
                 };
                 if (selectedMember) { await updateTeamMember(selectedMember.id, payload); }
@@ -106,9 +109,13 @@ export default function TeamClient({ initialTeam }: Props) {
                     {filteredTeam.map((member) => (
                         <div key={member.id} className="dashboard-card group">
                             <div className="flex items-start gap-4 mb-4">
-                                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary-500 to-cyan-500 flex items-center justify-center flex-shrink-0">
-                                    <span className="text-xl font-bold text-white">{member.name.split(" ").map((n) => n[0]).join("")}</span>
-                                </div>
+                                {member.image ? (
+                                    <img src={member.image} alt={member.name} className="w-16 h-16 rounded-full object-cover flex-shrink-0" />
+                                ) : (
+                                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary-500 to-cyan-500 flex items-center justify-center flex-shrink-0">
+                                        <span className="text-xl font-bold text-white">{member.name.split(" ").map((n) => n[0]).join("")}</span>
+                                    </div>
+                                )}
                                 <div className="flex-1 min-w-0">
                                     <h3 className="text-lg font-semibold text-white truncate">{member.name}</h3>
                                     <p className="text-sm text-primary-400 font-medium">{member.position}</p>
@@ -160,6 +167,10 @@ export default function TeamClient({ initialTeam }: Props) {
                                     <label className="block text-sm font-medium text-gray-300 mb-2">Position *</label>
                                     <input type="text" value={position} onChange={(e) => setPosition(e.target.value)} placeholder="e.g., CEO & Founder" className="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500" />
                                 </div>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-300 mb-2">Profile Image</label>
+                                <ImageUpload value={image} onChange={setImage} disabled={isPending} />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-300 mb-2">Bio</label>

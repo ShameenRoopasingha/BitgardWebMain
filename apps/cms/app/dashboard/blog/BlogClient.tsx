@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardHeader } from "@/components/dashboard/Header";
+import { ImageUpload } from "@/components/ui/ImageUpload";
 import {
     FiPlus, FiSearch, FiEdit2, FiTrash2, FiEye, FiFileText, FiTag, FiCalendar,
 } from "react-icons/fi";
@@ -44,6 +45,7 @@ export default function BlogClient({ initialPosts }: Props) {
     const [excerpt, setExcerpt] = useState("");
     const [content, setContent] = useState("");
     const [author, setAuthor] = useState("");
+    const [coverImage, setCoverImage] = useState("");
     const [tags, setTags] = useState("");
 
     const filtered = initialPosts.filter((p) => {
@@ -58,14 +60,14 @@ export default function BlogClient({ initialPosts }: Props) {
 
     const openCreate = () => {
         setSelected(null);
-        setTitle(""); setExcerpt(""); setContent(""); setAuthor(""); setTags("");
+        setTitle(""); setExcerpt(""); setContent(""); setAuthor(""); setCoverImage(""); setTags("");
         setError(null); setIsModalOpen(true);
     };
 
     const openEdit = (post: PostData) => {
         setSelected(post);
         setTitle(post.title); setExcerpt(post.excerpt); setContent(post.content);
-        setAuthor(post.author); setTags(post.tags.join(", "));
+        setAuthor(post.author); setCoverImage(post.coverImage || ""); setTags(post.tags.join(", "));
         setError(null); setIsModalOpen(true);
     };
 
@@ -79,7 +81,7 @@ export default function BlogClient({ initialPosts }: Props) {
             try {
                 const payload = {
                     title: title.trim(), slug: slugify(title), excerpt: excerpt.trim(),
-                    content: content.trim(), author: author.trim(), tags: tagList,
+                    content: content.trim(), author: author.trim(), coverImage: coverImage || undefined, tags: tagList,
                 };
                 if (selected) { await updateBlogPost(selected.id, payload); }
                 else { await createBlogPost(payload); }
@@ -178,6 +180,10 @@ export default function BlogClient({ initialPosts }: Props) {
                             <div>
                                 <label className="block text-sm font-medium text-gray-300 mb-2">Excerpt *</label>
                                 <textarea rows={2} value={excerpt} onChange={(e) => setExcerpt(e.target.value)} placeholder="Brief summary for previews..." className="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-300 mb-2">Cover Image</label>
+                                <ImageUpload value={coverImage} onChange={setCoverImage} disabled={isPending} />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-300 mb-2">Content *</label>

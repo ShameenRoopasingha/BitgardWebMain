@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardHeader } from "@/components/dashboard/Header";
+import { ImageUpload } from "@/components/ui/ImageUpload";
 import {
     FiPlus, FiSearch, FiEdit2, FiTrash2, FiStar, FiMessageSquare,
 } from "react-icons/fi";
@@ -38,6 +39,7 @@ export default function TestimonialsClient({ initialTestimonials }: Props) {
     const [clientTitle, setClientTitle] = useState("");
     const [company, setCompany] = useState("");
     const [content, setContent] = useState("");
+    const [image, setImage] = useState("");
     const [rating, setRating] = useState(5);
 
     const filtered = initialTestimonials.filter(
@@ -49,13 +51,13 @@ export default function TestimonialsClient({ initialTestimonials }: Props) {
 
     const openCreate = () => {
         setSelected(null);
-        setClientName(""); setClientTitle(""); setCompany(""); setContent(""); setRating(5);
+        setClientName(""); setClientTitle(""); setCompany(""); setContent(""); setImage(""); setRating(5);
         setError(null); setIsModalOpen(true);
     };
 
     const openEdit = (t: TestimonialData) => {
         setSelected(t);
-        setClientName(t.clientName); setClientTitle(t.clientTitle); setCompany(t.company); setContent(t.content); setRating(t.rating);
+        setClientName(t.clientName); setClientTitle(t.clientTitle); setCompany(t.company); setContent(t.content); setImage(t.image || ""); setRating(t.rating);
         setError(null); setIsModalOpen(true);
     };
 
@@ -65,7 +67,7 @@ export default function TestimonialsClient({ initialTestimonials }: Props) {
         }
         startTransition(async () => {
             try {
-                const payload = { clientName: clientName.trim(), clientTitle: clientTitle.trim(), company: company.trim(), content: content.trim(), rating };
+                const payload = { clientName: clientName.trim(), clientTitle: clientTitle.trim(), company: company.trim(), content: content.trim(), image: image || undefined, rating };
                 if (selected) { await updateTestimonial(selected.id, payload); }
                 else { await createTestimonial(payload); }
                 setIsModalOpen(false); setSelected(null); router.refresh();
@@ -111,9 +113,13 @@ export default function TestimonialsClient({ initialTestimonials }: Props) {
                         <div key={t.id} className="dashboard-card group">
                             <div className="flex items-start justify-between mb-4">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-cyan-500 flex items-center justify-center flex-shrink-0">
-                                        <span className="text-lg font-bold text-white">{t.clientName.split(" ").map((n) => n[0]).join("")}</span>
-                                    </div>
+                                    {t.image ? (
+                                        <img src={t.image} alt={t.clientName} className="w-12 h-12 rounded-full object-cover flex-shrink-0" />
+                                    ) : (
+                                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-cyan-500 flex items-center justify-center flex-shrink-0">
+                                            <span className="text-lg font-bold text-white">{t.clientName.split(" ").map((n) => n[0]).join("")}</span>
+                                        </div>
+                                    )}
                                     <div>
                                         <h3 className="text-lg font-semibold text-white">{t.clientName}</h3>
                                         <p className="text-sm text-gray-500">{t.clientTitle}, {t.company}</p>
@@ -169,6 +175,10 @@ export default function TestimonialsClient({ initialTestimonials }: Props) {
                             <div>
                                 <label className="block text-sm font-medium text-gray-300 mb-2">Testimonial Content *</label>
                                 <textarea rows={4} value={content} onChange={(e) => setContent(e.target.value)} placeholder="What did the client say?" className="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-300 mb-2">Client Photo</label>
+                                <ImageUpload value={image} onChange={setImage} disabled={isPending} />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-300 mb-2">Rating</label>

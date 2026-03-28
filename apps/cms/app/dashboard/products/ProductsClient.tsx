@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardHeader } from "@/components/dashboard/Header";
+import { ImageUpload } from "@/components/ui/ImageUpload";
 import {
     FiPlus, FiSearch, FiEdit2, FiTrash2, FiEye, FiBox,
 } from "react-icons/fi";
@@ -46,6 +47,7 @@ export default function ProductsClient({ initialProducts }: Props) {
     const [description, setDescription] = useState("");
     const [icon, setIcon] = useState("FiMonitor");
     const [features, setFeatures] = useState("");
+    const [image, setImage] = useState("");
     const [order, setOrder] = useState(0);
 
     const filteredProducts = initialProducts.filter(
@@ -56,7 +58,7 @@ export default function ProductsClient({ initialProducts }: Props) {
 
     const openCreate = () => {
         setSelectedProduct(null);
-        setName(""); setTagline(""); setDescription(""); setIcon("FiMonitor"); setFeatures(""); setOrder(initialProducts.length + 1);
+        setName(""); setTagline(""); setDescription(""); setIcon("FiMonitor"); setFeatures(""); setImage(""); setOrder(initialProducts.length + 1);
         setError(null); setIsModalOpen(true);
     };
 
@@ -66,6 +68,7 @@ export default function ProductsClient({ initialProducts }: Props) {
         setTagline(product.tagline);
         setDescription(product.description);
         setIcon(product.icon);
+        setImage(product.image || "");
         const f = Array.isArray(product.features) ? product.features : [];
         setFeatures(f.join(", "));
         setOrder(product.order);
@@ -87,6 +90,7 @@ export default function ProductsClient({ initialProducts }: Props) {
                     tagline: tagline.trim(),
                     description: description.trim(),
                     icon,
+                    image: image || undefined,
                     features: featureList,
                     order,
                 };
@@ -205,6 +209,10 @@ export default function ProductsClient({ initialProducts }: Props) {
                             <div>
                                 <label className="block text-sm font-medium text-gray-300 mb-2">Features (comma-separated)</label>
                                 <input type="text" value={features} onChange={(e) => setFeatures(e.target.value)} placeholder="e.g., Real-time Analytics, Multi-location, Offline Mode" className="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-300 mb-2">Product Image (Optional)</label>
+                                <ImageUpload value={image} onChange={setImage} disabled={isPending} />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>

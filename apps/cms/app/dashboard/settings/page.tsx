@@ -18,6 +18,7 @@
 
 import { useState } from "react";
 import { DashboardHeader } from "@/components/dashboard/Header";
+import { ImageUpload } from "@/components/ui/ImageUpload";
 import {
     FiSave,
     FiGlobe,
@@ -385,36 +386,30 @@ export default function SettingsPage() {
                             <label className="block text-sm font-medium text-gray-300 mb-2">
                                 Logo URL (Light)
                             </label>
-                            <input
-                                type="text"
+                            <ImageUpload
                                 value={settings.logo}
-                                onChange={(e) => handleChange("logo", e.target.value)}
-                                placeholder="/logo.png"
-                                className="w-full"
+                                onChange={(url) => handleChange("logo", url)}
+                                disabled={isSaving}
                             />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-2">
                                 Logo URL (Dark)
                             </label>
-                            <input
-                                type="text"
+                            <ImageUpload
                                 value={settings.logoDark}
-                                onChange={(e) => handleChange("logoDark", e.target.value)}
-                                placeholder="/logo-dark.png"
-                                className="w-full"
+                                onChange={(url) => handleChange("logoDark", url)}
+                                disabled={isSaving}
                             />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-2">
                                 Favicon URL
                             </label>
-                            <input
-                                type="text"
+                            <ImageUpload
                                 value={settings.favicon}
-                                onChange={(e) => handleChange("favicon", e.target.value)}
-                                placeholder="/favicon.ico"
-                                className="w-full"
+                                onChange={(url) => handleChange("favicon", url)}
+                                disabled={isSaving}
                             />
                         </div>
                     </div>
