@@ -65,6 +65,8 @@ const ACTIVITY_COLORS: Record<string, string> = {
 // Dashboard Home Component
 // -----------------------------------------------------------------------------
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage() {
     const [stats, recentActivity] = await Promise.all([
         getDashboardStats(),
