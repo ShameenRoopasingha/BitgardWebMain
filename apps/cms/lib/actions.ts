@@ -13,6 +13,40 @@ import { prisma } from "./db";
 import { revalidatePath } from "next/cache";
 
 // =============================================================================
+// CROSS-APP REVALIDATION
+// =============================================================================
+
+/**
+ * Trigger on-demand revalidation on the web app.
+ * Since the CMS and web are separate Vercel projects,
+ * revalidatePath("/") only clears the CMS cache.
+ * This function calls the web app's revalidation API endpoint.
+ */
+async function revalidateWebsite(path: string = "/") {
+    const webUrl = process.env.NEXT_PUBLIC_WEB_URL;
+    const secret = process.env.REVALIDATION_SECRET;
+
+    if (!webUrl || !secret) {
+        console.warn("[Revalidation] Missing NEXT_PUBLIC_WEB_URL or REVALIDATION_SECRET");
+        return;
+    }
+
+    try {
+        const res = await fetch(`${webUrl}/api/revalidate`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ secret, path }),
+        });
+
+        if (!res.ok) {
+            console.error(`[Revalidation] Failed: ${res.status} ${res.statusText}`);
+        }
+    } catch (error) {
+        console.error("[Revalidation] Error calling web app:", error);
+    }
+}
+
+// =============================================================================
 // SERVICES ACTIONS
 // =============================================================================
 
@@ -45,7 +79,7 @@ export async function createService(data: ServiceInput) {
         },
     });
     revalidatePath("/dashboard/services");
-    revalidatePath("/"); // Revalidate web homepage
+    revalidateWebsite();
     return service;
 }
 
@@ -55,7 +89,7 @@ export async function updateService(id: string, data: Partial<ServiceInput>) {
         data,
     });
     revalidatePath("/dashboard/services");
-    revalidatePath("/");
+    revalidateWebsite();
     return service;
 }
 
@@ -64,7 +98,7 @@ export async function deleteService(id: string) {
         where: { id },
     });
     revalidatePath("/dashboard/services");
-    revalidatePath("/");
+    revalidateWebsite();
 }
 
 export async function toggleServiceStatus(id: string) {
@@ -76,7 +110,7 @@ export async function toggleServiceStatus(id: string) {
         data: { isActive: !service.isActive },
     });
     revalidatePath("/dashboard/services");
-    revalidatePath("/");
+    revalidateWebsite();
     return updated;
 }
 
@@ -117,7 +151,7 @@ export async function createTeamMember(data: TeamMemberInput) {
         },
     });
     revalidatePath("/dashboard/team");
-    revalidatePath("/");
+    revalidateWebsite();
     return member;
 }
 
@@ -127,7 +161,7 @@ export async function updateTeamMember(id: string, data: Partial<TeamMemberInput
         data,
     });
     revalidatePath("/dashboard/team");
-    revalidatePath("/");
+    revalidateWebsite();
     return member;
 }
 
@@ -136,7 +170,7 @@ export async function deleteTeamMember(id: string) {
         where: { id },
     });
     revalidatePath("/dashboard/team");
-    revalidatePath("/");
+    revalidateWebsite();
 }
 
 export async function toggleTeamMemberStatus(id: string) {
@@ -148,7 +182,7 @@ export async function toggleTeamMemberStatus(id: string) {
         data: { isActive: !member.isActive },
     });
     revalidatePath("/dashboard/team");
-    revalidatePath("/");
+    revalidateWebsite();
     return updated;
 }
 
@@ -185,7 +219,7 @@ export async function createTestimonial(data: TestimonialInput) {
         },
     });
     revalidatePath("/dashboard/testimonials");
-    revalidatePath("/");
+    revalidateWebsite();
     return testimonial;
 }
 
@@ -195,7 +229,7 @@ export async function updateTestimonial(id: string, data: Partial<TestimonialInp
         data,
     });
     revalidatePath("/dashboard/testimonials");
-    revalidatePath("/");
+    revalidateWebsite();
     return testimonial;
 }
 
@@ -204,7 +238,7 @@ export async function deleteTestimonial(id: string) {
         where: { id },
     });
     revalidatePath("/dashboard/testimonials");
-    revalidatePath("/");
+    revalidateWebsite();
 }
 
 export async function toggleTestimonialStatus(id: string) {
@@ -216,7 +250,7 @@ export async function toggleTestimonialStatus(id: string) {
         data: { isActive: !testimonial.isActive },
     });
     revalidatePath("/dashboard/testimonials");
-    revalidatePath("/");
+    revalidateWebsite();
     return updated;
 }
 
@@ -263,7 +297,7 @@ export async function createProduct(data: ProductInput) {
         },
     });
     revalidatePath("/dashboard/products");
-    revalidatePath("/");
+    revalidateWebsite();
     return product;
 }
 
@@ -273,7 +307,7 @@ export async function updateProduct(id: string, data: Partial<ProductInput>) {
         data,
     });
     revalidatePath("/dashboard/products");
-    revalidatePath("/");
+    revalidateWebsite();
     return product;
 }
 
@@ -282,7 +316,7 @@ export async function deleteProduct(id: string) {
         where: { id },
     });
     revalidatePath("/dashboard/products");
-    revalidatePath("/");
+    revalidateWebsite();
 }
 
 export async function toggleProductStatus(id: string) {
@@ -294,7 +328,7 @@ export async function toggleProductStatus(id: string) {
         data: { isActive: !product.isActive },
     });
     revalidatePath("/dashboard/products");
-    revalidatePath("/");
+    revalidateWebsite();
     return updated;
 }
 
@@ -360,7 +394,7 @@ export async function createBlogPost(data: BlogPostInput) {
         },
     });
     revalidatePath("/dashboard/blog");
-    revalidatePath("/");
+    revalidateWebsite();
     return post;
 }
 
@@ -375,7 +409,7 @@ export async function updateBlogPost(id: string, data: Partial<BlogPostInput>) {
         },
     });
     revalidatePath("/dashboard/blog");
-    revalidatePath("/");
+    revalidateWebsite();
     return post;
 }
 
@@ -384,7 +418,7 @@ export async function deleteBlogPost(id: string) {
         where: { id },
     });
     revalidatePath("/dashboard/blog");
-    revalidatePath("/");
+    revalidateWebsite();
 }
 
 export async function toggleBlogPostPublish(id: string) {
@@ -399,7 +433,7 @@ export async function toggleBlogPostPublish(id: string) {
         },
     });
     revalidatePath("/dashboard/blog");
-    revalidatePath("/");
+    revalidateWebsite();
     return updated;
 }
 
