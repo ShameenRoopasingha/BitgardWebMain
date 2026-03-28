@@ -23,9 +23,9 @@ async function main() {
       tagline: 'Next-Generation Retail Management',
       description: 'A lightning-fast, cloud-based POS system designed for modern retail and restaurants. Handle transactions, track inventory in real-time, and manage your employees from one unified dashboard.',
       features: [
-        { title: 'Real-time Inventory tracking' },
-        { title: 'Multi-location support' },
-        { title: 'Advanced Sales Analytics' }
+        'Real-time Inventory tracking',
+        'Multi-location support',
+        'Advanced Sales Analytics'
       ],
       icon: 'FiMonitor',
       isActive: true,
