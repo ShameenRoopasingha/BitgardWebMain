@@ -19,6 +19,9 @@ import GradualBlur from "@/components/ui/GradualBlur";
 import DarkVeil from "@/components/backgrounds/DarkVeil";
 import "./globals.css";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 // Providers
 import { ReduxProvider } from "@/lib/redux-provider";
 import { LenisProvider } from "@/lib/lenis-provider";
