@@ -3,50 +3,45 @@
  * BITGARD WEBSITE - HERO SECTION
  * =============================================================================
  * 
- * The hero section is the first thing visitors see. It features:
- * - 3D animated background scene
- * - Animated headline and tagline using GSAP
- * - Call-to-action buttons
- * - Scroll indicator
- * 
- * Performance optimized with:
- * - Dynamic import for 3D scene
- * - GSAP SplitText for text animations
- * - Intersection observer for visibility
+ * Left-aligned hero with TextType typing animation showcasing
+ * what Bitgard Pvt Ltd does.
  * 
  * @author Bitgard Development Team
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 "use client";
 
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-
 import { FiArrowRight, FiPlay } from "react-icons/fi";
+import TextType from "@/components/TextType";
 
+// -----------------------------------------------------------------------------
+// Typing sentences that describe what Bitgard does
+// -----------------------------------------------------------------------------
 
+const TYPING_SENTENCES = [
+    "Engineering high-performance SaaS solutions that drive growth.",
+    "Streamlining retail with intelligent POS and inventory systems.",
+    "Architecting scalable software that evolves with your business.",
+    "Turning complex challenges into seamless digital experiences.",
+    "Where visionary ideas are forged into powerful software reality.",
+];
 
 // -----------------------------------------------------------------------------
 // Hero Section Component
 // -----------------------------------------------------------------------------
 
-/**
- * HeroClient - Client component for the hero section
- */
 export function HeroClient({ content }: { content: any }) {
-    // Refs for GSAP animations
     const sectionRef = useRef<HTMLElement>(null);
     const headlineRef = useRef<HTMLHeadingElement>(null);
-    const taglineRef = useRef<HTMLParagraphElement>(null);
+    const typingRef = useRef<HTMLDivElement>(null);
     const ctaRef = useRef<HTMLDivElement>(null);
     const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
-    // Initialize GSAP animations on mount
     useEffect(() => {
-        // Create animation context for cleanup
         const ctx = gsap.context(() => {
-            // Create a timeline for sequenced animations
             const tl = gsap.timeline({
                 defaults: {
                     duration: 1,
@@ -57,65 +52,35 @@ export function HeroClient({ content }: { content: any }) {
             // Animate headline
             tl.fromTo(
                 headlineRef.current,
-                {
-                    opacity: 0,
-                    y: 60,
-                    scale: 0.95,
-                },
-                {
-                    opacity: 1,
-                    y: 0,
-                    scale: 1,
-                }
+                { opacity: 0, y: 60, scale: 0.95 },
+                { opacity: 1, y: 0, scale: 1 }
             );
 
-            // Animate tagline (starts slightly before headline finishes)
+            // Animate typing section
             tl.fromTo(
-                taglineRef.current,
-                {
-                    opacity: 0,
-                    y: 40,
-                },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                },
-                "-=0.6" // Overlap with previous animation
+                typingRef.current,
+                { opacity: 0, y: 40 },
+                { opacity: 1, y: 0, duration: 0.8 },
+                "-=0.6"
             );
 
             // Animate CTA buttons
             tl.fromTo(
                 ctaRef.current?.children || [],
-                {
-                    opacity: 0,
-                    y: 30,
-                },
-                {
-                    opacity: 1,
-                    y: 0,
-                    stagger: 0.15,
-                    duration: 0.6,
-                },
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, stagger: 0.15, duration: 0.6 },
                 "-=0.4"
             );
 
-            // Animate scroll indicator with infinite bounce
+            // Animate scroll indicator
             tl.fromTo(
                 scrollIndicatorRef.current,
-                {
-                    opacity: 0,
-                    y: -20,
-                },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.5,
-                },
+                { opacity: 0, y: -20 },
+                { opacity: 1, y: 0, duration: 0.5 },
                 "-=0.2"
             );
 
-            // Add continuous bounce animation to scroll indicator
+            // Continuous bounce on scroll indicator
             gsap.to(scrollIndicatorRef.current, {
                 y: 10,
                 duration: 1.5,
@@ -126,7 +91,6 @@ export function HeroClient({ content }: { content: any }) {
             });
         }, sectionRef);
 
-        // Cleanup on unmount
         return () => ctx.revert();
     }, []);
 
@@ -134,27 +98,31 @@ export function HeroClient({ content }: { content: any }) {
         <section
             ref={sectionRef}
             id="hero"
-            className="relative min-h-screen flex items-center justify-center overflow-hidden"
+            className="relative min-h-screen flex items-center overflow-hidden"
             aria-label="Hero section"
         >
             {/* ------------------------------------------------------------------- */}
-            {/* Gradient Overlay for Text Readability - Minimal/No Background */}
+            {/* Hero Content - Left Aligned */}
             {/* ------------------------------------------------------------------- */}
-            {/* We now use the global Light Pillar background in layout.tsx */}
+            <div className="relative z-20 container mx-auto px-6 md:px-12 lg:px-20">
+                {/* Small label */}
+                <div
+                    className="inline-block px-4 py-1.5 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-400 text-sm font-medium mb-8"
+                    style={{ opacity: 0 }}
+                    ref={(el) => {
+                        if (el) {
+                            gsap.to(el, { opacity: 1, delay: 0.3, duration: 0.8 });
+                        }
+                    }}
+                >
+                    Bitgard (Pvt) Ltd — Software Company
+                </div>
 
-            {/* ------------------------------------------------------------------- */}
-            {/* Hero Content */}
-            {/* ------------------------------------------------------------------- */}
-
-            {/* ------------------------------------------------------------------- */}
-            {/* Hero Content */}
-            {/* ------------------------------------------------------------------- */}
-            <div className="relative z-20 container mx-auto px-6 text-center">
-                {/* Main Headline */}
+                {/* Main Headline - Left aligned */}
                 <h1
                     ref={headlineRef}
-                    className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight"
-                    style={{ opacity: 0 }} // Start hidden for GSAP
+                    className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight max-w-4xl"
+                    style={{ opacity: 0 }}
                 >
                     {content?.headline ? (
                         <span className="block text-white whitespace-pre-line">{content.headline}</span>
@@ -166,21 +134,31 @@ export function HeroClient({ content }: { content: any }) {
                     )}
                 </h1>
 
-                {/* Tagline */}
-                <p
-                    ref={taglineRef}
-                    className="text-lg md:text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto mb-10 whitespace-pre-line"
-                    style={{ opacity: 0 }} // Start hidden for GSAP
+                {/* TextType Typing Animation - What we do */}
+                <div
+                    ref={typingRef}
+                    className="mb-10 max-w-2xl"
+                    style={{ opacity: 0 }}
                 >
-                    {content?.subheadline || 
-                        "Transforming businesses with innovative SaaS solutions. From POS systems\n" +
-                        "to tax filing, we build the software that powers your success."}
-                </p>
+                    <TextType
+                        text={TYPING_SENTENCES}
+                        as="p"
+                        className="text-lg md:text-xl lg:text-2xl text-gray-300 font-light leading-relaxed"
+                        typingSpeed={40}
+                        deletingSpeed={25}
+                        pauseDuration={2500}
+                        loop={true}
+                        showCursor={true}
+                        cursorCharacter="|"
+                        cursorClassName="text-primary-400"
+                        cursorBlinkDuration={0.6}
+                    />
+                </div>
 
-                {/* Call-to-Action Buttons */}
+                {/* Call-to-Action Buttons - Left aligned */}
                 <div
                     ref={ctaRef}
-                    className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+                    className="flex flex-col sm:flex-row gap-4 items-start"
                 >
                     {/* Primary CTA */}
                     <a
@@ -210,7 +188,7 @@ export function HeroClient({ content }: { content: any }) {
             <div
                 ref={scrollIndicatorRef}
                 className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20"
-                style={{ opacity: 0 }} // Start hidden for GSAP
+                style={{ opacity: 0 }}
             >
                 <a
                     href="#products"
