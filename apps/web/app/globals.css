@@ -263,8 +263,46 @@
     box-shadow: var(--shadow-glow);
   }
 
-  .glow-strong {
-    box-shadow: var(--shadow-glow-strong);
+  /* Holographic White - silvery iridescent shimmer */
+  .text-holo-white {
+    background: linear-gradient(
+      90deg,
+      #ffffff 0%,
+      #d4d4d8 20%,
+      #ffffff 40%,
+      #e4e4e7 60%,
+      #ffffff 80%,
+      #d4d4d8 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: holo-shimmer 6s linear infinite;
+  }
+
+  /* Holographic Orange - warm amber iridescent shimmer */
+  .text-holo-orange {
+    background: linear-gradient(
+      90deg,
+      #ff9f43 0%,
+      #ffbe76 20%,
+      #f0932b 40%,
+      #ffcf9f 60%,
+      #ff9f43 80%,
+      #ffbe76 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: holo-shimmer 6s linear infinite;
+  }
+
+  @keyframes holo-shimmer {
+    to {
+      background-position: 200% center;
+    }
   }
 
   /* Text balance for headings */

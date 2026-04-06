@@ -14,6 +14,22 @@ module.exports = {
             },
         },
         extend: {
+            fontSize: {
+                // Golden Ratio (φ = 1.618) Fluid Typography Scale
+                "xs": ["clamp(0.618rem, 1vw + 0.5rem, 0.786rem)", { lineHeight: "1.5" }],
+                "sm": ["clamp(0.786rem, 1.2vw + 0.6rem, 1rem)", { lineHeight: "1.5" }],
+                "base": ["1rem", { lineHeight: "1.5" }],
+                "lg": ["clamp(1rem, 2vw + 0.8rem, 1.272rem)", { lineHeight: "1.4" }],
+                "xl": ["clamp(1.272rem, 2.5vw + 1rem, 1.618rem)", { lineHeight: "1.3" }],
+                "2xl": ["clamp(1.618rem, 3.5vw + 1.2rem, 2.058rem)", { lineHeight: "1.2" }],
+                "3xl": ["clamp(2.058rem, 4.5vw + 1.4rem, 2.618rem)", { lineHeight: "1.15" }],
+                "4xl": ["clamp(2.618rem, 6vw + 1.6rem, 3.330rem)", { lineHeight: "1.1" }],
+                "5xl": ["clamp(3.330rem, 8vw + 2rem, 4.236rem)", { lineHeight: "1.05" }],
+                "6xl": ["clamp(4.236rem, 11vw + 2.5rem, 5.388rem)", { lineHeight: "1.0" }],
+                "7xl": ["clamp(5.388rem, 15vw + 3rem, 6.854rem)", { lineHeight: "1.0" }],
+                "8xl": ["clamp(6.854rem, 20vw + 4rem, 8.719rem)", { lineHeight: "1.0" }],
+                "9xl": ["clamp(8.719rem, 26vw + 5rem, 11.089rem)", { lineHeight: "1.0" }],
+            },
             colors: {
                 // shadcn-style semantic colors using CSS variables
                 border: "hsl(var(--border))",

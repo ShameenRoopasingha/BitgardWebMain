@@ -118,18 +118,32 @@ export function HeroClient({ content }: { content: any }) {
                     Bitgard (Pvt) Ltd — Software Company
                 </div>
 
-                {/* Main Headline - Left aligned */}
+                {/* Main Headline - Left aligned, golden ratio typography (φ = 1.618) */}
                 <h1
                     ref={headlineRef}
-                    className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight max-w-4xl"
+                    className="mb-8 max-w-4xl"
                     style={{ opacity: 0 }}
                 >
                     {content?.headline ? (
-                        <span className="block text-white whitespace-pre-line">{content.headline}</span>
+                        <span className="block text-white whitespace-pre-line text-6xl font-bold tracking-tight">
+                            {content.headline}
+                        </span>
                     ) : (
                         <>
-                            <span className="block text-white">Dreams Forged</span>
-                            <span className="block gradient-text">in Code</span>
+                            {/* Tier 1: Base size — elegant setup */}
+                            <span className="block text-white text-4xl font-normal tracking-wide">
+                                Dreams Forged
+                            </span>
+                            {/* Tier 2: φ × base — the punchline */}
+                            <span
+                                className="block text-6xl font-extrabold tracking-tight"
+                                style={{
+                                    color: '#ff6b00',
+                                    textShadow: '0 0 10px rgba(255,107,0,0.6), 0 0 30px rgba(255,107,0,0.3), 0 0 60px rgba(255,107,0,0.15)',
+                                }}
+                            >
+                                in Code
+                            </span>
                         </>
                     )}
                 </h1>
@@ -138,12 +152,12 @@ export function HeroClient({ content }: { content: any }) {
                 <div
                     ref={typingRef}
                     className="mb-10 max-w-2xl"
-                    style={{ opacity: 0 }}
+                    style={{ opacity: 0, minHeight: '3.5rem' }}
                 >
                     <TextType
                         text={TYPING_SENTENCES}
                         as="p"
-                        className="text-lg md:text-xl lg:text-2xl text-gray-300 font-light leading-relaxed"
+                        className="text-gray-300 font-light text-2xl"
                         typingSpeed={40}
                         deletingSpeed={25}
                         pauseDuration={2500}
