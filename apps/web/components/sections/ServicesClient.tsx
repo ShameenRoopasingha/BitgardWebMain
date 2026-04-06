@@ -25,6 +25,7 @@ import {
     FiArrowRight,
 } from "react-icons/fi";
 import type { IconType } from "react-icons";
+import BorderGlow from "@/components/BorderGlow";
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {
@@ -73,40 +74,47 @@ function ServiceCard({ service }: ServiceCardProps) {
     const IconComponent = ICON_MAP[service.icon] || FiCode;
 
     return (
-        <div className="service-card group relative p-6 rounded-2xl bg-card border border-border hover:border-primary-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/10">
-            {/* Icon */}
-            <div className="w-14 h-14 rounded-xl mb-5 flex items-center justify-center bg-primary-500/10 text-primary-400 group-hover:bg-primary-500/20 transition-colors duration-300">
-                <IconComponent className="w-7 h-7" />
+        <BorderGlow 
+            className="service-card group cursor-pointer h-full"
+            glowColor="30 100 55" // Bitgard Neon Orange
+            backgroundColor="#050308" // Deep dark background to contrast the glow
+            glowIntensity={1.2}
+            borderRadius={20}
+        >
+            <div className="p-6 relative flex flex-col h-full transition-all duration-300">
+                {/* Icon */}
+                <div className="w-14 h-14 rounded-xl mb-5 flex items-center justify-center bg-primary-500/10 text-primary-400 group-hover:bg-primary-500/20 transition-colors duration-300">
+                    <IconComponent className="w-7 h-7" />
+                </div>
+
+                {/* Service Name */}
+                <h3 className="text-xl font-bold text-white mb-3">{service.name}</h3>
+
+                {/* Description */}
+                <p className="text-muted-foreground mb-5 leading-relaxed flex-grow">{service.description}</p>
+
+                {/* Features */}
+                <ul className="space-y-2 mb-6">
+                    {service.features.map((feature, i) => (
+                        <li key={i} className="flex items-center gap-2 text-sm text-foreground/80">
+                            <span className="w-1.5 h-1.5 rounded-full bg-primary-500" />
+                            {feature}
+                        </li>
+                    ))}
+                </ul>
+
+                {/* CTA Link */}
+                <a
+                    href="#contact"
+                    className="inline-flex items-center gap-2 text-primary-400 font-medium group/link hover:text-primary-300 transition-colors mt-auto"
+                >
+                    Get Started
+                    <FiArrowRight className="transition-transform group-hover/link:translate-x-1" />
+                </a>
+
+                {/* Remove the old static hover glow as BorderGlow handles it actively */}
             </div>
-
-            {/* Service Name */}
-            <h3 className="text-xl font-bold text-white mb-3">{service.name}</h3>
-
-            {/* Description */}
-            <p className="text-muted-foreground mb-5 leading-relaxed">{service.description}</p>
-
-            {/* Features */}
-            <ul className="space-y-2 mb-6">
-                {service.features.map((feature, i) => (
-                    <li key={i} className="flex items-center gap-2 text-sm text-foreground/80">
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary-500" />
-                        {feature}
-                    </li>
-                ))}
-            </ul>
-
-            {/* CTA Link */}
-            <a
-                href="#contact"
-                className="inline-flex items-center gap-2 text-primary-400 font-medium group/link hover:text-primary-300 transition-colors"
-            >
-                Get Started
-                <FiArrowRight className="transition-transform group-hover/link:translate-x-1" />
-            </a>
-
-            {/* Hover glow effect */}
-            <div className="absolute inset-0 -z-10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-primary-500/5 to-cyan-500/5" />
-        </div>
+        </BorderGlow>
     );
 }
 

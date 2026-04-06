@@ -70,7 +70,7 @@ export function HeroClient({ content }: { content: any }) {
                 ctaRef.current?.children || [],
                 { opacity: 0, y: 30 },
                 { opacity: 1, y: 0, stagger: 0.15, duration: 0.6 },
-                "-=0.4"
+                "+=0.3" // Delays until strictly after text has arrived
             );
 
             // Animate scroll indicator
@@ -110,10 +110,10 @@ export function HeroClient({ content }: { content: any }) {
                 style={{ transform: 'translate(25%, -50%) scale(3)' }}
             >
                 <CircularText
-                    text=" -BITGARD- Dreams Forged In Code "
+                    text=" * BITGARD * Dreams Forged in Code "
                     spinDuration={40}
                     className="text-orange-500 w-50 h-50 text-[10px] text-spacing-1"
-                    onHover="goBonkers"
+                    onHover="speedUp"
                 />
             </div>
 

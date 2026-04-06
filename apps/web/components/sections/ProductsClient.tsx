@@ -25,7 +25,7 @@ import {
     FiBox
 } from "react-icons/fi";
 import type { IconType } from "react-icons";
-
+import SpotlightCard from "@/components/SpotlightCard";
 // Register GSAP plugins
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -71,6 +71,15 @@ const COLOR_MAP: Record<string, string> = {
     default: "from-primary-500 to-cyan-500",
 };
 
+const SPOTLIGHT_MAP: Record<string, `rgba(${number}, ${number}, ${number}, ${number})`> = {
+    FiMonitor: "rgba(59, 130, 246, 0.15)",
+    FiPackage: "rgba(168, 85, 247, 0.15)",
+    FiFileText: "rgba(34, 197, 94, 0.15)",
+    FiGlobe: "rgba(249, 115, 22, 0.15)",
+    FiSmartphone: "rgba(236, 72, 153, 0.15)",
+    default: "rgba(249, 115, 22, 0.15)",
+};
+
 
 // -----------------------------------------------------------------------------
 // Product Card Component
@@ -81,102 +90,49 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product }: ProductCardProps) {
-    const cardRef = useRef<HTMLDivElement>(null);
     const IconComponent = ICON_MAP[product.icon] || FiBox;
     const colorClass = COLOR_MAP[product.icon] || COLOR_MAP.default;
-
-    // 3D tilt effect on mouse move
-    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!cardRef.current) return;
-
-        const card = cardRef.current;
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-
-        const rotateX = (y - centerY) / 20;
-        const rotateY = (centerX - x) / 20;
-
-        gsap.to(card, {
-            rotateX: rotateX,
-            rotateY: rotateY,
-            duration: 0.3,
-            ease: "power2.out",
-            transformPerspective: 1000,
-        });
-    };
-
-    const handleMouseLeave = () => {
-        if (!cardRef.current) return;
-
-        gsap.to(cardRef.current, {
-            rotateX: 0,
-            rotateY: 0,
-            duration: 0.5,
-            ease: "power2.out",
-        });
-    };
+    const spotlightColor = SPOTLIGHT_MAP[product.icon] || SPOTLIGHT_MAP.default;
 
     return (
-        <div
-            ref={cardRef}
-            className="product-card relative group"
-            style={{ transformStyle: "preserve-3d" }}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-        >
-            {/* Card Content */}
-            <div className="card h-full flex flex-col">
-                {/* Icon with gradient background */}
-                <div
-                    className={`
-                        w-16 h-16 rounded-xl mb-6 flex items-center justify-center
-                        bg-gradient-to-br ${colorClass}
-                        shadow-lg group-hover:scale-110 transition-transform duration-300
-                    `}
-                >
-                    <IconComponent className="w-8 h-8 text-white" />
-                </div>
-
-                {/* Product Name & Tagline */}
-                <h3 className="text-2xl font-bold text-foreground mb-2">{product.name}</h3>
-                <p className="text-primary-400 font-medium mb-4">{product.tagline}</p>
-
-                {/* Description */}
-                <p className="text-muted-foreground mb-6 flex-grow">{product.description}</p>
-
-                {/* Features */}
-                <ul className="space-y-2 mb-6">
-                    {product.features.map((feature, i) => (
-                        <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <span className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${colorClass}`} />
-                            {feature}
-                        </li>
-                    ))}
-                </ul>
-
-                {/* CTA Link */}
-                <a
-                    href={`/products/${product.slug}`}
-                    className="inline-flex items-center gap-2 text-primary-400 font-medium group/link hover:text-primary-300 transition-colors"
-                >
-                    Learn More
-                    <FiArrowRight className="transition-transform group-hover/link:translate-x-1" />
-                </a>
-            </div>
-
-            {/* Gradient border effect on hover */}
+        <SpotlightCard className="product-card group h-full flex flex-col" spotlightColor={spotlightColor}>
+            {/* Icon with gradient background */}
             <div
                 className={`
-                    absolute inset-0 -z-10 rounded-2xl opacity-0 group-hover:opacity-100
-                    transition-opacity duration-300 blur-xl
-                    bg-gradient-to-r ${colorClass}
+                    w-16 h-16 rounded-xl mb-6 flex items-center justify-center
+                    bg-gradient-to-br ${colorClass}
+                    shadow-md group-hover:scale-110 transition-transform duration-300
                 `}
-                style={{ transform: "translateZ(-20px)" }}
-            />
-        </div>
+            >
+                <IconComponent className="w-8 h-8 text-white" />
+            </div>
+
+            {/* Product Name & Tagline */}
+            <h3 className="text-2xl font-bold text-white mb-2">{product.name}</h3>
+            <p className="text-primary-400 font-medium mb-4">{product.tagline}</p>
+
+            {/* Description */}
+            <p className="text-muted-foreground mb-6 leading-relaxed">{product.description}</p>
+
+            {/* Features */}
+            <ul className={`grid gap-x-3 gap-y-2 mb-6 text-sm ${product.features.length > 5 ? 'grid-cols-2' : 'grid-cols-1'}`}>
+                {product.features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-2 text-foreground/80 leading-snug">
+                        <span className={`w-1.5 h-1.5 mt-1.5 shrink-0 rounded-full bg-gradient-to-r ${colorClass}`} />
+                        <span>{feature}</span>
+                    </li>
+                ))}
+            </ul>
+
+            {/* CTA Link */}
+            <a
+                href={`/products/${product.slug}`}
+                className="inline-flex items-center gap-2 text-primary-400 font-medium group/link hover:text-primary-300 transition-colors mt-auto"
+            >
+                Learn More
+                <FiArrowRight className="transition-transform group-hover/link:translate-x-1" />
+            </a>
+        </SpotlightCard>
     );
 }
 

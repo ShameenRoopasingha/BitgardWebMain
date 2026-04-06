@@ -24,6 +24,7 @@ import Link from "next/link";
 import { FiMenu, FiX } from "react-icons/fi";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { toggleMobileMenu, closeMobileMenu, setHasScrolled } from "@/store/slices/ui-slice";
+import GlitchText from "@/components/GlitchText";
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {
@@ -167,9 +168,13 @@ export function Header() {
                             </div>
 
                             {/* Brand Name */}
-                            <span className="text-xl md:text-2xl font-bold text-white group-hover:text-primary-400 transition-colors">
+                            <GlitchText 
+                                className="text-xl md:text-2xl font-bold text-white group-hover:text-primary-400 transition-colors"
+                                enableOnHover={true}
+                                speed={1}
+                            >
                                 Bitgard
-                            </span>
+                            </GlitchText>
                         </Link>
                     </div>
 
