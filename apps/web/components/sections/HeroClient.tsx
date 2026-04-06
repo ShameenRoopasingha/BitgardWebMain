@@ -16,6 +16,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { FiArrowRight, FiPlay } from "react-icons/fi";
 import TextType from "@/components/TextType";
+import CircularText from "@/components/CircularText";
 
 // -----------------------------------------------------------------------------
 // Typing sentences that describe what Bitgard does
@@ -101,6 +102,21 @@ export function HeroClient({ content }: { content: any }) {
             className="relative min-h-screen flex items-center overflow-hidden"
             aria-label="Hero section"
         >
+            {/* ------------------------------------------------------------------- */}
+            {/* Background Watermark */}
+            {/* ------------------------------------------------------------------- */}
+            <div
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/4 opacity-[0.03] md:opacity-[0.05] pointer-events-none z-0"
+                style={{ transform: 'translate(25%, -50%) scale(3)' }}
+            >
+                <CircularText
+                    text=" -BITGARD- Dreams Forged In Code "
+                    spinDuration={40}
+                    className="text-orange-500 w-50 h-50 text-[10px] text-spacing-1"
+                    onHover="goBonkers"
+                />
+            </div>
+
             {/* ------------------------------------------------------------------- */}
             {/* Hero Content - Left Aligned */}
             {/* ------------------------------------------------------------------- */}

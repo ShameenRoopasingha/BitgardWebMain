@@ -16,19 +16,20 @@ module.exports = {
         extend: {
             fontSize: {
                 // Golden Ratio (φ = 1.618) Fluid Typography Scale
-                "xs": ["clamp(0.618rem, 1vw + 0.5rem, 0.786rem)", { lineHeight: "1.5" }],
-                "sm": ["clamp(0.786rem, 1.2vw + 0.6rem, 1rem)", { lineHeight: "1.5" }],
-                "base": ["1rem", { lineHeight: "1.5" }],
-                "lg": ["clamp(1rem, 2vw + 0.8rem, 1.272rem)", { lineHeight: "1.4" }],
-                "xl": ["clamp(1.272rem, 2.5vw + 1rem, 1.618rem)", { lineHeight: "1.3" }],
-                "2xl": ["clamp(1.618rem, 3.5vw + 1.2rem, 2.058rem)", { lineHeight: "1.2" }],
-                "3xl": ["clamp(2.058rem, 4.5vw + 1.4rem, 2.618rem)", { lineHeight: "1.15" }],
-                "4xl": ["clamp(2.618rem, 6vw + 1.6rem, 3.330rem)", { lineHeight: "1.1" }],
-                "5xl": ["clamp(3.330rem, 8vw + 2rem, 4.236rem)", { lineHeight: "1.05" }],
-                "6xl": ["clamp(4.236rem, 11vw + 2.5rem, 5.388rem)", { lineHeight: "1.0" }],
-                "7xl": ["clamp(5.388rem, 15vw + 3rem, 6.854rem)", { lineHeight: "1.0" }],
-                "8xl": ["clamp(6.854rem, 20vw + 4rem, 8.719rem)", { lineHeight: "1.0" }],
-                "9xl": ["clamp(8.719rem, 26vw + 5rem, 11.089rem)", { lineHeight: "1.0" }],
+                // Line heights use geometric inverse powers: 1 + (1 / φⁿ)
+                "xs": ["clamp(0.618rem, 1vw + 0.5rem, 0.786rem)", { lineHeight: "1.618" }],
+                "sm": ["clamp(0.786rem, 1.2vw + 0.6rem, 1rem)", { lineHeight: "1.618" }],
+                "base": ["1rem", { lineHeight: "1.618" }], // 1 + 1/φ¹
+                "lg": ["clamp(1rem, 2vw + 0.8rem, 1.272rem)", { lineHeight: "1.382" }], // 1 + 1/φ²
+                "xl": ["clamp(1.272rem, 2.5vw + 1rem, 1.618rem)", { lineHeight: "1.236" }], // 1 + 1/φ³
+                "2xl": ["clamp(1.618rem, 3.5vw + 1.2rem, 2.058rem)", { lineHeight: "1.146" }], // 1 + 1/φ⁴
+                "3xl": ["clamp(2.058rem, 4.5vw + 1.4rem, 2.618rem)", { lineHeight: "1.090" }], // 1 + 1/φ⁵
+                "4xl": ["clamp(2.618rem, 6vw + 1.6rem, 3.330rem)", { lineHeight: "1.056" }], // 1 + 1/φ⁶
+                "5xl": ["clamp(3.330rem, 8vw + 2rem, 4.236rem)", { lineHeight: "1.034" }], // 1 + 1/φ⁷
+                "6xl": ["clamp(4.236rem, 11vw + 2.5rem, 5.388rem)", { lineHeight: "1.000" }], // Solid Block
+                "7xl": ["clamp(5.388rem, 15vw + 3rem, 6.854rem)", { lineHeight: "1.000" }],
+                "8xl": ["clamp(6.854rem, 20vw + 4rem, 8.719rem)", { lineHeight: "1.000" }],
+                "9xl": ["clamp(8.719rem, 26vw + 5rem, 11.089rem)", { lineHeight: "1.000" }],
             },
             colors: {
                 // shadcn-style semantic colors using CSS variables
