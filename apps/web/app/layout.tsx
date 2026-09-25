@@ -14,7 +14,7 @@
  */
 
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans, Manrope } from "next/font/google";
+import { Orbitron, Space_Grotesk, Inter } from "next/font/google";
 import GradualBlur from "@/components/ui/GradualBlur";
 import DarkVeil from "@/components/backgrounds/DarkVeil";
 import "./globals.css";
@@ -27,7 +27,7 @@ import { ReduxProvider } from "@/lib/redux-provider";
 import { LenisProvider } from "@/lib/lenis-provider";
 
 // Layout Components
-import { Header } from "@/components/layout/Header";
+import { FloatingNavbar } from "@/components/magic/FloatingNavbar";
 import { Footer } from "@/components/layout/Footer";
 
 // -----------------------------------------------------------------------------
@@ -35,25 +35,33 @@ import { Footer } from "@/components/layout/Footer";
 // -----------------------------------------------------------------------------
 
 /**
- * Plus Jakarta Sans - Used for headings
- * A modern, geometric sans-serif favored by fintech and SaaS companies
+ * Orbitron - Display headings
  */
-const plusJakarta = Plus_Jakarta_Sans({
+const orbitron = Orbitron({
   variable: "--font-heading",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 /**
- * Manrope - Used for body text
- * A highly readable, modern geometric sans-serif
+ * Space Grotesk - Subheadings and structural text
  */
-const manrope = Manrope({
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-subheading",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+/**
+ * Inter - The absolute gold standard for readable body text.
+ */
+const inter = Inter({
   variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 // -----------------------------------------------------------------------------
@@ -116,7 +124,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#2196f3",
+  themeColor: "#E8732A",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -144,7 +152,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html
       lang="en"
-      className={`${plusJakarta.variable} ${manrope.variable}`}
+      className={`dark ${orbitron.variable} ${spaceGrotesk.variable} ${inter.variable}`}
       suppressHydrationWarning
     >
       <body>
@@ -160,8 +168,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
             {/* Main Content Wrapper - Relative z-10 for interactivity */}
             <div className="relative z-10 flex flex-col min-h-screen">
-              {/* Header Navigation */}
-              <Header />
+              <FloatingNavbar />
 
               {/* Main Content */}
               <main id="main-content" className="flex-grow">{children}</main>

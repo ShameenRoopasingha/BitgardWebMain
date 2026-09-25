@@ -36,22 +36,28 @@ import {
 // Footer Links Configuration
 // -----------------------------------------------------------------------------
 
-const QUICK_LINKS = [
-    { label: "Home", href: "#hero" },
-    { label: "Products", href: "#products" },
-    { label: "Services", href: "#services" },
-    { label: "About Us", href: "#about" },
-    { label: "Team", href: "#team" },
-    { label: "Blog", href: "#blog" },
-    { label: "Contact", href: "#contact" },
+const PRODUCT_LINKS = [
+    { label: "POS + Inventory", href: "/products/pos" },
+    { label: "Vehicle Hire Management", href: "/products/vehicle-hire" },
+    { label: "HRM System", href: "/products/hrm" },
+    { label: "Pricing", href: "/pricing" },
+    { label: "Integrations", href: "/integrations" },
 ];
 
-const PRODUCT_LINKS = [
-    { label: "Smart POS", href: "/products/pos" },
-    { label: "Inventory Pro", href: "/products/ims" },
-    { label: "TaxEase", href: "/products/tax" },
-    { label: "WebCraft", href: "/products/web" },
-    { label: "AppForge", href: "/products/mobile" },
+const COMPANY_LINKS = [
+    { label: "About", href: "/about" },
+    { label: "Careers", href: "/careers" },
+    { label: "Blog", href: "/blog" },
+    { label: "Case Studies", href: "/case-studies" },
+    { label: "Contact", href: "/contact" },
+];
+
+const RESOURCE_LINKS = [
+    { label: "Documentation", href: "/docs" },
+    { label: "API Reference", href: "/docs/api" },
+    { label: "Help Center", href: "/help" },
+    { label: "System Status", href: "/status" },
+    { label: "Community", href: "/community" },
 ];
 
 
@@ -120,25 +126,6 @@ export function FooterClient({ settings }: { settings: any }) {
                     </div>
 
                     {/* ------------------------------------------------------------- */}
-                    {/* Quick Links */}
-                    {/* ------------------------------------------------------------- */}
-                    <div>
-                        <h3 className="text-white font-semibold mb-6">Quick Links</h3>
-                        <ul className="space-y-3">
-                            {QUICK_LINKS.map((link) => (
-                                <li key={link.label}>
-                                    <a
-                                        href={link.href}
-                                        className="text-muted-foreground hover:text-primary-400 transition-colors"
-                                    >
-                                        {link.label}
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* ------------------------------------------------------------- */}
                     {/* Products */}
                     {/* ------------------------------------------------------------- */}
                     <div>
@@ -148,7 +135,7 @@ export function FooterClient({ settings }: { settings: any }) {
                                 <li key={link.label}>
                                     <Link
                                         href={link.href}
-                                        className="text-muted-foreground hover:text-primary-400 transition-colors"
+                                        className="text-muted-foreground hover:text-primary-500 transition-colors"
                                     >
                                         {link.label}
                                     </Link>
@@ -157,6 +144,43 @@ export function FooterClient({ settings }: { settings: any }) {
                         </ul>
                     </div>
 
+                    {/* ------------------------------------------------------------- */}
+                    {/* Company */}
+                    {/* ------------------------------------------------------------- */}
+                    <div>
+                        <h3 className="text-white font-semibold mb-6">Company</h3>
+                        <ul className="space-y-3">
+                            {COMPANY_LINKS.map((link) => (
+                                <li key={link.label}>
+                                    <Link
+                                        href={link.href}
+                                        className="text-muted-foreground hover:text-primary-500 transition-colors"
+                                    >
+                                        {link.label}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* ------------------------------------------------------------- */}
+                    {/* Resources */}
+                    {/* ------------------------------------------------------------- */}
+                    <div>
+                        <h3 className="text-white font-semibold mb-6">Resources</h3>
+                        <ul className="space-y-3">
+                            {RESOURCE_LINKS.map((link) => (
+                                <li key={link.label}>
+                                    <Link
+                                        href={link.href}
+                                        className="text-muted-foreground hover:text-primary-500 transition-colors"
+                                    >
+                                        {link.label}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                     {/* ------------------------------------------------------------- */}
                     {/* Contact & Newsletter */}
                     {/* ------------------------------------------------------------- */}
@@ -177,7 +201,7 @@ export function FooterClient({ settings }: { settings: any }) {
                             <li className="flex items-start gap-3">
                                 <FiPhone className="w-5 h-5 text-primary-400 mt-0.5 flex-shrink-0" />
                                 <a
-                                    href={`tel:${settings?.phone ? settings.phone.replace(/[^\d+]/g, '') : "+1234567890"}`}
+                                    href={`tel:${settings?.phone ? settings.phone.replace(/[^\\d+]/g, '') : "+1234567890"}`}
                                     className="text-muted-foreground hover:text-foreground transition-colors"
                                 >
                                     {settings?.phone || "+1 (234) 567-890"}
@@ -186,7 +210,7 @@ export function FooterClient({ settings }: { settings: any }) {
                             <li className="flex items-start gap-3">
                                 <FiMapPin className="w-5 h-5 text-primary-400 mt-0.5 flex-shrink-0" />
                                 <span className="text-muted-foreground whitespace-pre-line">
-                                    {settings?.address || "123 Tech Street\nInnovation City, TC 12345"}
+                                    {settings?.address || "123 Tech Street\\nInnovation City, TC 12345"}
                                 </span>
                             </li>
                         </ul>

@@ -192,7 +192,7 @@ export function HeroClient({ content }: { content: any }) {
                 >
                     {/* Primary CTA */}
                     <a
-                        href={content?.ctaLink || "#products"}
+                        href={content?.ctaLink || "/products"}
                         className="btn btn-primary group"
                         aria-label={content?.ctaText || "Explore our products"}
                     >
@@ -202,9 +202,9 @@ export function HeroClient({ content }: { content: any }) {
 
                     {/* Secondary CTA */}
                     <a
-                        href="#contact"
+                        href="/contact"
                         className="btn btn-secondary group"
-                        aria-label="Watch demo video"
+                        aria-label="Contact us"
                     >
                         <FiPlay className="transition-transform group-hover:scale-110" />
                         Watch Demo

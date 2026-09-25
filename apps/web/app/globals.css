@@ -19,45 +19,45 @@
 
 :root {
   /* -------------------------------------------------------------------------
-     Modern Dark Theme - Slate Gray Primary (#6A6E79) & Near Black (#040504)
+     Modern Dark Theme - Deep Midnight Abyss (21st.dev style)
      ------------------------------------------------------------------------- */
 
-  /* Background layers - Near black base */
-  --background: 120 11% 2%;
-  --foreground: 210 5% 95%;
+  /* Background layers - Deep Charcoal to Obsidian */
+  --background: 0 0% 5%;
+  --foreground: 33 28% 94%; /* Off-white #F5F0EB */
 
-  /* Card/surface colors - Slightly lighter than background */
-  --card: 120 8% 5%;
-  --card-foreground: 210 5% 95%;
+  /* Card/surface colors - Dark translucent glass */
+  --card: 222 47% 6%;
+  --card-foreground: 0 0% 100%;
 
   /* Popover/dropdown colors */
-  --popover: 120 10% 4%;
-  --popover-foreground: 210 5% 95%;
+  --popover: 222 47% 6%;
+  --popover-foreground: 0 0% 100%;
 
-  /* Primary brand color - Slate Gray #6A6E79 -> Platinum Steel */
-  --primary: 215 5% 50%;
+  /* Primary brand color - Matte Orange (#E8732A) */
+  --primary: 23 81% 54%;
   --primary-foreground: 0 0% 100%;
 
-  /* Secondary color - Darker slate */
-  --secondary: 220 8% 25%;
-  --secondary-foreground: 210 5% 95%;
+  /* Secondary color - Muted Blue */
+  --secondary: 217 33% 20%;
+  --secondary-foreground: 0 0% 100%;
 
   /* Muted/subtle colors */
-  --muted: 220 8% 15%;
-  --muted-foreground: 210 5% 60%;
+  --muted: 217 33% 12%;
+  --muted-foreground: 215 20% 65%;
 
-  /* Accent color - Lighter slate for highlights */
-  --accent: 222 6% 50%;
+  /* Accent color - Electric Violet (#8b5cf6) */
+  --accent: 258 90% 66%;
   --accent-foreground: 0 0% 100%;
 
-  /* Destructive/error colors */
-  --destructive: 0 62% 35%;
-  --destructive-foreground: 0 0% 98%;
+  /* Destructive/error colors - Cyber Pink */
+  --destructive: 330 80% 60%;
+  --destructive-foreground: 0 0% 100%;
 
-  /* Border and input colors */
-  --border: 220 8% 18%;
-  --input: 220 8% 12%;
-  --ring: 222 6% 45%;
+  /* Border and input colors - Ultra-thin subtle slate */
+  --border: 0 0% 12%;
+  --input: 0 0% 9%;
+  --ring: 23 81% 54%;
 
   /* Chart colors - Slate palette variations */
   --chart-1: 222 6% 45%;
@@ -131,8 +131,12 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-outfit), system-ui, sans-serif;
+    font-family: var(--font-heading), system-ui, sans-serif;
     @apply font-bold tracking-tight;
+  }
+
+  .subheading {
+    font-family: var(--font-subheading), system-ui, sans-serif;
   }
 
   ::selection {
@@ -410,6 +414,15 @@
     100% {
       background-position: -150% 0;
     }
+  }
+
+  /* Hide scrollbar for carousels */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 

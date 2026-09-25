@@ -15,21 +15,21 @@ module.exports = {
         },
         extend: {
             fontSize: {
-                // Golden Ratio (φ = 1.618) Fluid Typography Scale
-                // Line heights use geometric inverse powers: 1 + (1 / φⁿ)
-                "xs": ["clamp(0.618rem, 1vw + 0.5rem, 0.786rem)", { lineHeight: "1.618" }],
-                "sm": ["clamp(0.786rem, 1.2vw + 0.6rem, 1rem)", { lineHeight: "1.618" }],
-                "base": ["1rem", { lineHeight: "1.618" }], // 1 + 1/φ¹
-                "lg": ["clamp(1rem, 2vw + 0.8rem, 1.272rem)", { lineHeight: "1.382" }], // 1 + 1/φ²
-                "xl": ["clamp(1.272rem, 2.5vw + 1rem, 1.618rem)", { lineHeight: "1.236" }], // 1 + 1/φ³
-                "2xl": ["clamp(1.618rem, 3.5vw + 1.2rem, 2.058rem)", { lineHeight: "1.146" }], // 1 + 1/φ⁴
-                "3xl": ["clamp(2.058rem, 4.5vw + 1.4rem, 2.618rem)", { lineHeight: "1.090" }], // 1 + 1/φ⁵
-                "4xl": ["clamp(2.618rem, 6vw + 1.6rem, 3.330rem)", { lineHeight: "1.056" }], // 1 + 1/φ⁶
-                "5xl": ["clamp(3.330rem, 8vw + 2rem, 4.236rem)", { lineHeight: "1.034" }], // 1 + 1/φ⁷
-                "6xl": ["clamp(4.236rem, 11vw + 2.5rem, 5.388rem)", { lineHeight: "1.000" }], // Solid Block
-                "7xl": ["clamp(5.388rem, 15vw + 3rem, 6.854rem)", { lineHeight: "1.000" }],
-                "8xl": ["clamp(6.854rem, 20vw + 4rem, 8.719rem)", { lineHeight: "1.000" }],
-                "9xl": ["clamp(8.719rem, 26vw + 5rem, 11.089rem)", { lineHeight: "1.000" }],
+                // Major Third (1.250) Typographic Scale
+                // Base: 16px (1rem). Tightly geometrically decreasing line-heights for larger text.
+                "xs": ["0.640rem", { lineHeight: "1.6" }],
+                "sm": ["0.800rem", { lineHeight: "1.6" }],
+                "base": ["1.000rem", { lineHeight: "1.6" }],
+                "lg": ["1.250rem", { lineHeight: "1.4" }],
+                "xl": ["1.563rem", { lineHeight: "1.3" }],
+                "2xl": ["1.953rem", { lineHeight: "1.2" }],
+                "3xl": ["2.441rem", { lineHeight: "1.15" }],
+                "4xl": ["3.052rem", { lineHeight: "1.1" }],
+                "5xl": ["3.815rem", { lineHeight: "1.05" }],
+                "6xl": ["4.768rem", { lineHeight: "1.0" }],
+                "7xl": ["5.960rem", { lineHeight: "1.0" }],
+                "8xl": ["7.451rem", { lineHeight: "1.0" }],
+                "9xl": ["9.313rem", { lineHeight: "1.0" }],
             },
             colors: {
                 // shadcn-style semantic colors using CSS variables
@@ -41,17 +41,17 @@ module.exports = {
                 primary: {
                     DEFAULT: "hsl(var(--primary))",
                     foreground: "hsl(var(--primary-foreground))",
-                    // Slate Gray palette based on #6A6E79
-                    50: "#f0f1f2",
-                    100: "#d9dbde",
-                    200: "#c2c5ca",
-                    300: "#a9adb4",
-                    400: "#8f949d",
-                    500: "#6a6e79",
-                    600: "#5a5e67",
-                    700: "#4a4d55",
-                    800: "#3a3d43",
-                    900: "#2a2c31",
+                    // Matte Orange palette based on #E8732A
+                    50: "#fdf2ec",
+                    100: "#fbe4d8",
+                    200: "#f6c4ac",
+                    300: "#f1a47f",
+                    400: "#ec8353",
+                    500: "#e8732a",
+                    600: "#c75c1d",
+                    700: "#994716",
+                    800: "#6e3310",
+                    900: "#441f0a",
                 },
                 secondary: {
                     DEFAULT: "hsl(var(--secondary))",
@@ -112,6 +112,7 @@ module.exports = {
             },
             fontFamily: {
                 heading: ["var(--font-heading)", "sans-serif"],
+                subheading: ["var(--font-subheading)", "sans-serif"],
                 body: ["var(--font-body)", "sans-serif"],
                 mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
             },
@@ -136,6 +137,10 @@ module.exports = {
                     "0%, 100%": { boxShadow: "0 0 20px rgba(106, 110, 121, 0.3)" },
                     "50%": { boxShadow: "0 0 40px rgba(106, 110, 121, 0.5)" },
                 },
+                spotlight: {
+                    "0%": { opacity: 0, transform: "translate(-72%, -62%) scale(0.5)" },
+                    "100%": { opacity: 1, transform: "translate(-50%,-40%) scale(1)" },
+                },
             },
             animation: {
                 "accordion-down": "accordion-down 0.2s ease-out",
@@ -143,6 +148,7 @@ module.exports = {
                 "fade-in": "fade-in 0.5s ease-out",
                 "fade-up": "fade-up 0.5s ease-out",
                 "glow-pulse": "glow-pulse 2s ease-in-out infinite",
+                spotlight: "spotlight 2s ease .75s 1 forwards",
             },
         },
     },
