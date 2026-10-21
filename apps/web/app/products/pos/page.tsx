@@ -94,7 +94,7 @@ export default function POSProductPage() {
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
                 className="absolute -right-5 bottom-10 z-20 bg-black/80 backdrop-blur-xl border border-primary/50 p-4 rounded-xl shadow-[0_10px_30px_rgba(232,115,42,0.2)]"
               >
-                <div className="text-neutral-400 text-xs mb-1">Today's Sales</div>
+                <div className="text-neutral-400 text-xs mb-1">Today&apos;s Sales</div>
                 <div className="text-white text-2xl font-bold font-heading text-primary">$12,450.00</div>
               </motion.div>
             </div>

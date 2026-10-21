@@ -54,13 +54,13 @@ export default function DocsPage() {
                 {/* Terminal Body */}
                 <div className="p-6 font-mono text-sm leading-relaxed overflow-x-auto">
                   <div className="text-neutral-300">
-                    <span className="text-pink-500">curl</span> -X GET <span className="text-blue-400">"https://api.bitgard.com/v1/inventory"</span> \
+                    <span className="text-pink-500">curl</span> -X GET <span className="text-blue-400">&quot;https://api.bitgard.com/v1/inventory&quot;</span> \
                   </div>
                   <div className="text-neutral-300 pl-4">
-                    -H <span className="text-blue-400">"Authorization: Bearer bg_live_8f7d6a..."</span> \
+                    -H <span className="text-blue-400">&quot;Authorization: Bearer bg_live_8f7d6a...&quot;</span> \
                   </div>
                   <div className="text-neutral-300 pl-4 mb-4">
-                    -H <span className="text-blue-400">"Content-Type: application/json"</span>
+                    -H <span className="text-blue-400">&quot;Content-Type: application/json&quot;</span>
                   </div>
                   
                   <div className="text-neutral-500 mb-2"># Response</div>

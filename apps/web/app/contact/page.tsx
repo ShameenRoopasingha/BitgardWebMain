@@ -28,7 +28,7 @@ export default function ContactPage() {
         {/* HERO SECTION */}
         <div className="text-center mb-20">
           <h1 className="text-5xl md:text-7xl font-heading font-bold text-white mb-6 drop-shadow-[0_0_15px_rgba(232,115,42,0.3)]">
-            Let's Build <span className="text-primary">Together.</span>
+            Let&apos;s Build <span className="text-primary">Together.</span>
           </h1>
           <p className="text-xl text-neutral-400 font-subheading max-w-2xl mx-auto">
             Ready to upgrade your business operating system? Contact our team of architects today.

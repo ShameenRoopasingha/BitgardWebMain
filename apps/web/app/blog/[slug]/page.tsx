@@ -98,7 +98,7 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
               <div className="my-12 p-8 rounded-2xl bg-primary/5 border border-primary/20 border-l-4 border-l-primary relative overflow-hidden">
                 <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
                 <p className="text-white italic text-xl m-0 relative z-10 font-heading">
-                  "Transitioning to a cloud-native architecture isn't just about saving IT costs; it's about survival in an environment where real-time data is the only currency that matters."
+                  &ldquo;Transitioning to a cloud-native architecture isn&apos;t just about saving IT costs; it&apos;s about survival in an environment where real-time data is the only currency that matters.&rdquo;
                 </p>
               </div>
 

@@ -174,7 +174,7 @@ export default function PricingPage() {
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-heading font-bold text-white mb-4">Compare Features</h2>
-            <p className="text-neutral-400 font-subheading">See exactly what you're paying for.</p>
+            <p className="text-neutral-400 font-subheading">See exactly what you&apos;re paying for.</p>
           </div>
 
           <div className="max-w-5xl mx-auto overflow-x-auto rounded-2xl border border-white/10 bg-[#050505]">

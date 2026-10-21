@@ -127,7 +127,7 @@ export default function BlogIndexPage() {
              {/* Glow */}
              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-[50px]" />
              
-             <h2 className="text-3xl font-heading font-bold text-white mb-4 relative z-10">Don't miss a transmission.</h2>
+             <h2 className="text-3xl font-heading font-bold text-white mb-4 relative z-10">Don&apos;t miss a transmission.</h2>
              <p className="text-neutral-400 mb-8 relative z-10">Join 10,000+ engineers and founders receiving our monthly updates.</p>
              
              <form className="flex flex-col sm:flex-row gap-4 relative z-10" onSubmit={e => e.preventDefault()}>

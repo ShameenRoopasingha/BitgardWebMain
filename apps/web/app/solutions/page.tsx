@@ -54,7 +54,7 @@ export default function SolutionsPage() {
             Tailored for <span className="text-primary">Your Industry</span>
           </h1>
           <p className="text-xl text-neutral-400 font-subheading mb-12 max-w-2xl mx-auto">
-            Bitgard isn't just generic software. We provide specialized solutions configured for the unique demands of your specific sector.
+            Bitgard isn&apos;t just generic software. We provide specialized solutions configured for the unique demands of your specific sector.
           </p>
         </div>
       </section>
