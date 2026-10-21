@@ -10,7 +10,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "db:generate": "npm run db:generate --workspace=@bitgard/database",
     "db:push": "npm run db:push --workspace=@bitgard/database",
-    "db:studio": "npm run db:studio --workspace=@bitgard/database"
+    "db:studio": "npm run db:studio --workspace=@bitgard/database",
+    "postinstall": "npm run db:generate"
   },
   "devDependencies": {
     "prettier": "^3.2.0",

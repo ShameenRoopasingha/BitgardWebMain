@@ -9,15 +9,15 @@
  * All functions include error handling and return demo data as fallback.
  */
 
-import { prisma } from "@bitgard/database";
-import type {
-    Service,
-    TeamMember,
-    Testimonial,
-    Product,
-    HeroContent,
-    SiteSettings
-} from "@prisma/client";
+import {
+    prisma,
+    type Service,
+    type TeamMember,
+    type Testimonial,
+    type Product,
+    type HeroContent,
+    type SiteSettings
+} from "@bitgard/database";
 
 // =============================================================================
 // SERVICES
