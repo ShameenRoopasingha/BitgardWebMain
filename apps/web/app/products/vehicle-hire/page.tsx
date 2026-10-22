@@ -352,14 +352,188 @@ export default function VehicleHireProductPage() {
       {/* CORE FEATURES (ZIGZAG 1) */}
       <section id="features" className="py-24 bg-[#080808] border-y border-white/5 overflow-hidden">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-20">
-            <div className="text-xs uppercase tracking-widest text-primary font-bold mb-2">Platform Architecture</div>
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider mb-3">
+              <Sparkles className="w-4 h-4" />
+              <span>Showcase Architecture</span>
+            </div>
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-white">
-              Every Feature Built For Commercial Fleet Accuracy
+              Key Features Showcased on Vigil
             </h2>
             <p className="text-neutral-400 max-w-2xl mx-auto mt-4 text-sm sm:text-base">
-              Built specifically around the operational realities of tour operators, chauffeur services, and vehicle rental companies.
+              Engineered specifically around the operational realities of tour operators, chauffeur services, and commercial vehicle rental companies.
             </p>
+          </div>
+
+          {/* 5-PILLAR SHOWCASE MATRIX */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-24">
+            {/* Feature 1 */}
+            <div className="bg-white/[0.02] border border-primary/20 hover:border-primary/50 rounded-2xl p-7 flex flex-col justify-between transition-all hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(232,115,42,0.15)] group">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                  <DollarSign className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-lg font-heading font-bold text-white mb-3">
+                  Precision Billing &amp; Multi-Currency Quotation Engine
+                </h3>
+                <ul className="space-y-2.5 text-xs text-neutral-300">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <span>Automated calculations for base packages, included kilometers, excess KM rates, and extra hours.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <span>Granular charges: driver accommodation, meals, expressway tolls/gate passes, and advance deductions.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <span>Dual-currency billing (LKR and USD) with live exchange rate lock and one-click PDF invoices.</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-[11px] text-primary font-semibold">
+                <span>Dual-Currency LKR / USD</span>
+                <span>Zero Revenue Leakage</span>
+              </div>
+            </div>
+
+            {/* Feature 2 */}
+            <div className="bg-white/[0.02] border border-primary/20 hover:border-primary/50 rounded-2xl p-7 flex flex-col justify-between transition-all hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(232,115,42,0.15)] group">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                  <Compass className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-lg font-heading font-bold text-white mb-3">
+                  Day-by-Day Tour Scheduling &amp; Landmark Engine
+                </h3>
+                <ul className="space-y-2.5 text-xs text-neutral-300">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <span>Multi-day tour planner with curated Sri Lankan landmarks (Sigiriya, Ella, Kandy, Yala) powered by typo-tolerant Fuse.js fuzzy autocomplete.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <span>OSRM road routing with automatic distance and driving duration estimation.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <span>Permanent itinerary snapshots embedded with finalized invoices.</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-[11px] text-primary font-semibold">
+                <span>Fuzzy Landmark Search</span>
+                <span>OSRM Routing Engine</span>
+              </div>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="bg-white/[0.02] border border-primary/20 hover:border-primary/50 rounded-2xl p-7 flex flex-col justify-between transition-all hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(232,115,42,0.15)] group">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                  <Smartphone className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-lg font-heading font-bold text-white mb-3">
+                  Live Fleet Telematics &amp; Mobile Driver App Sync
+                </h3>
+                <ul className="space-y-2.5 text-xs text-neutral-300">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <span>Real-time GPS fleet radar with vehicle speed, live coordinates, and status.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <span>Companion mobile driver app (vigil-driver-app) for duty assignment, milestone updates, and in-field expense logging (fuel, tolls).</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <span>One-tap Emergency SOS alerts with dispatcher acknowledgment.</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-[11px] text-emerald-400 font-semibold font-mono">
+                <span>LIVE RADAR ONLINE</span>
+                <span>SOS Signal Dispatch</span>
+              </div>
+            </div>
+
+            {/* Feature 4 */}
+            <div className="bg-white/[0.02] border border-primary/20 hover:border-primary/50 rounded-2xl p-7 flex flex-col justify-between transition-all hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(232,115,42,0.15)] group">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                  <Wrench className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-lg font-heading font-bold text-white mb-3">
+                  Preventive Maintenance Intelligence &amp; Vehicle Swaps
+                </h3>
+                <ul className="space-y-2.5 text-xs text-neutral-300">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <span>Mileage countdowns for engine oil (5,000 KM), air filters (10,000 KM), tyre wear (40,000 KM), and routine washing.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <span>Revenue license &amp; insurance policy expiry countdown monitors.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <span>In-field Vehicle Swap Audit Logging for breakdown replacements without disrupting active tour bookings.</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-[11px] text-primary font-semibold">
+                <span>Audited Interval Timers</span>
+                <span>Zero Tour Disruption</span>
+              </div>
+            </div>
+
+            {/* Feature 5 (Spans 2 columns on lg) */}
+            <div className="md:col-span-2 lg:col-span-2 bg-gradient-to-br from-primary/10 via-black to-neutral-950 border border-primary/30 hover:border-primary/60 rounded-2xl p-7 flex flex-col justify-between transition-all hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(232,115,42,0.2)] group">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-primary/20 border border-primary/40 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                  <Car className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-lg font-heading font-bold text-white mb-3">
+                  Real-World Fleet Categories
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-neutral-300">
+                  <div className="p-3 rounded-xl bg-black/60 border border-white/10">
+                    <div className="text-primary font-bold">Cars (CAR)</div>
+                    <div className="text-white font-medium mt-0.5">Toyota Prius, Axio, Premio, Alto</div>
+                    <div className="text-neutral-400 text-[11px]">Transfers &amp; city hires</div>
+                  </div>
+                  <div className="p-3 rounded-xl bg-black/60 border border-white/10">
+                    <div className="text-primary font-bold">Vans (VAN)</div>
+                    <div className="text-white font-medium mt-0.5">Toyota KDH 200 Super GL, Caravan</div>
+                    <div className="text-neutral-400 text-[11px]">Family tours &amp; corporate travel</div>
+                  </div>
+                  <div className="p-3 rounded-xl bg-black/60 border border-white/10">
+                    <div className="text-primary font-bold">SUVs (SUV)</div>
+                    <div className="text-white font-medium mt-0.5">BYD Sealion 6, Land Cruiser Prado</div>
+                    <div className="text-neutral-400 text-[11px]">Upcountry &amp; VIP luxury</div>
+                  </div>
+                  <div className="p-3 rounded-xl bg-black/60 border border-white/10">
+                    <div className="text-primary font-bold">Coaches (BUS)</div>
+                    <div className="text-white font-medium mt-0.5">Toyota Coaster 29-seater with Dual A/C</div>
+                    <div className="text-neutral-400 text-[11px]">Tour delegations</div>
+                  </div>
+                  <div className="sm:col-span-2 p-3 rounded-xl bg-black/60 border border-white/10 flex items-center justify-between">
+                    <div>
+                      <span className="text-primary font-bold">Three-Wheelers (TUKTUK):</span>{" "}
+                      <span className="text-white font-medium">Local excursions &amp; sightseeing</span>
+                    </div>
+                    <span className="text-[10px] text-neutral-400 font-mono">Custom Tariff Compatible</span>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-[11px] text-neutral-400">
+                <span>Granular Per-Category Extra KM &amp; Overtime Tariff Support</span>
+                <a href="#fleet-types" className="text-primary hover:underline font-semibold flex items-center gap-1">
+                  <span>Explore All Vehicle Classes</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </div>
           </div>
 
           <div className="space-y-32">
@@ -393,21 +567,21 @@ export default function VehicleHireProductPage() {
                   <DollarSign className="w-5 h-5 text-primary" />
                 </div>
                 <h3 className="text-3xl font-heading font-bold text-white mb-4">
-                  Precision Billing &amp; Quotation Engine
+                  Precision Billing &amp; Multi-Currency Quotation Engine
                 </h3>
                 <p className="text-neutral-400 text-base mb-6 leading-relaxed">
                   Eliminate manual spreadsheet math and bill customers with 100% auditable accuracy. Capture package inclusions, excess mileage, hourly overtime, night charges, expressway tolls, and driver meal allowances in seconds.
                 </p>
                 <ul className="space-y-3.5">
                   {[
-                    "Dual-currency invoicing in LKR & USD with live exchange rate lock",
-                    "Granular extra kilometer and overtime hour rate cards per vehicle category",
-                    "Expressway gate pass, driver accommodation, and meal allowances auto-summed",
-                    "Instant quotation builder convertible to finalized bills in a single click",
-                    "Professional printable PDF invoices and receipts with your company branding",
+                    "Automated calculations for base packages, included kilometers, excess KM rates, and extra hours.",
+                    "Granular charges: driver accommodation, meals, expressway tolls/gate passes, and advance deductions.",
+                    "Dual-currency billing (LKR and USD) with live exchange rate lock and one-click PDF invoices.",
+                    "Granular extra kilometer and overtime hour rate cards configured per vehicle category.",
+                    "Instant quotation builder convertible to finalized bills in a single click with zero revenue leakage.",
                   ].map((feat, fi) => (
-                    <li key={fi} className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center border border-primary/50 shrink-0">
+                    <li key={fi} className="flex items-start gap-3">
+                      <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center border border-primary/50 shrink-0 mt-0.5">
                         <CheckCircle2 className="w-3.5 h-3.5 text-primary" />
                       </div>
                       <span className="text-neutral-200 text-sm font-medium">{feat}</span>
@@ -450,21 +624,21 @@ export default function VehicleHireProductPage() {
                   <Compass className="w-5 h-5 text-primary" />
                 </div>
                 <h3 className="text-3xl font-heading font-bold text-white mb-4">
-                  Day-by-Day Tour Scheduling &amp; Landmark Routing
+                  Day-by-Day Tour Scheduling &amp; Landmark Engine
                 </h3>
                 <p className="text-neutral-400 text-base mb-6 leading-relaxed">
                   Plan multi-day tour itineraries with automated routing. Pre-indexed with iconic Sri Lankan destinations and landmarks with typo-tolerant fuzzy autocomplete, so your dispatch team can craft accurate tour schedules effortlessly.
                 </p>
                 <ul className="space-y-3.5">
                   {[
-                    "Curated Sri Lankan landmarks with typo-tolerant Fuse.js fuzzy search (Sigiriya, Ella, Yala, Mirissa)",
-                    "OSRM road routing with automated driving distance and travel duration estimation",
-                    "Day-by-day itinerary schedule linked directly to billing quotations and driver assignments",
-                    "Printable guest itineraries and tour vouchers with complete day item breakdowns",
-                    "Itinerary snapshot locked into the finalized invoice record for historical accuracy",
+                    "Multi-day tour planner with curated Sri Lankan landmarks (Sigiriya, Ella, Kandy, Yala) powered by typo-tolerant Fuse.js fuzzy autocomplete.",
+                    "OSRM road routing with automatic distance and driving duration estimation.",
+                    "Permanent itinerary snapshots embedded with finalized invoices.",
+                    "Day-by-day itinerary schedule linked directly to billing quotations and driver assignments.",
+                    "Printable guest itineraries and tour vouchers with complete day item breakdowns.",
                   ].map((feat, fi) => (
-                    <li key={fi} className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center border border-primary/50 shrink-0">
+                    <li key={fi} className="flex items-start gap-3">
+                      <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center border border-primary/50 shrink-0 mt-0.5">
                         <CheckCircle2 className="w-3.5 h-3.5 text-primary" />
                       </div>
                       <span className="text-neutral-200 text-sm font-medium">{feat}</span>
@@ -515,21 +689,21 @@ export default function VehicleHireProductPage() {
                   <Smartphone className="w-5 h-5 text-primary" />
                 </div>
                 <h3 className="text-3xl font-heading font-bold text-white mb-4">
-                  Live Fleet Telematics &amp; Companion Driver App
+                  Live Fleet Telematics &amp; Mobile Driver App Sync
                 </h3>
                 <p className="text-neutral-400 text-base mb-6 leading-relaxed">
                   Bridge the gap between your dispatch office and chauffeurs on the road. The companion <code className="text-primary font-mono font-bold">vigil-driver-app</code> feeds real-time GPS telemetry back to your desktop radar while allowing drivers to confirm duties and log fuel expenses.
                 </p>
                 <ul className="space-y-3.5">
                   {[
-                    "Live vehicle radar showing real-time GPS coordinates, driving speed, and telemetry",
-                    "Dedicated mobile driver app for assignment acceptance, milestone updates, and route review",
-                    "In-field expense logging: drivers submit fuel, toll, and repair receipts during active tours",
-                    "Instant emergency SOS beacon: drivers can alert dispatch with one-tap emergency signaling",
-                    "Dispatcher emergency acknowledgment workflow with automated audit logging",
+                    "Real-time GPS fleet radar with vehicle speed, live coordinates, and status.",
+                    "Companion mobile driver app (vigil-driver-app) for duty assignment, milestone updates, and in-field expense logging (fuel, tolls).",
+                    "One-tap Emergency SOS alerts with dispatcher acknowledgment.",
+                    "In-field expense logging: drivers submit fuel, toll, and repair receipts during active tours.",
+                    "Dispatcher emergency acknowledgment workflow with automated audit logging.",
                   ].map((feat, fi) => (
-                    <li key={fi} className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center border border-primary/50 shrink-0">
+                    <li key={fi} className="flex items-start gap-3">
+                      <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center border border-primary/50 shrink-0 mt-0.5">
                         <CheckCircle2 className="w-3.5 h-3.5 text-primary" />
                       </div>
                       <span className="text-neutral-200 text-sm font-medium">{feat}</span>
@@ -557,18 +731,18 @@ export default function VehicleHireProductPage() {
                       <div className="text-emerald-400 text-[10px] mt-1 font-mono">3,850 KM Remaining</div>
                     </div>
                     <div className="p-3 rounded-xl bg-white/5 border border-white/10">
-                      <div className="text-neutral-400 text-[11px]">Filter Replacement</div>
+                      <div className="text-neutral-400 text-[11px]">Air Filter Service</div>
                       <div className="text-white font-bold text-sm mt-0.5">Every 10,000 KM</div>
                       <div className="text-emerald-400 text-[10px] mt-1 font-mono">6,200 KM Remaining</div>
                     </div>
                     <div className="p-3 rounded-xl bg-white/5 border border-white/10">
-                      <div className="text-neutral-400 text-[11px]">Tyre Set Lifespan</div>
+                      <div className="text-neutral-400 text-[11px]">Tyre Set Wear</div>
                       <div className="text-white font-bold text-sm mt-0.5">40,000 KM Target</div>
                       <div className="text-amber-400 text-[10px] mt-1 font-mono">Due in 2,400 KM</div>
                     </div>
                     <div className="p-3 rounded-xl bg-white/5 border border-white/10">
-                      <div className="text-neutral-400 text-[11px]">Revenue License</div>
-                      <div className="text-white font-bold text-sm mt-0.5">Expiry Monitor</div>
+                      <div className="text-neutral-400 text-[11px]">Revenue License &amp; Insurance</div>
+                      <div className="text-white font-bold text-sm mt-0.5">Policy Expiry Monitor</div>
                       <div className="text-emerald-400 text-[10px] mt-1 font-mono">Valid 142 Days</div>
                     </div>
                   </div>
@@ -580,21 +754,21 @@ export default function VehicleHireProductPage() {
                   <Wrench className="w-5 h-5 text-primary" />
                 </div>
                 <h3 className="text-3xl font-heading font-bold text-white mb-4">
-                  Preventive Maintenance &amp; Vehicle Swap Logs
+                  Preventive Maintenance Intelligence &amp; Vehicle Swaps
                 </h3>
                 <p className="text-neutral-400 text-base mb-6 leading-relaxed">
                   Stop surprise breakdowns and traffic fines. Vigil automatically tracks vehicle mileage against routine service intervals and alerts your fleet manager when oil changes, tyre rotations, or insurance policy renewals are due.
                 </p>
                 <ul className="space-y-3.5">
                   {[
-                    "Mileage countdowns for engine oil (5,000 KM), filter changes, tyre wear, and washing",
-                    "Revenue license and insurance expiry date countdowns with proactive visual alerts",
-                    "Vehicle Swap Logging: swap broken down or servicing vehicles on active bookings with one click",
-                    "Fuel efficiency monitoring: track actual KM per Litre per vehicle and identify high-cost units",
-                    "Annual insurance and routine servicing cost analytics per vehicle identification number",
+                    "Mileage countdowns for engine oil (5,000 KM), air filters (10,000 KM), tyre wear (40,000 KM), and routine washing.",
+                    "Revenue license & insurance policy expiry countdown monitors.",
+                    "In-field Vehicle Swap Audit Logging for breakdown replacements without disrupting active tour bookings.",
+                    "Fuel efficiency monitoring: track actual KM per Litre per vehicle and identify high-cost units.",
+                    "Annual insurance and routine servicing cost analytics per vehicle identification number.",
                   ].map((feat, fi) => (
-                    <li key={fi} className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center border border-primary/50 shrink-0">
+                    <li key={fi} className="flex items-start gap-3">
+                      <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center border border-primary/50 shrink-0 mt-0.5">
                         <CheckCircle2 className="w-3.5 h-3.5 text-primary" />
                       </div>
                       <span className="text-neutral-200 text-sm font-medium">{feat}</span>
@@ -682,29 +856,60 @@ export default function VehicleHireProductPage() {
 
       {/* VEHICLE CATEGORIES COMPATIBILITY */}
       <section id="fleet-types" className="py-24 container mx-auto px-6 text-center border-t border-white/5">
-        <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-4">
-          Built For Real-World Commercial Fleets
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider mb-4">
+          <Car className="w-4 h-4" />
+          <span>Vehicle Class Support</span>
+        </div>
+        <h2 className="text-3xl md:text-5xl font-heading font-bold text-white mb-4">
+          Real-World Fleet Categories
         </h2>
-        <p className="text-neutral-400 mb-16 font-subheading max-w-xl mx-auto">
-          From luxury chauffeur SUVs to 29-seater tour coaches, Vigil manages custom rate cards, seating capacities, and A/C configurations for every vehicle class.
+        <p className="text-neutral-400 mb-16 font-subheading max-w-2xl mx-auto">
+          From luxury chauffeur SUVs to 29-seater tour coaches, Vigil manages custom rate cards, seating capacities, and A/C configurations for every commercial vehicle category.
         </p>
 
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 max-w-6xl mx-auto">
           {[
-            { icon: Car, label: "Sedans (CAR)", desc: "Prius, Axio, Premio", role: "Airport & City Transfers" },
-            { icon: Bus, label: "Vans (VAN)", desc: "Toyota KDH Super GL", role: "Family & Inbound Tours" },
-            { icon: Package, label: "SUVs (SUV)", desc: "BYD Sealion 6, Prado", role: "Upcountry & VIP Luxury" },
-            { icon: Bus, label: "Coaches (BUS)", desc: "Toyota Coaster (Dual A/C)", role: "Large Delegation Tours" },
-            { icon: Compass, label: "Tuk-Tuks (TUKTUK)", desc: "Three-Wheelers", role: "Local Excursions & Safari" },
+            {
+              icon: Car,
+              label: "Cars (CAR)",
+              models: "Toyota Prius, Axio, Premio, Alto",
+              role: "Transfers & city hires",
+            },
+            {
+              icon: Bus,
+              label: "Vans (VAN)",
+              models: "Toyota KDH 200 Super GL, Caravan",
+              role: "Family tours & corporate travel",
+            },
+            {
+              icon: Package,
+              label: "SUVs (SUV)",
+              models: "BYD Sealion 6, Land Cruiser Prado",
+              role: "Upcountry & VIP luxury",
+            },
+            {
+              icon: Bus,
+              label: "Coaches (BUS)",
+              models: "Toyota Coaster 29-seater with Dual A/C",
+              role: "Tour delegations",
+            },
+            {
+              icon: Compass,
+              label: "Three-Wheelers (TUKTUK)",
+              models: "Local excursions & sightseeing",
+              role: "Custom tariff & tour itineraries",
+            },
           ].map((item, i) => (
             <div
               key={i}
-              className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 flex flex-col items-center gap-2 hover:border-primary/50 transition-colors"
+              className="bg-white/[0.02] border border-white/10 hover:border-primary/50 rounded-2xl p-6 flex flex-col items-center text-center transition-all hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(232,115,42,0.15)] group"
             >
-              <item.icon className="w-9 h-9 text-primary mb-2" strokeWidth={1.5} />
-              <div className="font-bold text-white text-sm">{item.label}</div>
-              <div className="text-primary text-[11px] font-semibold">{item.desc}</div>
-              <div className="text-neutral-500 text-[10px]">{item.role}</div>
+              <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <item.icon className="w-7 h-7 text-primary" strokeWidth={1.5} />
+              </div>
+              <div className="font-bold text-white text-base mb-1">{item.label}</div>
+              <div className="text-primary text-xs font-semibold mb-2">{item.models}</div>
+              <div className="text-neutral-400 text-xs mt-auto">{item.role}</div>
             </div>
           ))}
         </div>

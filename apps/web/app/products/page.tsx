@@ -135,9 +135,16 @@ export default function ProductsOverviewPage() {
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-                {["Online Booking Engine", "Fleet & Vehicle Tracking", "Driver Assignment", "Tour Packages", "Customer CRM", "Revenue Reports"].map((feat, i) => (
+                {[
+                  "Precision Billing & Multi-Currency Quotations",
+                  "Day-by-Day Tour Scheduling & Landmarks",
+                  "Live Fleet Telematics & GPS Radar",
+                  "Mobile Driver App & In-Field Receipts",
+                  "Preventive Maintenance & Vehicle Swaps",
+                  "Real-World Fleet Categories (Cars, Vans, Coaches)",
+                ].map((feat, i) => (
                   <div key={i} className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-primary" />
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
                     <span className="text-sm text-neutral-300 font-medium">{feat}</span>
                   </div>
                 ))}
