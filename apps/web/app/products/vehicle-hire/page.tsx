@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, Suspense } from "react";
+import React, { useState, useRef, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
+import LaserFlow from "@/components/LaserFlow";
 import {
   CheckCircle2,
   Play,
@@ -108,6 +109,7 @@ function StatusNotification() {
 }
 
 export default function VehicleHireProductPage() {
+  const heroImageRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState("overview");
   const [downloadEmail, setDownloadEmail] = useState("");
   const [downloadMsg, setDownloadMsg] = useState<string | null>(null);
@@ -204,12 +206,34 @@ export default function VehicleHireProductPage() {
               </div>
             </div>
 
-            {/* Right: Mockup */}
+            {/* Right: Mockup with LaserFlow Animation */}
             <div className="w-full lg:w-1/2 relative perspective-1000">
+              {/* LaserFlow: Holographic Orange Light Beam pouring over the surface */}
+              <div className="absolute -inset-x-12 -top-32 -bottom-20 pointer-events-none z-20 overflow-visible">
+                <LaserFlow
+                  surfaceRef={heroImageRef}
+                  color="#E8732A"
+                  beamPosition={0.5}
+                  beamWidth={4}
+                  flare={1.6}
+                  spread={1.5}
+                  spill={1.6}
+                  fog={0.35}
+                  dust={1.8}
+                  streaks={1.6}
+                  dots={1.2}
+                  pulse={1.4}
+                  speed={1.5}
+                  mouseInteraction={true}
+                  theme="dark"
+                />
+              </div>
+
               {/* Outer ambient glow */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary/30 via-cyan-500/20 to-primary/30 rounded-3xl blur-2xl opacity-60 pointer-events-none" />
+              <div className="absolute -inset-1 bg-gradient-to-r from-primary/30 via-orange-500/20 to-primary/30 rounded-3xl blur-2xl opacity-60 pointer-events-none" />
 
               <motion.div
+                ref={heroImageRef}
                 initial={{ rotateY: -10, rotateX: 6, opacity: 0, scale: 0.95 }}
                 animate={{ rotateY: 0, rotateX: 0, opacity: 1, scale: 1 }}
                 whileHover={{ scale: 1.02, rotateY: -2 }}
