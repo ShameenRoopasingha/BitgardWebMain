@@ -595,26 +595,21 @@ export default function VehicleHireProductPage() {
                 02
               </div>
               <div className="w-full lg:w-1/2 relative z-10">
-                <div className="w-full aspect-[4/3] bg-gradient-to-br from-black to-neutral-950 border border-primary/30 rounded-2xl p-8 flex flex-col justify-between shadow-[0_0_40px_rgba(232,115,42,0.1)]">
-                  <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                    <span className="text-xs font-bold text-primary uppercase tracking-wider">Day-by-Day Tour Itinerary</span>
-                    <span className="text-xs font-mono text-cyan-400">OSRM ROUTED</span>
+                {/* Outer ambient glow */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 via-primary/30 to-cyan-500/20 rounded-2xl blur-xl opacity-50 pointer-events-none" />
+
+                <div className="relative z-10 bg-[#070709] border border-primary/40 hover:border-primary/70 rounded-2xl shadow-[0_20px_60px_-15px_rgba(232,115,42,0.25)] overflow-hidden transition-all duration-500 group">
+                  {/* Genuine Itinerary Screenshot */}
+                  <div className="relative">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/vigil-itinerary.png"
+                      alt="Vigil Day-by-Day Tour Itinerary Planning and Pricing Breakdown"
+                      className="w-full h-auto object-cover rounded-2xl block border border-white/5 group-hover:scale-[1.01] transition-transform duration-500"
+                    />
+                    {/* Subtle glass reflective sweep */}
+                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.03] to-transparent pointer-events-none" />
                   </div>
-                  <div className="space-y-2.5 text-xs text-neutral-300">
-                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/10">
-                      <span className="text-primary font-bold">Day 01:</span> Colombo Airport &rarr; Sigiriya Lion Rock &bull; 148 KM
-                    </div>
-                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/10">
-                      <span className="text-primary font-bold">Day 02:</span> Sigiriya &rarr; Temple of the Tooth, Kandy &bull; 90 KM
-                    </div>
-                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/10">
-                      <span className="text-primary font-bold">Day 03:</span> Kandy &rarr; Nine Arches Bridge, Ella &bull; 135 KM
-                    </div>
-                    <div className="p-2.5 rounded-lg bg-white/5 border border-white/10">
-                      <span className="text-primary font-bold">Day 04:</span> Ella &rarr; Galle Dutch Fort &rarr; Colombo &bull; 240 KM
-                    </div>
-                  </div>
-                  <div className="text-[11px] text-neutral-500 italic">Pre-indexed Fuse.js fuzzy autocomplete &bull; Automatic road distance estimation</div>
                 </div>
               </div>
               <div className="w-full lg:w-1/2 relative z-10">
