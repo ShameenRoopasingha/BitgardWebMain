@@ -153,13 +153,14 @@ export default function ProductsOverviewPage() {
               </div>
             </div>
 
-            {/* Right: Mockup Placeholder */}
-            <div className="w-full lg:w-[55%] aspect-video bg-black/50 border border-white/10 rounded-2xl relative overflow-hidden flex items-center justify-center shadow-[0_0_30px_rgba(232,115,42,0.1)]">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent" />
-                <div className="text-neutral-500 font-subheading flex flex-col items-center gap-4">
-                  <Package className="w-16 h-16 text-primary/40" />
-                  <span>Vigil Fleet Management Desktop Mockup</span>
-                </div>
+            {/* Right: Real Dashboard Screenshot */}
+            <div className="w-full lg:w-[55%] aspect-video bg-black/50 border border-primary/30 rounded-2xl relative overflow-hidden flex items-center justify-center shadow-[0_0_40px_rgba(232,115,42,0.15)] group-hover:border-primary/60 transition-colors">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/vigil-dashboard.png"
+                  alt="Vigil Tour Management Platform"
+                  className="w-full h-full object-cover rounded-2xl"
+                />
             </div>
           </motion.div>
 
