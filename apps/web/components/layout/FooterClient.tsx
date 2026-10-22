@@ -38,7 +38,7 @@ import {
 
 const PRODUCT_LINKS = [
     { label: "POS + Inventory", href: "/products/pos" },
-    { label: "Vehicle Hire Management", href: "/products/vehicle-hire" },
+    { label: "Vigil (Vehicle Hire)", href: "/products/vehicle-hire" },
     { label: "HRM System", href: "/products/hrm" },
     { label: "Pricing", href: "/pricing" },
     { label: "Integrations", href: "/integrations" },

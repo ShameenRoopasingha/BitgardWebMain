@@ -66,7 +66,7 @@ export default function SolutionsPage() {
             {[
               { icon: Store, title: "Retail & Supermarkets", desc: "Multi-location POS, barcode scanning, and real-time inventory sync across all your physical stores.", link: "/products/pos" },
               { icon: Utensils, title: "Restaurants & Cafes", desc: "Table management, Kitchen Display Systems (KDS), and complex recipe inventory tracking.", link: "/products/pos" },
-              { icon: Car, title: "Fleet & Rental", desc: "Vehicle tracking, maintenance scheduling, and online booking engines for rental operators.", link: "/products/vehicle-hire" },
+              { icon: Car, title: "Fleet & Rental (Vigil)", desc: "Vehicle tracking, maintenance scheduling, and online booking engines powered by Vigil.", link: "/products/vehicle-hire" },
               { icon: Briefcase, title: "Agencies & Services", desc: "Time tracking, project management, and automated invoicing for professional services.", link: "/products/hrm" },
               { icon: Factory, title: "Manufacturing", desc: "Raw material tracking, supply chain management, and production line efficiency tools.", link: "/products/pos" },
               { icon: Heart, title: "Non-Profits", desc: "Donor management, volunteer tracking, and transparent financial reporting.", link: "/products" }

@@ -73,10 +73,10 @@ export default function PricingPage() {
           </div>
 
           {/* Product Selector Tabs */}
-          <div className="inline-flex bg-white/5 border border-white/10 rounded-2xl p-1.5 mb-16 max-w-full overflow-x-auto scrollbar-hide">
+          <div className="inline-flex bg-white/5 border border-white/10 rounded-2xl p-1.5 mb-8 max-w-full overflow-x-auto scrollbar-hide">
             {[
               { id: "pos", label: "POS + Inventory" },
-              { id: "vehicle", label: "Vehicle Hire" },
+              { id: "vehicle", label: "Vigil (Vehicle Hire)" },
               { id: "hrm", label: "HRM System" }
             ].map(prod => (
               <button
@@ -97,6 +97,12 @@ export default function PricingPage() {
               </button>
             ))}
           </div>
+
+          {activeProduct === "vehicle" && (
+            <div className="max-w-xl mx-auto mb-12 p-3 rounded-xl bg-primary/10 border border-primary/20 text-xs text-primary font-medium">
+              Vigil is commercial software licensed via monthly subscription. No free tier or trial versions. Software installer and license key provided immediately upon checkout.
+            </div>
+          )}
         </div>
       </section>
 
@@ -120,7 +126,17 @@ export default function PricingPage() {
                   <li key={i} className="flex items-center text-sm text-neutral-300"><CheckCircle2 className="w-4 h-4 text-neutral-500 mr-3"/>{feat}</li>
                 ))}
               </ul>
-              <button className="w-full py-4 rounded-xl border border-white/20 hover:bg-white/5 text-white font-semibold transition-colors mt-auto">Start Free Trial</button>
+              {activeProduct === "vehicle" ? (
+                <a href="/checkout/tourbiller?tier=starter" className="w-full">
+                  <button className="w-full py-4 rounded-xl border border-primary/50 bg-primary/10 hover:bg-primary/20 text-white font-semibold transition-colors mt-auto">
+                    Subscribe to Starter
+                  </button>
+                </a>
+              ) : (
+                <button className="w-full py-4 rounded-xl border border-white/20 hover:bg-white/5 text-white font-semibold transition-colors mt-auto">
+                  Start Free Trial
+                </button>
+              )}
             </motion.div>
 
             {/* Professional (Highlighted) */}
@@ -140,7 +156,17 @@ export default function PricingPage() {
                   <li key={i} className="flex items-center text-sm text-white font-medium"><CheckCircle2 className="w-5 h-5 text-primary mr-3"/>{feat}</li>
                 ))}
               </ul>
-              <button className="w-full py-4 rounded-xl bg-primary hover:bg-primary-600 text-white font-bold transition-all transform hover:-translate-y-1 shadow-[0_0_20px_rgba(232,115,42,0.4)] mt-auto">Get Professional</button>
+              {activeProduct === "vehicle" ? (
+                <a href="/checkout/tourbiller?tier=professional" className="w-full">
+                  <button className="w-full py-4 rounded-xl bg-primary hover:bg-primary-600 text-white font-bold transition-all transform hover:-translate-y-1 shadow-[0_0_20px_rgba(232,115,42,0.4)] mt-auto">
+                    Subscribe to Professional
+                  </button>
+                </a>
+              ) : (
+                <button className="w-full py-4 rounded-xl bg-primary hover:bg-primary-600 text-white font-bold transition-all transform hover:-translate-y-1 shadow-[0_0_20px_rgba(232,115,42,0.4)] mt-auto">
+                  Get Professional
+                </button>
+              )}
             </motion.div>
 
             {/* Enterprise */}
@@ -162,7 +188,17 @@ export default function PricingPage() {
                   <li key={i} className="flex items-center text-sm text-neutral-300"><CheckCircle2 className="w-4 h-4 text-white mr-3"/>{feat}</li>
                 ))}
               </ul>
-              <button className="w-full py-4 rounded-xl bg-white text-black hover:bg-neutral-200 font-semibold transition-colors mt-auto relative z-10">Contact Sales</button>
+              {activeProduct === "vehicle" ? (
+                <a href="/checkout/tourbiller?tier=enterprise" className="w-full relative z-10">
+                  <button className="w-full py-4 rounded-xl bg-white text-black hover:bg-neutral-200 font-semibold transition-colors mt-auto">
+                    Subscribe to Enterprise
+                  </button>
+                </a>
+              ) : (
+                <button className="w-full py-4 rounded-xl bg-white text-black hover:bg-neutral-200 font-semibold transition-colors mt-auto relative z-10">
+                  Contact Sales
+                </button>
+              )}
             </motion.div>
 
           </div>

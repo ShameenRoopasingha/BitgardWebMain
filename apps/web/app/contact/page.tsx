@@ -75,7 +75,7 @@ export default function ContactPage() {
                 <select id="inquiry" required className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-primary/80 transition-colors appearance-none cursor-pointer">
                   <option value="" disabled selected className="text-neutral-500">Select Inquiry Type...</option>
                   <option value="pos" className="bg-neutral-900">POS + Inventory</option>
-                  <option value="hire" className="bg-neutral-900">Vehicle Hire System</option>
+                  <option value="hire" className="bg-neutral-900">Vigil (Tour &amp; Vehicle Hire)</option>
                   <option value="hrm" className="bg-neutral-900">HRM System</option>
                   <option value="general" className="bg-neutral-900">General Inquiry</option>
                 </select>

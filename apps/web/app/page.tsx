@@ -53,7 +53,7 @@ export default function Home() {
               </motion.div>
             </Link>
 
-            {/* Vehicle Hire */}
+            {/* Vigil (Vehicle Hire) */}
             <Link href="/products/vehicle-hire" className="group">
               <motion.div 
                 whileHover={{ y: -10 }}
@@ -65,12 +65,12 @@ export default function Home() {
                 <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center mb-6 relative z-10 group-hover:scale-110 transition-transform">
                   <Package className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-2xl font-heading font-bold text-white mb-3 relative z-10 group-hover:text-primary transition-colors">Vehicle Hire</h3>
+                <h3 className="text-2xl font-heading font-bold text-white mb-3 relative z-10 group-hover:text-primary transition-colors">Vigil</h3>
                 <p className="text-neutral-400 mb-8 relative z-10 flex-1">
-                  End-to-end platform for vehicle rental operators. Manage bookings, track your fleet, and handle customers.
+                  Tour & vehicle hire fleet operating system. Commercial desktop software with live dispatch, reservation engine, and driver rosters.
                 </p>
                 <span className="text-primary font-semibold text-sm flex items-center gap-2 group-hover:gap-4 transition-all relative z-10">
-                  Explore Product →
+                  Explore Vigil →
                 </span>
               </motion.div>
             </Link>

@@ -18,7 +18,7 @@ export const FloatingNavbar = ({ className }: { className?: string }) => {
       link: "/products",
       dropdown: [
         { name: "POS + Inventory", link: "/products/pos", desc: "Sell smarter. Stock effortlessly.", icon: <MonitorSmartphone className="w-5 h-5 text-primary" /> },
-        { name: "Vehicle Hire", link: "/products/vehicle-hire", desc: "Manage your fleet and bookings.", icon: <Package className="w-5 h-5 text-primary" /> },
+        { name: "Vigil", link: "/products/vehicle-hire", desc: "Tour & vehicle hire fleet management.", icon: <Package className="w-5 h-5 text-primary" /> },
         { name: "HRM System", link: "/products/hrm", desc: "Your people, perfectly managed.", icon: <Briefcase className="w-5 h-5 text-primary" /> }
       ]
     },

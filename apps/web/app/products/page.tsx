@@ -114,7 +114,7 @@ export default function ProductsOverviewPage() {
           </motion.div>
 
 
-          {/* CARD 2 — VEHICLE HIRE */}
+          {/* CARD 2 — VIGIL (VEHICLE HIRE) */}
           <motion.div 
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -128,10 +128,10 @@ export default function ProductsOverviewPage() {
               <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/30 mb-6">
                 <Package className="w-6 h-6 text-primary" />
               </div>
-              <h2 className="text-3xl lg:text-4xl font-heading font-bold text-white mb-3">Vehicle Hire</h2>
-              <h3 className="text-xl text-primary font-subheading mb-4">Manage your fleet. Maximize every booking.</h3>
+              <h2 className="text-3xl lg:text-4xl font-heading font-bold text-white mb-3">Vigil</h2>
+              <h3 className="text-xl text-primary font-subheading mb-4">Tour & Vehicle Hire Management System</h3>
               <p className="text-neutral-400 mb-8 leading-relaxed">
-                End-to-end platform for vehicle rental and tour operators. Manage bookings, track your fleet, coordinate drivers, and handle customer reservations.
+                Commercial fleet and tour operating software. Manage reservations, live dispatch, GPS telematics, driver rosters, and invoices from a unified desktop platform.
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
@@ -145,11 +145,11 @@ export default function ProductsOverviewPage() {
 
               <div className="flex flex-wrap gap-4">
                 <Link href="/products/vehicle-hire" className="bg-primary hover:bg-primary-600 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm">
-                  View Product
+                  View Vigil
                 </Link>
-                <button className="bg-transparent border border-white/20 hover:border-white/50 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm">
-                  Try Free
-                </button>
+                <Link href="/products/vehicle-hire#pricing" className="bg-transparent border border-white/20 hover:border-white/50 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm">
+                  Subscribe &amp; Download
+                </Link>
               </div>
             </div>
 
@@ -158,7 +158,7 @@ export default function ProductsOverviewPage() {
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent" />
                 <div className="text-neutral-500 font-subheading flex flex-col items-center gap-4">
                   <Package className="w-16 h-16 text-primary/40" />
-                  <span>Fleet Dashboard UI Mockup</span>
+                  <span>Vigil Fleet Management Desktop Mockup</span>
                 </div>
             </div>
           </motion.div>
@@ -233,7 +233,7 @@ export default function ProductsOverviewPage() {
                 </div>
                 <div className="flex flex-col items-center gap-4 relative z-10 bg-[#0A0A0A] p-4 rounded-xl border border-primary/30 scale-110">
                   <Package className="w-12 h-12 text-primary drop-shadow-[0_0_15px_rgba(232,115,42,0.8)]" />
-                  <span className="text-white font-bold font-heading">Vehicle Hire</span>
+                  <span className="text-white font-bold font-heading">Vigil</span>
                 </div>
                 <div className="flex flex-col items-center gap-4 relative z-10 bg-[#0A0A0A] p-4 rounded-xl border border-primary/30">
                   <Briefcase className="w-10 h-10 text-primary" />

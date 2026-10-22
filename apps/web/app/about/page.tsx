@@ -9,7 +9,7 @@ export default function AboutPage() {
   const timeline = [
     { year: "2018", title: "The Foundation", desc: "Bitgard was founded with a mission to simplify complex business operations through elegant software." },
     { year: "2020", title: "Launch of POS v1", desc: "Our flagship Point of Sale system launched, quickly becoming the backbone for hundreds of retail stores." },
-    { year: "2023", title: "Ecosystem Expansion", desc: "Introduced Vehicle Hire Management and HRM Systems, completing our unified business suite." },
+    { year: "2023", title: "Ecosystem Expansion", desc: "Introduced Vigil (Tour & Vehicle Hire Management) and HRM Systems, completing our unified business suite." },
     { year: "Today", title: "Global Scale", desc: "Powering over 5,000 businesses worldwide with our secure, scalable infrastructure." }
   ];
 
