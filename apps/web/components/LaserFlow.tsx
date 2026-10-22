@@ -628,11 +628,8 @@ export const LaserFlow = ({
       probeContext.fillStyle = '#3847ff';
       probeContext.fillStyle = value;
       probeContext.fillRect(0, 0, 1, 1);
-      const imgData = probeContext.getImageData(0, 0, 1, 1).data;
-      const r = imgData[0];
-      const g = imgData[1];
-      const b = imgData[2];
-      return [r / 255, g / 255, b / 255];
+      const data = probeContext.getImageData(0, 0, 1, 1).data;
+      return [data[0] / 255, data[1] / 255, data[2] / 255];
     };
 
     const resolveColor = (s: Settings) => {
