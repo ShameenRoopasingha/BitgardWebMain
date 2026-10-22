@@ -543,23 +543,21 @@ export default function VehicleHireProductPage() {
                 01
               </div>
               <div className="w-full lg:w-1/2 relative z-10">
-                <div className="w-full aspect-[4/3] bg-gradient-to-br from-black to-neutral-950 border border-primary/30 rounded-2xl p-8 flex flex-col justify-between shadow-[0_0_40px_rgba(232,115,42,0.1)]">
-                  <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                    <span className="text-xs font-bold text-primary uppercase tracking-wider">Automated Invoice Calculation</span>
-                    <span className="text-xs font-mono text-emerald-400">STATUS: VERIFIED</span>
+                {/* Outer ambient glow */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-primary/30 via-orange-500/20 to-primary/30 rounded-2xl blur-xl opacity-50 pointer-events-none" />
+
+                <div className="relative z-10 bg-[#070709] border border-primary/40 hover:border-primary/70 rounded-2xl shadow-[0_20px_60px_-15px_rgba(232,115,42,0.25)] overflow-hidden transition-all duration-500 group">
+                  {/* Genuine Invoice Screenshot */}
+                  <div className="relative">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/vigil-invoice.png"
+                      alt="Vigil Precision Billing & Invoice Generator with Multi-Channel Sharing"
+                      className="w-full h-auto object-cover rounded-2xl block border border-white/5 group-hover:scale-[1.01] transition-transform duration-500"
+                    />
+                    {/* Subtle glass reflective sweep */}
+                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.03] to-transparent pointer-events-none" />
                   </div>
-                  <div className="space-y-3 font-mono text-xs text-neutral-300">
-                    <div className="flex justify-between"><span>Base Package (3 Days / 300 KM):</span> <span className="text-white font-bold">LKR 45,000.00</span></div>
-                    <div className="flex justify-between"><span>Excess Kilometers (142 KM @ 120/km):</span> <span className="text-white font-bold">LKR 17,040.00</span></div>
-                    <div className="flex justify-between"><span>Extra Hours (4.5 hrs @ 1,500/hr):</span> <span className="text-white font-bold">LKR 6,750.00</span></div>
-                    <div className="flex justify-between"><span>Waiting Time &amp; Gate Passes:</span> <span className="text-white font-bold">LKR 3,500.00</span></div>
-                    <div className="flex justify-between"><span>Driver Accommodation &amp; Meals:</span> <span className="text-white font-bold">LKR 8,000.00</span></div>
-                    <div className="flex justify-between border-t border-dashed border-white/20 pt-2 text-primary font-bold text-sm">
-                      <span>Total Invoice (USD equiv: $253.50):</span>
-                      <span>LKR 80,290.00</span>
-                    </div>
-                  </div>
-                  <div className="text-[11px] text-neutral-500 italic">Automated currency exchange rate sync &bull; Advance payment deductions</div>
                 </div>
               </div>
               <div className="w-full lg:w-1/2 relative z-10">
