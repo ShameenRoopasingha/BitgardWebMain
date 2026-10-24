@@ -306,13 +306,19 @@ export default function VehicleHireProductPage() {
 
         {/* Video / Workspace Preview Banner */}
         <div className="max-w-4xl mx-auto mb-20 relative rounded-2xl overflow-hidden border border-primary/30 aspect-video group bg-[#050505] shadow-[0_10px_50px_rgba(232,115,42,0.15)]">
-          <div className="absolute inset-0 bg-gradient-to-tr from-primary/15 via-transparent to-black" />
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-center p-6">
-            <div className="w-20 h-20 rounded-full bg-primary/20 backdrop-blur-md flex items-center justify-center border border-primary/50 group-hover:scale-110 transition-transform">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/vigil-dashboard.png"
+            alt="Vigil Tour Management Workspace Preview"
+            className="absolute inset-0 w-full h-full object-cover opacity-35 group-hover:opacity-50 transition-opacity duration-700 pointer-events-none"
+          />
+          <div className="absolute inset-0 bg-gradient-to-tr from-primary/15 via-black/40 to-black/80" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-center p-6 relative z-10">
+            <div className="w-20 h-20 rounded-full bg-primary/20 backdrop-blur-md flex items-center justify-center border border-primary/50 group-hover:scale-110 transition-transform shadow-[0_0_30px_rgba(232,115,42,0.3)]">
               <Play className="w-8 h-8 text-primary ml-1" />
             </div>
             <div className="text-white font-heading font-bold text-xl">Vigil Tour Management Workspace</div>
-            <p className="text-neutral-400 text-sm max-w-md">
+            <p className="text-neutral-300 text-sm max-w-md">
               Real-time dispatch radar, day-by-day tour itineraries, instant quotation builder, maintenance intervals, and driver mobile sync.
             </p>
           </div>
@@ -647,34 +653,21 @@ export default function VehicleHireProductPage() {
                 03
               </div>
               <div className="w-full lg:w-1/2 relative z-10">
-                <div className="w-full aspect-[4/3] bg-gradient-to-br from-black to-neutral-950 border border-primary/30 rounded-2xl p-8 flex flex-col justify-between shadow-[0_0_40px_rgba(232,115,42,0.1)]">
-                  <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                    <span className="text-xs font-bold text-primary uppercase tracking-wider">Live Fleet Radar &amp; Telematics</span>
-                    <span className="text-xs font-mono text-emerald-400 animate-pulse">&bull; LIVE TRACKING</span>
+                {/* Outer ambient glow */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 via-primary/30 to-emerald-500/20 rounded-2xl blur-xl opacity-50 pointer-events-none" />
+
+                <div className="relative z-10 bg-[#070709] border border-primary/40 hover:border-primary/70 rounded-2xl shadow-[0_20px_60px_-15px_rgba(16,185,129,0.25)] overflow-hidden transition-all duration-500 group">
+                  {/* Genuine Telematics & Radar Screenshot */}
+                  <div className="relative">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/vigil-telematics.png"
+                      alt="Vigil Live Fleet Radar, Real-Time GPS Tracking & Telematics Dispatch Center"
+                      className="w-full h-auto object-cover rounded-2xl block border border-white/5 group-hover:scale-[1.01] transition-transform duration-500"
+                    />
+                    {/* Subtle glass reflective sweep */}
+                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.03] to-transparent pointer-events-none" />
                   </div>
-                  <div className="space-y-3 text-xs text-neutral-300">
-                    <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
-                      <div>
-                        <div className="font-bold text-white">Toyota KDH 200 (NC-8724)</div>
-                        <div className="text-[11px] text-neutral-400">Driver: Sunil Perera &bull; Southern Expressway</div>
-                      </div>
-                      <div className="text-right font-mono">
-                        <div className="text-emerald-400 font-bold">84 km/h</div>
-                        <div className="text-[10px] text-neutral-500">Normal Speed</div>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
-                      <div>
-                        <div className="font-bold text-white">BYD Sealion 6 (CBO-0087)</div>
-                        <div className="text-[11px] text-neutral-400">Driver: Chaminda Silva &bull; Nuwara Eliya</div>
-                      </div>
-                      <div className="text-right font-mono">
-                        <div className="text-cyan-400 font-bold">Stationary</div>
-                        <div className="text-[10px] text-neutral-500">Tour Milestone Stop</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-[11px] text-neutral-500 italic">Driver location sync &bull; On-tour fuel and expense receipts logged via mobile</div>
                 </div>
               </div>
               <div className="w-full lg:w-1/2 relative z-10">
@@ -712,34 +705,21 @@ export default function VehicleHireProductPage() {
                 04
               </div>
               <div className="w-full lg:w-1/2 relative z-10">
-                <div className="w-full aspect-[4/3] bg-gradient-to-br from-black to-neutral-950 border border-primary/30 rounded-2xl p-8 flex flex-col justify-between shadow-[0_0_40px_rgba(232,115,42,0.1)]">
-                  <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                    <span className="text-xs font-bold text-primary uppercase tracking-wider">Preventive Maintenance Radar</span>
-                    <span className="text-xs font-mono text-amber-400">AUDITED INTERVALS</span>
+                {/* Outer ambient glow */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/20 via-primary/30 to-amber-500/20 rounded-2xl blur-xl opacity-50 pointer-events-none" />
+
+                <div className="relative z-10 bg-[#070709] border border-primary/40 hover:border-primary/70 rounded-2xl shadow-[0_20px_60px_-15px_rgba(245,158,11,0.25)] overflow-hidden transition-all duration-500 group">
+                  {/* Genuine Maintenance Screenshot */}
+                  <div className="relative">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/vigil-maintenance.png"
+                      alt="Vigil Preventive Fleet Maintenance Radar & Service Interval Intelligence"
+                      className="w-full h-auto object-cover rounded-2xl block border border-white/5 group-hover:scale-[1.01] transition-transform duration-500"
+                    />
+                    {/* Subtle glass reflective sweep */}
+                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.03] to-transparent pointer-events-none" />
                   </div>
-                  <div className="grid grid-cols-2 gap-3 text-xs">
-                    <div className="p-3 rounded-xl bg-white/5 border border-white/10">
-                      <div className="text-neutral-400 text-[11px]">Engine Oil Service</div>
-                      <div className="text-white font-bold text-sm mt-0.5">Every 5,000 KM</div>
-                      <div className="text-emerald-400 text-[10px] mt-1 font-mono">3,850 KM Remaining</div>
-                    </div>
-                    <div className="p-3 rounded-xl bg-white/5 border border-white/10">
-                      <div className="text-neutral-400 text-[11px]">Air Filter Service</div>
-                      <div className="text-white font-bold text-sm mt-0.5">Every 10,000 KM</div>
-                      <div className="text-emerald-400 text-[10px] mt-1 font-mono">6,200 KM Remaining</div>
-                    </div>
-                    <div className="p-3 rounded-xl bg-white/5 border border-white/10">
-                      <div className="text-neutral-400 text-[11px]">Tyre Set Wear</div>
-                      <div className="text-white font-bold text-sm mt-0.5">40,000 KM Target</div>
-                      <div className="text-amber-400 text-[10px] mt-1 font-mono">Due in 2,400 KM</div>
-                    </div>
-                    <div className="p-3 rounded-xl bg-white/5 border border-white/10">
-                      <div className="text-neutral-400 text-[11px]">Revenue License &amp; Insurance</div>
-                      <div className="text-white font-bold text-sm mt-0.5">Policy Expiry Monitor</div>
-                      <div className="text-emerald-400 text-[10px] mt-1 font-mono">Valid 142 Days</div>
-                    </div>
-                  </div>
-                  <div className="text-[11px] text-neutral-500 italic">In-field vehicle swap logging during maintenance &bull; Zero tour schedule disruption</div>
                 </div>
               </div>
               <div className="w-full lg:w-1/2 relative z-10">
@@ -905,6 +885,30 @@ export default function VehicleHireProductPage() {
               <div className="text-neutral-400 text-xs mt-auto">{item.role}</div>
             </div>
           ))}
+        </div>
+
+        {/* Genuine Fleet Directory Showcase */}
+        <div className="mt-16 max-w-5xl mx-auto relative z-10 text-left">
+          <div className="absolute -inset-1 bg-gradient-to-r from-primary/30 via-orange-500/20 to-primary/30 rounded-2xl blur-xl opacity-40 pointer-events-none" />
+          <div className="relative z-10 bg-[#070709] border border-primary/40 hover:border-primary/70 rounded-2xl shadow-[0_20px_60px_-15px_rgba(232,115,42,0.25)] overflow-hidden transition-all duration-500 group">
+            {/* Genuine Vehicles Screenshot */}
+            <div className="relative">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/vigil-vehicles.png"
+                alt="Vigil Comprehensive Commercial Fleet Management, Rate Cards & Capacities Table"
+                className="w-full h-auto object-cover rounded-2xl block border border-white/5 group-hover:scale-[1.01] transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.03] to-transparent pointer-events-none" />
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mt-4 px-2 text-xs text-neutral-400">
+            <span className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-primary" />
+              Live fleet registry with package tariffs, daily rate baselines, and excess KM pricing.
+            </span>
+            <span className="font-mono text-primary font-semibold">12 Fleet Categories Supported</span>
+          </div>
         </div>
       </section>
 
