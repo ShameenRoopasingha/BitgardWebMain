@@ -70,7 +70,7 @@ export default function POSProductPage() {
                 </div>
                 <div className="absolute inset-0 mt-10">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/pos-dashboard.png" alt="POS System Dashboard" className="w-full h-full object-cover grayscale-[20%] border-t border-white/5" />
+                  <img src="/pos-dashboard.png" alt="POS System Dashboard" className="w-full h-full object-cover border-t border-white/5" />
                 </div>
               </motion.div>
 
@@ -128,17 +128,23 @@ export default function POSProductPage() {
           </p>
         </div>
 
-        {/* Video Player Mockup */}
-        <div className="max-w-4xl mx-auto mb-20 relative rounded-2xl overflow-hidden border border-primary/20 aspect-video group cursor-pointer bg-[#050505]">
-          <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-20 h-20 rounded-full bg-primary/20 backdrop-blur-md flex items-center justify-center border border-primary/50 group-hover:scale-110 transition-transform">
+        {/* Workspace Preview Banner */}
+        <div className="max-w-4xl mx-auto mb-20 relative rounded-2xl overflow-hidden border border-primary/30 aspect-video group bg-[#050505] shadow-[0_10px_50px_rgba(232,115,42,0.15)]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/pos-dashboard.png"
+            alt="POS System Live Workspace Preview"
+            className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-55 transition-opacity duration-700 pointer-events-none"
+          />
+          <div className="absolute inset-0 bg-gradient-to-tr from-primary/15 via-black/40 to-black/80" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-center p-6 relative z-10">
+            <div className="w-20 h-20 rounded-full bg-primary/20 backdrop-blur-md flex items-center justify-center border border-primary/50 group-hover:scale-110 transition-transform shadow-[0_0_30px_rgba(232,115,42,0.3)]">
               <Play className="w-8 h-8 text-primary ml-1" />
             </div>
-          </div>
-          {/* Progress bar */}
-          <div className="absolute bottom-0 inset-x-0 h-1 bg-white/10">
-            <div className="h-full w-1/3 bg-primary" />
+            <div className="text-white font-heading font-bold text-xl">Bitgard POS + IMS Workspace</div>
+            <p className="text-neutral-300 text-sm max-w-md">
+              Real-time checkout register, automated batch expiry tracking, and instant sales analytics.
+            </p>
           </div>
         </div>
 
@@ -172,14 +178,40 @@ export default function POSProductPage() {
                 title: "Fast Checkout & Billing",
                 desc: "Never keep a line waiting. Our interface is optimized for speed, supporting complex split payments, discounts, and custom items on the fly.",
                 features: ["Barcode & QR scanning", "Custom item search", "Split & partial payments", "Digital receipts (SMS/Email)"],
-                img: <div className="w-full aspect-[4/3] bg-black border border-white/10 rounded-xl relative overflow-hidden flex items-center justify-center"><CreditCard className="w-20 h-20 text-primary/30" /></div>
+                img: (
+                  <div className="relative group">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-primary/30 via-orange-500/20 to-primary/30 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-500 pointer-events-none" />
+                    <div className="relative z-10 bg-[#070709] border border-primary/30 hover:border-primary/60 rounded-2xl shadow-[0_20px_50px_-15px_rgba(232,115,42,0.25)] overflow-hidden transition-all duration-500">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src="/pos-checkout.png"
+                        alt="Fast Checkout & POS Cashier Register"
+                        className="w-full h-auto object-cover rounded-2xl block border border-white/5 group-hover:scale-[1.01] transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.03] to-transparent pointer-events-none" />
+                    </div>
+                  </div>
+                )
               },
               {
                 id: "02",
                 title: "Real-Time Inventory",
                 desc: "Know exactly what you have, where it is, and what it's worth. Every sale instantly updates stock levels across your entire network.",
                 features: ["Live stock tracking", "Low-stock alerts", "Stock transfers", "Batch & expiry tracking"],
-                img: <div className="w-full aspect-[4/3] bg-black border border-white/10 rounded-xl relative overflow-hidden flex items-center justify-center"><Package className="w-20 h-20 text-primary/30" /></div>,
+                img: (
+                  <div className="relative group">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-primary/30 via-orange-500/20 to-primary/30 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-500 pointer-events-none" />
+                    <div className="relative z-10 bg-[#070709] border border-primary/30 hover:border-primary/60 rounded-2xl shadow-[0_20px_50px_-15px_rgba(232,115,42,0.25)] overflow-hidden transition-all duration-500">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src="/pos-inventory.png"
+                        alt="Real-Time Inventory and Batch Tracking"
+                        className="w-full h-auto object-cover rounded-2xl block border border-white/5 group-hover:scale-[1.01] transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.03] to-transparent pointer-events-none" />
+                    </div>
+                  </div>
+                ),
                 reversed: true
               },
               {
@@ -187,7 +219,20 @@ export default function POSProductPage() {
                 title: "Sales Reports & Analytics",
                 desc: "Turn data into profit. Identify your best-selling items, most profitable hours, and top-performing staff with visual dashboards.",
                 features: ["Trend line charts", "Revenue heatmaps", "Staff performance", "Export to PDF/Excel"],
-                img: <div className="w-full aspect-[4/3] bg-black border border-white/10 rounded-xl relative overflow-hidden flex items-center justify-center"><BarChart3 className="w-20 h-20 text-primary/30" /></div>
+                img: (
+                  <div className="relative group">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-primary/30 via-orange-500/20 to-primary/30 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-500 pointer-events-none" />
+                    <div className="relative z-10 bg-[#070709] border border-primary/30 hover:border-primary/60 rounded-2xl shadow-[0_20px_50px_-15px_rgba(232,115,42,0.25)] overflow-hidden transition-all duration-500">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src="/pos-reports.png"
+                        alt="Sales Analytics & Revenue Reports"
+                        className="w-full h-auto object-cover rounded-2xl block border border-white/5 group-hover:scale-[1.01] transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.03] to-transparent pointer-events-none" />
+                    </div>
+                  </div>
+                )
               }
             ].map((block, i) => (
               <div key={i} className={`flex flex-col ${block.reversed ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-16 relative`}>
