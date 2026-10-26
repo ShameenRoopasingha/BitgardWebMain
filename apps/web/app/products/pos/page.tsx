@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { CheckCircle2, Play, Clock, TrendingUp, Store, MonitorSmartphone, Printer, CreditCard, Laptop, FileText, BarChart3, Package, Settings, Users } from "lucide-react";
+import { CheckCircle2, Play, Clock, TrendingUp, Store, MonitorSmartphone, Printer, CreditCard, Laptop, FileText, BarChart3, Package, Settings, Users, ArrowRight, ShieldCheck } from "lucide-react";
 import { GlareCard } from "@/components/magic/GlareCard";
 
 export default function POSProductPage() {
@@ -40,17 +40,35 @@ export default function POSProductPage() {
               </p>
               
               <div className="flex flex-wrap items-center gap-4 mb-8">
-                <button className="bg-primary hover:bg-primary-600 text-white font-semibold px-8 py-4 rounded-xl shadow-[0_0_20px_rgba(232,115,42,0.4)] transition-all transform hover:-translate-y-1">
-                  Start Free Trial
-                </button>
-                <button className="bg-transparent border border-white/20 hover:border-white/50 text-white font-semibold px-8 py-4 rounded-xl transition-colors">
-                  Book a Demo
-                </button>
+                <a
+                  href="#pricing"
+                  className="bg-primary hover:bg-primary-600 text-white font-semibold px-8 py-4 rounded-xl shadow-[0_0_20px_rgba(232,115,42,0.4)] transition-all transform hover:-translate-y-1 inline-flex items-center gap-2.5"
+                >
+                  <span>Subscribe to Bitgard POS</span>
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+                <a
+                  href="#features"
+                  className="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-8 py-4 rounded-xl transition-all inline-flex items-center gap-2.5 backdrop-blur-md"
+                >
+                  <span>Explore Features</span>
+                </a>
               </div>
 
-              <div className="flex items-center gap-6 text-sm text-neutral-400">
-                <span className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-primary" /> No credit card required</span>
-                <span className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-primary" /> 14-day free trial</span>
+              {/* Commercial Terms Badges */}
+              <div className="flex flex-wrap items-center gap-6 text-sm text-neutral-400">
+                <span className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-primary" />
+                  Subscription-based licensing
+                </span>
+                <span className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-primary" />
+                  Instant license activation
+                </span>
+                <span className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-primary" />
+                  Offline-ready desktop &amp; web suite
+                </span>
               </div>
             </div>
 
@@ -105,22 +123,28 @@ export default function POSProductPage() {
       {/* STICKY TABS */}
       <div className="sticky top-20 z-50 bg-black/60 backdrop-blur-xl border-b border-white/10">
         <div className="container mx-auto px-6 flex items-center gap-8 overflow-x-auto scrollbar-hide">
-          {["overview", "features", "hardware", "use-cases", "pricing"].map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`py-4 text-sm font-medium capitalize whitespace-nowrap transition-colors border-b-2 ${
-                activeTab === tab ? "border-primary text-primary" : "border-transparent text-neutral-400 hover:text-white"
+          {[
+            { id: "overview", label: "Overview" },
+            { id: "features", label: "Features" },
+            { id: "hardware", label: "Hardware" },
+            { id: "pricing", label: "Subscription Plans" }
+          ].map((tab) => (
+            <a
+              key={tab.id}
+              href={`#${tab.id}`}
+              onClick={() => setActiveTab(tab.id)}
+              className={`py-4 text-sm font-medium whitespace-nowrap transition-colors border-b-2 ${
+                activeTab === tab.id ? "border-primary text-primary" : "border-transparent text-neutral-400 hover:text-white"
               }`}
             >
-              {tab.replace("-", " ")}
-            </button>
+              {tab.label}
+            </a>
           ))}
         </div>
       </div>
 
       {/* OVERVIEW SECTION */}
-      <section className="py-24 container mx-auto px-6">
+      <section id="overview" className="py-24 container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-heading font-bold text-white mb-6">Why Businesses Choose Our POS</h2>
           <p className="text-xl text-neutral-300 max-w-3xl mx-auto font-subheading">
@@ -165,7 +189,7 @@ export default function POSProductPage() {
       </section>
 
       {/* FEATURES ZIGZAG */}
-      <section className="py-24 bg-[#080808] border-y border-white/5 overflow-hidden">
+      <section id="features" className="py-24 bg-[#080808] border-y border-white/5 overflow-hidden">
         <div className="container mx-auto px-6">
           <div className="text-center mb-24">
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-primary">Powerful Features</h2>
@@ -265,7 +289,7 @@ export default function POSProductPage() {
       </section>
 
       {/* HARDWARE COMPATIBILITY */}
-      <section className="py-24 container mx-auto px-6 text-center">
+      <section id="hardware" className="py-24 container mx-auto px-6 text-center">
         <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-4">Works With Your Hardware</h2>
         <p className="text-neutral-400 mb-16 font-subheading">Works on any device with a modern browser.</p>
 
@@ -284,10 +308,18 @@ export default function POSProductPage() {
         </div>
       </section>
 
-      {/* PRICING PREVIEW */}
-      <section className="py-24 bg-black border-t border-primary/10">
+      {/* PRICING SECTION */}
+      <section id="pricing" className="py-24 bg-black border-t border-primary/10 relative">
         <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-5xl font-heading font-bold text-white mb-16">Simple Pricing</h2>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-bold uppercase tracking-wider mb-4">
+            <ShieldCheck className="w-4 h-4" />
+            <span>Commercial Software Licensing</span>
+          </div>
+
+          <h2 className="text-3xl md:text-5xl font-heading font-bold text-white mb-4">Simple, Transparent Subscription Plans</h2>
+          <p className="text-neutral-400 max-w-2xl mx-auto mb-16 text-sm sm:text-base">
+            Choose your subscription tier. Once subscribed, you immediately receive access to deploy the Bitgard POS suite, connect your cashier terminals, and activate your license key.
+          </p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {/* Starter */}
@@ -296,10 +328,11 @@ export default function POSProductPage() {
               <p className="text-neutral-400 text-sm mb-6">Perfect for single stores</p>
               <div className="text-4xl font-bold text-white mb-8">$29<span className="text-lg text-neutral-500 font-normal">/mo</span></div>
               <ul className="space-y-4 mb-8">
-                <li className="flex items-center text-sm text-neutral-300"><CheckCircle2 className="w-4 h-4 text-primary mr-3"/>1 Location</li>
-                <li className="flex items-center text-sm text-neutral-300"><CheckCircle2 className="w-4 h-4 text-primary mr-3"/>Basic POS</li>
+                <li className="flex items-center text-sm text-neutral-300"><CheckCircle2 className="w-4 h-4 text-primary mr-3"/>1 Location / Terminal</li>
+                <li className="flex items-center text-sm text-neutral-300"><CheckCircle2 className="w-4 h-4 text-primary mr-3"/>Basic POS &amp; Cashier</li>
+                <li className="flex items-center text-sm text-neutral-300"><CheckCircle2 className="w-4 h-4 text-primary mr-3"/>Instant License Activation</li>
               </ul>
-              <button className="w-full py-3 rounded-xl border border-white/20 hover:bg-white/5 text-white transition-colors">Start Trial</button>
+              <button className="w-full py-3.5 rounded-xl border border-white/20 hover:bg-white/10 text-white font-semibold transition-colors">Subscribe to Starter</button>
             </div>
 
             {/* Business */}
@@ -310,22 +343,24 @@ export default function POSProductPage() {
               <div className="text-4xl font-bold text-white mb-8">$79<span className="text-lg text-neutral-500 font-normal">/mo</span></div>
               <ul className="space-y-4 mb-8">
                 <li className="flex items-center text-sm text-neutral-300"><CheckCircle2 className="w-4 h-4 text-primary mr-3"/>Up to 5 Locations</li>
-                <li className="flex items-center text-sm text-neutral-300"><CheckCircle2 className="w-4 h-4 text-primary mr-3"/>Advanced Inventory</li>
-                <li className="flex items-center text-sm text-neutral-300"><CheckCircle2 className="w-4 h-4 text-primary mr-3"/>Sales Reports</li>
+                <li className="flex items-center text-sm text-neutral-300"><CheckCircle2 className="w-4 h-4 text-primary mr-3"/>Advanced Inventory &amp; Expiry</li>
+                <li className="flex items-center text-sm text-neutral-300"><CheckCircle2 className="w-4 h-4 text-primary mr-3"/>Sales Reports &amp; Analytics</li>
+                <li className="flex items-center text-sm text-neutral-300"><CheckCircle2 className="w-4 h-4 text-primary mr-3"/>Priority Tech Support</li>
               </ul>
-              <button className="w-full py-3 rounded-xl bg-primary hover:bg-primary-600 text-white font-bold transition-colors shadow-[0_0_15px_rgba(232,115,42,0.3)]">Get Business</button>
+              <button className="w-full py-3.5 rounded-xl bg-primary hover:bg-primary-600 text-white font-bold transition-colors shadow-[0_0_15px_rgba(232,115,42,0.3)]">Subscribe to Business</button>
             </div>
 
             {/* Enterprise */}
             <div className="bg-[#050505] border border-white/10 rounded-3xl p-8 text-left">
               <h3 className="text-2xl font-heading font-bold text-white mb-2">Enterprise</h3>
-              <p className="text-neutral-400 text-sm mb-6">Unlimited scale</p>
+              <p className="text-neutral-400 text-sm mb-6">Unlimited scale &amp; branches</p>
               <div className="text-4xl font-bold text-white mb-8">$199<span className="text-lg text-neutral-500 font-normal">/mo</span></div>
               <ul className="space-y-4 mb-8">
                 <li className="flex items-center text-sm text-neutral-300"><CheckCircle2 className="w-4 h-4 text-primary mr-3"/>Unlimited Locations</li>
-                <li className="flex items-center text-sm text-neutral-300"><CheckCircle2 className="w-4 h-4 text-primary mr-3"/>API Access</li>
+                <li className="flex items-center text-sm text-neutral-300"><CheckCircle2 className="w-4 h-4 text-primary mr-3"/>Full API &amp; ERP Access</li>
+                <li className="flex items-center text-sm text-neutral-300"><CheckCircle2 className="w-4 h-4 text-primary mr-3"/>Dedicated Account Manager</li>
               </ul>
-              <button className="w-full py-3 rounded-xl border border-white/20 hover:bg-white/5 text-white transition-colors">Contact Sales</button>
+              <button className="w-full py-3.5 rounded-xl border border-white/20 hover:bg-white/10 text-white font-semibold transition-colors">Contact Sales</button>
             </div>
           </div>
         </div>
