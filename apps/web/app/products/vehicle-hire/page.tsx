@@ -3,7 +3,7 @@
 import React, { useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   CheckCircle2,
   Play,
@@ -107,8 +107,119 @@ function StatusNotification() {
   return null;
 }
 
+interface PricingTier {
+  id: "starter" | "professional" | "enterprise";
+  name: string;
+  subtitle: string;
+  isPopular?: boolean;
+  monthly: {
+    priceFormatted: string;
+    period: string;
+    subtext?: string;
+  };
+  annual: {
+    priceFormatted: string;
+    period: string;
+    subtext: string;
+  };
+  setupFeeNote: string;
+  features: string[];
+  ctaText: string;
+  ctaHref: (billing: "monthly" | "annual") => string;
+}
+
+const PRICING_TIERS: PricingTier[] = [
+  {
+    id: "starter",
+    name: "Starter",
+    subtitle: "For small operators & independent rental fleets",
+    monthly: {
+      priceFormatted: "Rs 6,900",
+      period: "/mo",
+      subtext: "Billed monthly",
+    },
+    annual: {
+      priceFormatted: "Rs 69,000",
+      period: "/yr",
+      subtext: "Rs 5,750/mo billed annually",
+    },
+    setupFeeNote: "Rs 0 self-serve setup (Optional assisted setup: Rs 9,500)",
+    features: [
+      "Up to 10 Vehicles (+Rs 490/extra vehicle)",
+      "1 Office Desktop App (.exe)",
+      "Precision Invoicing & Quotations Engine",
+      "Customer Directory & Travel History",
+      "Instant Smart Search Across All Records",
+      "Basic Service Due Reminders",
+      "Automated Daily Cloud Backups",
+      "Standard Support (Mon–Fri, 9 AM–5 PM)",
+    ],
+    ctaText: "Subscribe to Starter",
+    ctaHref: (billing) => `/checkout/tourbiller?tier=starter&billing=${billing}`,
+  },
+  {
+    id: "professional",
+    name: "Professional",
+    subtitle: "For growing tour agencies & commercial fleets",
+    isPopular: true,
+    monthly: {
+      priceFormatted: "Rs 14,900",
+      period: "/mo",
+      subtext: "Billed monthly",
+    },
+    annual: {
+      priceFormatted: "Rs 149,000",
+      period: "/yr",
+      subtext: "Rs 12,417/mo billed annually",
+    },
+    setupFeeNote: "One-time onboarding & driver training: Rs 14,500",
+    features: [
+      "Up to 25 Vehicles (+Rs 450/extra vehicle)",
+      "Up to 3 Office Desktop Apps (.exe)",
+      "Everything in Starter, plus:",
+      "Day-by-Day Tour Itinerary & Landmark Routing",
+      "Live GPS Fleet Radar (30-Day Route History)",
+      "Companion Mobile Driver App Sync",
+      "Preventive Maintenance Milestone Alerts",
+      "Trip Cost & Fuel Margin Tracking",
+      "Priority Support (Mon–Sat, 8 AM–8 PM)",
+    ],
+    ctaText: "Subscribe to Professional",
+    ctaHref: (billing) => `/checkout/tourbiller?tier=professional&billing=${billing}`,
+  },
+  {
+    id: "enterprise",
+    name: "Enterprise",
+    subtitle: "For multi-branch operators & large fleet companies",
+    monthly: {
+      priceFormatted: "Rs 38,900",
+      period: "/mo",
+      subtext: "Billed monthly",
+    },
+    annual: {
+      priceFormatted: "Rs 389,000",
+      period: "/yr",
+      subtext: "Rs 32,417/mo billed annually",
+    },
+    setupFeeNote: "One-time multi-PC deployment & setup: Rs 34,500",
+    features: [
+      "Up to 75 Vehicles (+Rs 350/extra vehicle)",
+      "Up to 10 Multi-Branch Workstations",
+      "Everything in Professional, plus:",
+      "Multi-Currency Billing (LKR, USD, EUR) & Custom Rates",
+      "In-Field Vehicle Swap Audit Logging",
+      "Role-Based Access (Managers, Dispatch & Accounts)",
+      "90-Day Telemetry Archive & Custom Reports",
+      "Dedicated Account Manager & 4-Hr Critical SLA",
+    ],
+    ctaText: "Subscribe to Enterprise",
+    ctaHref: (billing) => `/checkout/tourbiller?tier=enterprise&billing=${billing}`,
+  },
+];
+
 export default function VehicleHireProductPage() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("monthly");
   const [downloadEmail, setDownloadEmail] = useState("");
   const [downloadMsg, setDownloadMsg] = useState<string | null>(null);
 
@@ -415,7 +526,7 @@ export default function VehicleHireProductPage() {
                 <ul className="space-y-2.5 text-xs text-neutral-300">
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                    <span>Multi-day tour planner with curated Sri Lankan landmarks (Sigiriya, Ella, Kandy, Yala) powered by typo-tolerant Fuse.js fuzzy autocomplete.</span>
+                    <span>Multi-day tour planner with curated Sri Lankan landmarks (Sigiriya, Ella, Kandy, Yala) powered by typo-tolerant smart search autocomplete.</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
@@ -630,7 +741,7 @@ export default function VehicleHireProductPage() {
                 </p>
                 <ul className="space-y-3.5">
                   {[
-                    "Multi-day tour planner with curated Sri Lankan landmarks (Sigiriya, Ella, Kandy, Yala) powered by typo-tolerant Fuse.js fuzzy autocomplete.",
+                    "Multi-day tour planner with curated Sri Lankan landmarks (Sigiriya, Ella, Kandy, Yala) powered by typo-tolerant smart search autocomplete.",
                     "OSRM road routing with automatic distance and driving duration estimation.",
                     "Permanent itinerary snapshots embedded with finalized invoices.",
                     "Day-by-day itinerary schedule linked directly to billing quotations and driver assignments.",
@@ -760,7 +871,7 @@ export default function VehicleHireProductPage() {
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider mb-3">
               <Search className="w-4 h-4" />
-              <span>Intelligent Fuse.js Search Engine</span>
+              <span>Intelligent Smart Search Engine</span>
             </div>
             <h2 className="text-3xl md:text-5xl font-heading font-bold text-white mb-4">
               Instant Typo-Tolerant Search &amp; Customer CRM
@@ -776,7 +887,7 @@ export default function VehicleHireProductPage() {
                 <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center border border-primary/40 mb-4">
                   <Search className="w-5 h-5 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">Fuse.js Fuzzy Search Across Every Table</h3>
+                <h3 className="text-xl font-bold text-white mb-2">Instant Smart Search Across Every Table</h3>
                 <p className="text-neutral-400 text-sm leading-relaxed mb-6">
                   Typing &ldquo;sealon&rdquo; instantly surfaces &ldquo;BYD Sealion 6&rdquo;. Searching &ldquo;sigriya&rdquo; matches &ldquo;Sigiriya Lion Rock&rdquo;. Your team never loses time to exact-string queries or search failures.
                 </p>
@@ -923,125 +1034,180 @@ export default function VehicleHireProductPage() {
           <h2 className="text-3xl md:text-5xl font-heading font-bold text-white mb-4">
             Simple, Transparent Subscription Plans
           </h2>
-          <p className="text-neutral-400 max-w-2xl mx-auto mb-16 text-sm sm:text-base">
-            Choose your plan and complete your monthly subscription via Dodo Payments. Once subscribed, you immediately receive access to download the Vigil Windows desktop suite, download the mobile driver APK, and activate your license key.
+          <p className="text-neutral-400 max-w-2xl mx-auto mb-10 text-sm sm:text-base">
+            Choose your plan and complete your subscription via Dodo Payments. Once subscribed, you immediately receive access to download the Vigil Windows desktop suite, download the mobile driver APK, and activate your license key.
           </p>
 
+          {/* Billing Toggle Pill */}
+          <div className="flex items-center justify-center mb-14">
+            <div className="inline-flex items-center p-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md">
+              <button
+                type="button"
+                onClick={() => setBillingCycle("monthly")}
+                className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
+                  billingCycle === "monthly"
+                    ? "bg-primary text-white shadow-[0_0_20px_rgba(232,115,42,0.4)]"
+                    : "text-neutral-400 hover:text-white"
+                }`}
+              >
+                Monthly Billing
+              </button>
+              <button
+                type="button"
+                onClick={() => setBillingCycle("annual")}
+                className={`relative px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 flex items-center gap-2 ${
+                  billingCycle === "annual"
+                    ? "bg-primary text-white shadow-[0_0_20px_rgba(232,115,42,0.4)]"
+                    : "text-neutral-400 hover:text-white"
+                }`}
+              >
+                <span>Annual Billing</span>
+                <span
+                  className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full transition-colors ${
+                    billingCycle === "annual"
+                      ? "bg-black/30 text-white border border-white/20"
+                      : "bg-primary/20 text-primary border border-primary/30"
+                  }`}
+                >
+                  2 Months Free
+                </span>
+              </button>
+            </div>
+          </div>
+
+          {/* Pricing Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto items-stretch">
-            {/* Starter */}
-            <div className="bg-[#050505] border border-white/10 hover:border-white/20 rounded-3xl p-8 text-left flex flex-col transition-all">
-              <h3 className="text-2xl font-heading font-bold text-white mb-1">Starter</h3>
-              <p className="text-neutral-400 text-xs mb-6">For small operators &amp; independent rental fleets</p>
-              <div className="text-4xl font-bold text-white mb-6">
-                Rs 5,000<span className="text-base text-neutral-500 font-normal">/mo</span>
-              </div>
-              <ul className="space-y-3.5 mb-8 flex-1">
-                <li className="flex items-center text-sm text-neutral-300">
-                  <CheckCircle2 className="w-4 h-4 text-primary mr-3 shrink-0" />
-                  Up to 10 Vehicles
-                </li>
-                <li className="flex items-center text-sm text-neutral-300">
-                  <CheckCircle2 className="w-4 h-4 text-primary mr-3 shrink-0" />
-                  Precision Invoicing &amp; Quotations Engine
-                </li>
-                <li className="flex items-center text-sm text-neutral-300">
-                  <CheckCircle2 className="w-4 h-4 text-primary mr-3 shrink-0" />
-                  Customer Directory &amp; Travel History
-                </li>
-                <li className="flex items-center text-sm text-neutral-300">
-                  <CheckCircle2 className="w-4 h-4 text-primary mr-3 shrink-0" />
-                  Full Desktop Installer Access (.exe)
-                </li>
-                <li className="flex items-center text-sm text-neutral-300">
-                  <CheckCircle2 className="w-4 h-4 text-primary mr-3 shrink-0" />
-                  Standard Support &amp; Regular Updates
-                </li>
-              </ul>
-              <Link href="/checkout/tourbiller?tier=starter" className="block w-full">
-                <button className="w-full py-3.5 rounded-xl border border-white/20 hover:bg-white/10 text-white font-semibold transition-all text-sm text-center">
-                  Subscribe to Starter
-                </button>
-              </Link>
-            </div>
+            {PRICING_TIERS.map((tier) => {
+              const currentPricing = billingCycle === "annual" ? tier.annual : tier.monthly;
+              const isPopular = tier.isPopular;
 
-            {/* Professional (Highlighted) */}
-            <div className="bg-primary/5 border-2 border-primary rounded-3xl p-8 text-left flex flex-col relative transform md:-translate-y-4 shadow-[0_20px_60px_rgba(232,115,42,0.2)]">
-              <div className="absolute top-0 right-8 -translate-y-1/2 bg-primary text-white text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider shadow-[0_0_15px_rgba(232,115,42,0.6)]">
-                Most Popular
-              </div>
-              <h3 className="text-2xl font-heading font-bold text-primary mb-1">Professional</h3>
-              <p className="text-neutral-400 text-xs mb-6">For growing tour agencies &amp; commercial fleets</p>
-              <div className="text-4xl font-bold text-white mb-6">
-                Rs 10,000<span className="text-base text-neutral-500 font-normal">/mo</span>
-              </div>
-              <ul className="space-y-3.5 mb-8 flex-1">
-                <li className="flex items-center text-sm text-white font-medium">
-                  <CheckCircle2 className="w-4 h-4 text-primary mr-3 shrink-0" />
-                  Up to 50 Vehicles
-                </li>
-                <li className="flex items-center text-sm text-white font-medium">
-                  <CheckCircle2 className="w-4 h-4 text-primary mr-3 shrink-0" />
-                  Day-by-Day Tour Itinerary &amp; Landmark Routing
-                </li>
-                <li className="flex items-center text-sm text-white font-medium">
-                  <CheckCircle2 className="w-4 h-4 text-primary mr-3 shrink-0" />
-                  Live GPS Fleet Radar &amp; Telematics
-                </li>
-                <li className="flex items-center text-sm text-white font-medium">
-                  <CheckCircle2 className="w-4 h-4 text-primary mr-3 shrink-0" />
-                  Companion Mobile Driver App Sync
-                </li>
-                <li className="flex items-center text-sm text-white font-medium">
-                  <CheckCircle2 className="w-4 h-4 text-primary mr-3 shrink-0" />
-                  Preventive Maintenance Milestone Alerts
-                </li>
-                <li className="flex items-center text-sm text-white font-medium">
-                  <CheckCircle2 className="w-4 h-4 text-primary mr-3 shrink-0" />
-                  Fuse.js Typo-Tolerant Search Across All Tables
-                </li>
-              </ul>
-              <Link href="/checkout/tourbiller?tier=professional" className="block w-full">
-                <button className="w-full py-4 rounded-xl bg-primary hover:bg-primary-600 text-white font-bold transition-all shadow-[0_0_20px_rgba(232,115,42,0.4)] text-sm text-center">
-                  Subscribe to Professional
-                </button>
-              </Link>
-            </div>
+              return (
+                <div
+                  key={tier.id}
+                  className={`rounded-3xl p-8 text-left flex flex-col justify-between transition-all duration-300 ${
+                    isPopular
+                      ? "bg-primary/5 border-2 border-primary relative transform md:-translate-y-4 shadow-[0_20px_60px_rgba(232,115,42,0.2)]"
+                      : "bg-[#050505] border border-white/10 hover:border-white/20"
+                  }`}
+                >
+                  {/* Top Popular Badge */}
+                  {isPopular && (
+                    <div className="absolute top-0 right-8 -translate-y-1/2 bg-primary text-white text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider shadow-[0_0_15px_rgba(232,115,42,0.6)] flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5" />
+                      <span>Most Popular</span>
+                    </div>
+                  )}
 
-            {/* Enterprise */}
-            <div className="bg-[#050505] border border-white/10 hover:border-white/20 rounded-3xl p-8 text-left flex flex-col transition-all">
-              <h3 className="text-2xl font-heading font-bold text-white mb-1">Enterprise</h3>
-              <p className="text-neutral-400 text-xs mb-6">For multi-branch operators &amp; large fleet companies</p>
-              <div className="text-4xl font-bold text-white mb-6">
-                Rs 25,000<span className="text-base text-neutral-500 font-normal">/mo</span>
+                  <div>
+                    {/* Header */}
+                    <h3
+                      className={`text-2xl font-heading font-bold mb-1 ${
+                        isPopular ? "text-primary" : "text-white"
+                      }`}
+                    >
+                      {tier.name}
+                    </h3>
+                    <p className="text-neutral-400 text-xs mb-6 min-h-[32px]">
+                      {tier.subtitle}
+                    </p>
+
+                    {/* Price with smooth animation */}
+                    <div className="mb-4">
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={billingCycle}
+                          initial={{ opacity: 0, y: -6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 6 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <div
+                            className={`text-4xl font-bold font-heading ${
+                              isPopular ? "text-primary" : "text-white"
+                            }`}
+                          >
+                            {currentPricing.priceFormatted}
+                            <span className="text-base text-neutral-500 font-normal font-sans ml-1">
+                              {currentPricing.period}
+                            </span>
+                          </div>
+                          <div className="text-xs text-neutral-400 mt-1 min-h-[18px]">
+                            {currentPricing.subtext || "Billed monthly"}
+                          </div>
+                        </motion.div>
+                      </AnimatePresence>
+                    </div>
+
+                    {/* Setup Fee Display */}
+                    <div className="mb-6 pb-5 border-b border-white/10">
+                      <div className="text-[11px] text-neutral-400 leading-snug flex items-start gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary/60 shrink-0 mt-1" />
+                        <span>{tier.setupFeeNote}</span>
+                      </div>
+                    </div>
+
+                    {/* Feature List */}
+                    <ul className="space-y-3.5 mb-8">
+                      {tier.features.map((feat, fi) => {
+                        const isSectionHeader = feat.startsWith("Everything in");
+                        return (
+                          <li key={fi} className="flex items-start text-sm">
+                            <CheckCircle2 className="w-4 h-4 text-primary mr-3 shrink-0 mt-0.5" />
+                            <span
+                              className={
+                                isSectionHeader
+                                  ? "text-primary font-semibold"
+                                  : isPopular
+                                  ? "text-white font-medium"
+                                  : "text-neutral-300"
+                              }
+                            >
+                              {feat}
+                            </span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+
+                  {/* CTA Button Aligned to Bottom */}
+                  <div className="pt-2">
+                    <Link href={tier.ctaHref(billingCycle)} className="block w-full">
+                      <button
+                        className={`w-full text-sm text-center font-bold transition-all ${
+                          isPopular
+                            ? "py-4 rounded-xl bg-primary hover:bg-primary-600 text-white shadow-[0_0_20px_rgba(232,115,42,0.4)]"
+                            : "py-3.5 rounded-xl border border-white/20 hover:bg-white/10 text-white font-semibold"
+                        }`}
+                      >
+                        {tier.ctaText}
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Add-On Strip Below Cards */}
+          <div className="max-w-6xl mx-auto mt-8 p-5 rounded-2xl bg-[#080808] border border-white/10 text-neutral-300 text-xs sm:text-sm text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                <Sparkles className="w-4 h-4 text-primary" />
               </div>
-              <ul className="space-y-3.5 mb-8 flex-1">
-                <li className="flex items-center text-sm text-neutral-300">
-                  <CheckCircle2 className="w-4 h-4 text-primary mr-3 shrink-0" />
-                  Unlimited Fleet Vehicles
-                </li>
-                <li className="flex items-center text-sm text-neutral-300">
-                  <CheckCircle2 className="w-4 h-4 text-primary mr-3 shrink-0" />
-                  Multi-Currency Billing (LKR &amp; USD) with Custom Rates
-                </li>
-                <li className="flex items-center text-sm text-neutral-300">
-                  <CheckCircle2 className="w-4 h-4 text-primary mr-3 shrink-0" />
-                  In-Field Vehicle Swap Audit Logging
-                </li>
-                <li className="flex items-center text-sm text-neutral-300">
-                  <CheckCircle2 className="w-4 h-4 text-primary mr-3 shrink-0" />
-                  Multi-Workstation Office Desktop Deployment
-                </li>
-                <li className="flex items-center text-sm text-neutral-300">
-                  <CheckCircle2 className="w-4 h-4 text-primary mr-3 shrink-0" />
-                  Dedicated Account SLA &amp; 24/7 Priority Support
-                </li>
-              </ul>
-              <Link href="/checkout/tourbiller?tier=enterprise" className="block w-full">
-                <button className="w-full py-3.5 rounded-xl border border-white/20 hover:bg-white/10 text-white font-semibold transition-all text-sm text-center">
-                  Subscribe to Enterprise
-                </button>
-              </Link>
+              <div className="leading-relaxed">
+                <span className="text-white font-semibold">Optional Add-On:</span>{" "}
+                24/7 Priority Hotline SLA available on Enterprise for{" "}
+                <span className="text-primary font-semibold">+Rs 15,000/mo</span>. Managing more than 75 vehicles? Contact us for a custom fleet quote.
+              </div>
             </div>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-1.5 text-primary hover:text-primary-400 font-semibold text-xs sm:text-sm whitespace-nowrap transition-colors"
+            >
+              <span>Contact for Custom Quote</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
 
           {/* Commercial Policy Clarification Notice */}

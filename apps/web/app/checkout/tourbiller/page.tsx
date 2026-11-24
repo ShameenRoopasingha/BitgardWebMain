@@ -9,19 +9,20 @@ import { ArrowLeft, Shield, Download, CheckCircle2, Package } from 'lucide-react
 function CheckoutContent() {
   const searchParams = useSearchParams();
   const tier = (searchParams.get('tier') || 'starter').toLowerCase();
+  const isAnnual = searchParams.get('billing') === 'annual';
 
   let planName = 'Starter';
-  let price = 5000;
+  let price = isAnnual ? 69000 : 6900;
   let vehicleLimit = 'Up to 10 Vehicles';
 
   if (tier === 'professional' || tier === 'pro') {
     planName = 'Professional';
-    price = 10000;
-    vehicleLimit = 'Up to 50 Vehicles';
+    price = isAnnual ? 149000 : 14900;
+    vehicleLimit = 'Up to 25 Vehicles';
   } else if (tier === 'enterprise') {
     planName = 'Enterprise';
-    price = 25000;
-    vehicleLimit = 'Unlimited Fleet';
+    price = isAnnual ? 389000 : 38900;
+    vehicleLimit = 'Up to 75 Vehicles';
   }
 
   return (
@@ -37,22 +38,23 @@ function CheckoutContent() {
         </h1>
         <p className="text-neutral-400 text-sm">
           Commercial license & software access for{' '}
-          <span className="text-primary font-bold">{planName}</span> tier ({vehicleLimit}).
+          <span className="text-primary font-bold">{planName}</span> tier ({vehicleLimit}) &bull;{' '}
+          <span className="text-white font-medium">{isAnnual ? 'Annual Billing (2 Months Free)' : 'Monthly Billing'}</span>.
         </p>
       </div>
 
       {/* Plan Switcher Pills */}
       <div className="flex gap-2 p-1.5 bg-white/5 border border-white/10 rounded-2xl mb-8">
         {[
-          { id: 'starter', label: 'Starter', price: 'Rs 5,000' },
-          { id: 'professional', label: 'Professional', price: 'Rs 10,000' },
-          { id: 'enterprise', label: 'Enterprise', price: 'Rs 25,000' },
+          { id: 'starter', label: 'Starter', price: isAnnual ? 'Rs 69,000/yr' : 'Rs 6,900/mo' },
+          { id: 'professional', label: 'Professional', price: isAnnual ? 'Rs 149,000/yr' : 'Rs 14,900/mo' },
+          { id: 'enterprise', label: 'Enterprise', price: isAnnual ? 'Rs 389,000/yr' : 'Rs 38,900/mo' },
         ].map((p) => {
           const isActive = planName.toLowerCase() === p.id;
           return (
             <Link
               key={p.id}
-              href={`/checkout/tourbiller?tier=${p.id}`}
+              href={`/checkout/tourbiller?tier=${p.id}${isAnnual ? '&billing=annual' : ''}`}
               className={`flex-1 py-2.5 px-3 rounded-xl text-center text-xs font-semibold transition-all ${
                 isActive
                   ? 'bg-primary text-white shadow-[0_0_15px_rgba(232,115,42,0.4)]'
@@ -60,7 +62,7 @@ function CheckoutContent() {
               }`}
             >
               <div>{p.label}</div>
-              <div className="text-[11px] opacity-80">{p.price}/mo</div>
+              <div className="text-[11px] opacity-80">{p.price}</div>
             </Link>
           );
         })}
