@@ -14,23 +14,6 @@ module.exports = {
             },
         },
         extend: {
-            fontSize: {
-                // Major Third (1.250) Typographic Scale
-                // Base: 16px (1rem). Tightly geometrically decreasing line-heights for larger text.
-                "xs": ["0.640rem", { lineHeight: "1.6" }],
-                "sm": ["0.800rem", { lineHeight: "1.6" }],
-                "base": ["1.000rem", { lineHeight: "1.6" }],
-                "lg": ["1.250rem", { lineHeight: "1.4" }],
-                "xl": ["1.563rem", { lineHeight: "1.3" }],
-                "2xl": ["1.953rem", { lineHeight: "1.2" }],
-                "3xl": ["2.441rem", { lineHeight: "1.15" }],
-                "4xl": ["3.052rem", { lineHeight: "1.1" }],
-                "5xl": ["3.815rem", { lineHeight: "1.05" }],
-                "6xl": ["4.768rem", { lineHeight: "1.0" }],
-                "7xl": ["5.960rem", { lineHeight: "1.0" }],
-                "8xl": ["7.451rem", { lineHeight: "1.0" }],
-                "9xl": ["9.313rem", { lineHeight: "1.0" }],
-            },
             colors: {
                 // shadcn-style semantic colors using CSS variables
                 border: "hsl(var(--border))",
@@ -111,10 +94,11 @@ module.exports = {
                 sm: "calc(var(--radius) - 4px)",
             },
             fontFamily: {
-                heading: ["var(--font-heading)", "sans-serif"],
-                subheading: ["var(--font-subheading)", "sans-serif"],
-                body: ["var(--font-body)", "sans-serif"],
-                mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
+                heading: ["var(--font-geist-sans)", "sans-serif"],
+                subheading: ["var(--font-geist-sans)", "sans-serif"],
+                body: ["var(--font-geist-sans)", "sans-serif"],
+                sans: ["var(--font-geist-sans)", "sans-serif"],
+                mono: ["var(--font-geist-mono)", "ui-monospace", "monospace"],
             },
             keyframes: {
                 "accordion-down": {

@@ -120,9 +120,12 @@ export const FloatingNavbar = ({ className }: { className?: string }) => {
             )}
           </div>
         ))}
-        <button className="bg-primary hover:bg-primary-600 text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow-[0_0_15px_rgba(232,115,42,0.4)] hover:shadow-[0_0_25px_rgba(232,115,42,0.6)] transition-all transform hover:-translate-y-0.5">
-          Get Started
-        </button>
+        <Link
+          href="/#products"
+          className="bg-primary hover:bg-primary-600 active:scale-[0.98] text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-full shadow-[0_0_15px_rgba(232,115,42,0.4)] hover:shadow-[0_0_25px_rgba(232,115,42,0.6)] transition-all transform hover:-translate-y-0.5"
+        >
+          Subscribe
+        </Link>
       </motion.div>
     </AnimatePresence>
     
@@ -173,9 +176,13 @@ export const FloatingNavbar = ({ className }: { className?: string }) => {
                   )}
                 </div>
               ))}
-              <button className="w-full mt-4 bg-primary text-sm font-bold text-white px-4 py-3 rounded-xl hover:shadow-[0_0_15px_rgba(232,115,42,0.4)] transition-all">
-                Get Started
-              </button>
+              <Link
+                href="/#products"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="w-full mt-4 bg-primary text-center block text-sm font-semibold text-white px-4 py-3 rounded-xl hover:shadow-[0_0_15px_rgba(232,115,42,0.4)] transition-all"
+              >
+                Subscribe
+              </Link>
             </motion.div>
           )}
         </AnimatePresence>

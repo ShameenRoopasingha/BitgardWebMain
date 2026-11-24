@@ -14,7 +14,7 @@
  */
 
 import type { Metadata, Viewport } from "next";
-import { Orbitron, Space_Grotesk, Inter } from "next/font/google";
+import localFont from "next/font/local";
 import GradualBlur from "@/components/ui/GradualBlur";
 import DarkVeil from "@/components/backgrounds/DarkVeil";
 import "./globals.css";
@@ -31,37 +31,19 @@ import { FloatingNavbar } from "@/components/magic/FloatingNavbar";
 import { Footer } from "@/components/layout/Footer";
 
 // -----------------------------------------------------------------------------
-// Font Configuration
+// Font Configuration (Geist & Geist Mono per Landing Page Design System)
 // -----------------------------------------------------------------------------
 
-/**
- * Orbitron - Display headings
- */
-const orbitron = Orbitron({
-  variable: "--font-heading",
-  subsets: ["latin"],
+const geistSans = localFont({
+  src: "./fonts/GeistVF.woff",
+  variable: "--font-geist-sans",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
-/**
- * Space Grotesk - Subheadings and structural text
- */
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-subheading",
-  subsets: ["latin"],
+const geistMono = localFont({
+  src: "./fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
   display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
-});
-
-/**
- * Inter - The absolute gold standard for readable body text.
- */
-const inter = Inter({
-  variable: "--font-body",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
 });
 
 // -----------------------------------------------------------------------------
@@ -152,7 +134,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html
       lang="en"
-      className={`dark ${orbitron.variable} ${spaceGrotesk.variable} ${inter.variable}`}
+      className={`dark ${geistSans.variable} ${geistMono.variable} font-sans`}
       suppressHydrationWarning
     >
       <body>
