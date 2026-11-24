@@ -28,7 +28,7 @@ export async function POST(request: Request) {
       process.env.NEXT_PUBLIC_WEB_URL ||
       'http://localhost:3000';
 
-    const returnUrl = `${origin}/products/vehicle-hire?status=success&plan=${encodeURIComponent(
+    const returnUrl = `${origin}/products/vigil?status=success&plan=${encodeURIComponent(
       planName || 'Starter'
     )}&session_id={CHECKOUT_SESSION_ID}`;
 

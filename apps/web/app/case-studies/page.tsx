@@ -21,10 +21,10 @@ export default function CaseStudiesPage() {
     },
     {
       id: "apex-rentals",
-      company: "Apex Vehicle Hire",
+      company: "Apex Fleet Rentals",
       industry: "Fleet Management",
       title: "Increasing Fleet Utilization by 35%",
-      desc: "Apex struggled with fragmented booking systems and lost inventory. By deploying our integrated vehicle hire system, they achieved total visibility and automated their maintenance schedules.",
+      desc: "Apex struggled with fragmented booking systems and lost inventory. By deploying our integrated Vigil fleet system, they achieved total visibility and automated their maintenance schedules.",
       metrics: [
         { label: "Utilization", value: "+35%", icon: TrendingUp },
         { label: "Loss Prevention", value: "100%", icon: Shield }

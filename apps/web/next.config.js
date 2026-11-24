@@ -14,6 +14,21 @@ const nextConfig = {
         domains: [],
         formats: ["image/avif", "image/webp"],
     },
+
+    async redirects() {
+        return [
+            {
+                source: "/products/vehicle-hire",
+                destination: "/products/vigil",
+                permanent: true,
+            },
+            {
+                source: "/products/vehicle-hire/:path*",
+                destination: "/products/vigil/:path*",
+                permanent: true,
+            },
+        ];
+    },
 };
 
 module.exports = nextConfig;

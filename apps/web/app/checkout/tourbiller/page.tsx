@@ -116,7 +116,7 @@ export default function VigilCheckoutPage() {
 
       <div className="container mx-auto px-6 relative z-10">
         <Link
-          href="/products/vehicle-hire"
+          href="/products/vigil"
           className="inline-flex items-center text-sm text-neutral-400 hover:text-white mb-8 transition-colors group"
         >
           <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />

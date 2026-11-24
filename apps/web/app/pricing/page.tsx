@@ -76,7 +76,7 @@ export default function PricingPage() {
           <div className="inline-flex bg-white/5 border border-white/10 rounded-2xl p-1.5 mb-8 max-w-full overflow-x-auto scrollbar-hide">
             {[
               { id: "pos", label: "POS + Inventory" },
-              { id: "vehicle", label: "Vigil (Vehicle Hire)" },
+              { id: "vehicle", label: "Vigil" },
               { id: "hrm", label: "HRM System" }
             ].map(prod => (
               <button

@@ -32,7 +32,7 @@ export default function Home() {
         "name": "Vigil Tour Management & Fleet OS",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Windows 10, Windows 11, macOS, Linux",
-        "description": "Commercial tour operations and vehicle hire fleet management desktop suite with live GPS telematics and precision invoicing.",
+        "description": "Commercial tour operations and fleet management desktop suite with live GPS telematics and precision invoicing.",
         "offers": {
           "@type": "Offer",
           "price": "5000",

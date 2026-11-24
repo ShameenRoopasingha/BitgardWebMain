@@ -16,7 +16,7 @@ export default function BlogIndexPage() {
       img: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=600"
     },
     {
-      slug: "vehicle-hire-telematics",
+      slug: "vigil-telematics",
       title: "Integrating Telematics into Your Rental Fleet",
       category: "Product Update",
       date: "Sep 28, 2026",

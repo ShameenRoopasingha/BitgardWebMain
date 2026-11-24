@@ -129,7 +129,7 @@ export default function ProductsOverviewPage() {
                 <Package className="w-6 h-6 text-primary" />
               </div>
               <h2 className="text-3xl lg:text-4xl font-heading font-bold text-white mb-3">Vigil</h2>
-              <h3 className="text-xl text-primary font-subheading mb-4">Tour & Vehicle Hire Management System</h3>
+              <h3 className="text-xl text-primary font-subheading mb-4">Tour & Fleet Management System</h3>
               <p className="text-neutral-400 mb-8 leading-relaxed">
                 Commercial fleet and tour operating software. Manage reservations, live dispatch, GPS telematics, driver rosters, and invoices from a unified desktop platform.
               </p>
@@ -151,10 +151,10 @@ export default function ProductsOverviewPage() {
               </div>
 
               <div className="flex flex-wrap gap-4">
-                <Link href="/products/vehicle-hire" className="bg-primary hover:bg-primary-600 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm">
+                <Link href="/products/vigil" className="bg-primary hover:bg-primary-600 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm">
                   View Vigil
                 </Link>
-                <Link href="/products/vehicle-hire#pricing" className="bg-transparent border border-white/20 hover:border-white/50 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm">
+                <Link href="/products/vigil#pricing" className="bg-transparent border border-white/20 hover:border-white/50 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm">
                   Subscribe &amp; Download
                 </Link>
               </div>

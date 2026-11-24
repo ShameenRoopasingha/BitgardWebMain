@@ -217,7 +217,7 @@ const PRICING_TIERS: PricingTier[] = [
   },
 ];
 
-export default function VehicleHireProductPage() {
+export default function VigilProductPage() {
   const [activeTab, setActiveTab] = useState("overview");
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("monthly");
   const [downloadEmail, setDownloadEmail] = useState("");

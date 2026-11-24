@@ -94,7 +94,7 @@ export function FlagshipProducts() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             <div className="lg:col-span-5 flex flex-col justify-center">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-medium uppercase tracking-wider mb-4 w-fit">
-                <span>Flagship 01 &bull; Vehicle Hire &amp; Tour Ops</span>
+                <span>Flagship 01 &bull; Fleet &amp; Tour Ops</span>
               </div>
               <h3 className="text-2xl sm:text-3xl font-semibold text-white mb-4 tracking-tight">
                 Vigil Tour Management &amp; Live Telematics Suite
@@ -137,7 +137,7 @@ export function FlagshipProducts() {
 
               <div className="flex flex-wrap items-center gap-4">
                 <Link
-                  href="/products/vehicle-hire"
+                  href="/products/vigil"
                   className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-600 active:scale-[0.98] text-white font-semibold text-xs sm:text-sm px-6 py-3 rounded-xl transition-all shadow-[0_0_20px_rgba(232,115,42,0.3)]"
                 >
                   <span>Explore Vigil and subscribe</span>
