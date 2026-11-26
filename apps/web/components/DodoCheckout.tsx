@@ -13,7 +13,7 @@ interface DodoCheckoutProps {
 export function DodoCheckout({
   planName,
   price,
-  currency = 'LKR',
+  currency = 'USD',
   billingCycle = 'MONTHLY',
 }: DodoCheckoutProps) {
   const [loading, setLoading] = useState(false);
@@ -79,7 +79,7 @@ export function DodoCheckout({
             {isAnnual ? 'Annual Plan' : 'Monthly Plan'}
           </div>
           <div className="text-white font-bold text-lg">
-            {currency} {price.toLocaleString()}
+            {currency === 'USD' ? `$${price.toLocaleString()}` : `${currency} ${price.toLocaleString()}`}
             <span className="text-neutral-500 text-xs font-normal">
               {isAnnual ? '/yr' : '/mo'}
             </span>

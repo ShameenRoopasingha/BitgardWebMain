@@ -143,7 +143,7 @@ export function FlagshipProducts() {
                   <span>Explore Vigil and subscribe</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
-                <span className="text-xs text-neutral-400">From Rs 5,000 per month</span>
+                <span className="text-xs text-neutral-400">From $21 per month</span>
               </div>
             </div>
 

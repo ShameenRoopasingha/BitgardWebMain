@@ -12,16 +12,16 @@ function CheckoutContent() {
   const isAnnual = searchParams.get('billing') === 'annual';
 
   let planName = 'Starter';
-  let price = isAnnual ? 69000 : 6900;
+  let price = isAnnual ? 210 : 21;
   let vehicleLimit = 'Up to 10 Vehicles';
 
   if (tier === 'professional' || tier === 'pro') {
     planName = 'Professional';
-    price = isAnnual ? 149000 : 14900;
+    price = isAnnual ? 450 : 45;
     vehicleLimit = 'Up to 25 Vehicles';
   } else if (tier === 'enterprise') {
     planName = 'Enterprise';
-    price = isAnnual ? 389000 : 38900;
+    price = isAnnual ? 1170 : 117;
     vehicleLimit = 'Up to 75 Vehicles';
   }
 
@@ -46,9 +46,9 @@ function CheckoutContent() {
       {/* Plan Switcher Pills */}
       <div className="flex gap-2 p-1.5 bg-white/5 border border-white/10 rounded-2xl mb-8">
         {[
-          { id: 'starter', label: 'Starter', price: isAnnual ? 'Rs 69,000/yr' : 'Rs 6,900/mo' },
-          { id: 'professional', label: 'Professional', price: isAnnual ? 'Rs 149,000/yr' : 'Rs 14,900/mo' },
-          { id: 'enterprise', label: 'Enterprise', price: isAnnual ? 'Rs 389,000/yr' : 'Rs 38,900/mo' },
+          { id: 'starter', label: 'Starter', price: isAnnual ? '$210/yr' : '$21/mo' },
+          { id: 'professional', label: 'Professional', price: isAnnual ? '$450/yr' : '$45/mo' },
+          { id: 'enterprise', label: 'Enterprise', price: isAnnual ? '$1,170/yr' : '$117/mo' },
         ].map((p) => {
           const isActive = planName.toLowerCase() === p.id;
           return (
@@ -72,7 +72,7 @@ function CheckoutContent() {
       <DodoCheckout
         planName={planName}
         price={price}
-        currency="LKR"
+        currency="USD"
         billingCycle={isAnnual ? 'ANNUAL' : 'MONTHLY'}
       />
 

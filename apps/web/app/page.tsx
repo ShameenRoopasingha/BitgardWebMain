@@ -35,8 +35,8 @@ export default function Home() {
         "description": "Commercial tour operations and fleet management desktop suite with live GPS telematics and precision invoicing.",
         "offers": {
           "@type": "Offer",
-          "price": "5000",
-          "priceCurrency": "LKR"
+          "price": "21",
+          "priceCurrency": "USD"
         }
       },
       {

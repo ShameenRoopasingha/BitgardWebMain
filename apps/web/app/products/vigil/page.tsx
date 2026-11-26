@@ -134,18 +134,18 @@ const PRICING_TIERS: PricingTier[] = [
     name: "Starter",
     subtitle: "For small operators & independent rental fleets",
     monthly: {
-      priceFormatted: "Rs 6,900",
+      priceFormatted: "$21",
       period: "/mo",
       subtext: "Billed monthly",
     },
     annual: {
-      priceFormatted: "Rs 69,000",
+      priceFormatted: "$210",
       period: "/yr",
-      subtext: "Rs 5,750/mo billed annually",
+      subtext: "$17.50/mo billed annually",
     },
-    setupFeeNote: "Rs 0 self-serve setup (Optional assisted setup: Rs 9,500)",
+    setupFeeNote: "$0 self-serve setup (Optional assisted setup: $29)",
     features: [
-      "Up to 10 Vehicles (+Rs 490/extra vehicle)",
+      "Up to 10 Vehicles (+$1.50/extra vehicle)",
       "1 Office Desktop App (.exe)",
       "Precision Invoicing & Quotations Engine",
       "Customer Directory & Travel History",
@@ -163,18 +163,18 @@ const PRICING_TIERS: PricingTier[] = [
     subtitle: "For growing tour agencies & commercial fleets",
     isPopular: true,
     monthly: {
-      priceFormatted: "Rs 14,900",
+      priceFormatted: "$45",
       period: "/mo",
       subtext: "Billed monthly",
     },
     annual: {
-      priceFormatted: "Rs 149,000",
+      priceFormatted: "$450",
       period: "/yr",
-      subtext: "Rs 12,417/mo billed annually",
+      subtext: "$37.50/mo billed annually",
     },
-    setupFeeNote: "One-time onboarding & driver training: Rs 14,500",
+    setupFeeNote: "One-time onboarding & driver training: $44",
     features: [
-      "Up to 25 Vehicles (+Rs 450/extra vehicle)",
+      "Up to 25 Vehicles (+$1.35/extra vehicle)",
       "Up to 3 Office Desktop Apps (.exe)",
       "Everything in Starter, plus:",
       "Day-by-Day Tour Itinerary & Landmark Routing",
@@ -192,18 +192,18 @@ const PRICING_TIERS: PricingTier[] = [
     name: "Enterprise",
     subtitle: "For multi-branch operators & large fleet companies",
     monthly: {
-      priceFormatted: "Rs 38,900",
+      priceFormatted: "$117",
       period: "/mo",
       subtext: "Billed monthly",
     },
     annual: {
-      priceFormatted: "Rs 389,000",
+      priceFormatted: "$1,170",
       period: "/yr",
-      subtext: "Rs 32,417/mo billed annually",
+      subtext: "$97.50/mo billed annually",
     },
-    setupFeeNote: "One-time multi-PC deployment & setup: Rs 34,500",
+    setupFeeNote: "One-time multi-PC deployment & setup: $104",
     features: [
-      "Up to 75 Vehicles (+Rs 350/extra vehicle)",
+      "Up to 75 Vehicles (+$1.05/extra vehicle)",
       "Up to 10 Multi-Branch Workstations",
       "Everything in Professional, plus:",
       "Multi-Currency Billing (LKR, USD, EUR) & Custom Rates",
@@ -1198,7 +1198,7 @@ export default function VigilProductPage() {
               <div className="leading-relaxed">
                 <span className="text-white font-semibold">Optional Add-On:</span>{" "}
                 24/7 Priority Hotline SLA available on Enterprise for{" "}
-                <span className="text-primary font-semibold">+Rs 15,000/mo</span>. Managing more than 75 vehicles? Contact us for a custom fleet quote.
+                <span className="text-primary font-semibold">+$45/mo</span>. Managing more than 75 vehicles? Contact us for a custom fleet quote.
               </div>
             </div>
             <Link
