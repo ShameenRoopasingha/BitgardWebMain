@@ -161,7 +161,12 @@ export async function POST(request: Request) {
     const billingCycle =
       existingSub?.status === 'LIFETIME'
         ? 'LIFETIME'
-        : mapBillingCycle(data?.metadata?.billing_cycle || data?.metadata?.billingCycle || existingSub?.billingCycle);
+        : mapBillingCycle(
+            data?.metadata?.billing_cycle ||
+              data?.metadata?.billingCycle ||
+              data?.product_id ||
+              existingSub?.billingCycle
+          );
 
     const now = new Date();
     const nextBillingRaw = data?.next_billing_date || data?.expires_at;

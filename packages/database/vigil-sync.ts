@@ -148,14 +148,52 @@ export function generateVigilLicenseKey(): string {
 }
 
 export function mapPlanToTier(input?: string | null): VigilTier {
-  const normalized = (input || "").toLowerCase();
+  const raw = (input || "").trim();
+  const enterpriseIds = [
+    process.env.DODO_PRODUCT_ID_ENTERPRISE,
+    process.env.DODO_PRODUCT_ID_ENTERPRISE_MONTHLY,
+    process.env.DODO_PRODUCT_ID_ENTERPRISE_ANNUAL,
+  ]
+    .map((v) => v?.trim())
+    .filter(Boolean);
+  if (raw && enterpriseIds.includes(raw)) return "ENTERPRISE";
+
+  const proIds = [
+    process.env.DODO_PRODUCT_ID_PROFESSIONAL,
+    process.env.DODO_PRODUCT_ID_PROFESSIONAL_MONTHLY,
+    process.env.DODO_PRODUCT_ID_PROFESSIONAL_ANNUAL,
+  ]
+    .map((v) => v?.trim())
+    .filter(Boolean);
+  if (raw && proIds.includes(raw)) return "PROFESSIONAL";
+
+  const starterIds = [
+    process.env.DODO_PRODUCT_ID_STARTER,
+    process.env.DODO_PRODUCT_ID_STARTER_MONTHLY,
+    process.env.DODO_PRODUCT_ID_STARTER_ANNUAL,
+  ]
+    .map((v) => v?.trim())
+    .filter(Boolean);
+  if (raw && starterIds.includes(raw)) return "STARTER";
+
+  const normalized = raw.toLowerCase();
   if (normalized.includes("ent")) return "ENTERPRISE";
   if (normalized.includes("pro")) return "PROFESSIONAL";
   return "STARTER";
 }
 
 export function mapBillingCycle(input?: string | null): VigilBillingCycle {
-  const normalized = (input || "").toLowerCase();
+  const raw = (input || "").trim();
+  const annualIds = [
+    process.env.DODO_PRODUCT_ID_STARTER_ANNUAL,
+    process.env.DODO_PRODUCT_ID_PROFESSIONAL_ANNUAL,
+    process.env.DODO_PRODUCT_ID_ENTERPRISE_ANNUAL,
+  ]
+    .map((v) => v?.trim())
+    .filter(Boolean);
+  if (raw && annualIds.includes(raw)) return "ANNUAL";
+
+  const normalized = raw.toLowerCase();
   if (normalized.includes("life")) return "LIFETIME";
   if (normalized.includes("ann") || normalized.includes("year")) return "ANNUAL";
   return "MONTHLY";
