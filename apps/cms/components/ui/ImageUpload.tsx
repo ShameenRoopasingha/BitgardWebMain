@@ -2,7 +2,6 @@
 
 import React, { useState, useRef } from "react";
 import { FiUploadCloud, FiTrash2, FiImage } from "react-icons/fi";
-import { getSupabase } from "@/lib/supabase";
 import toast from "react-hot-toast";
 
 interface ImageUploadProps {
@@ -21,31 +20,22 @@ export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
                 return;
             }
 
-            const supabase = getSupabase();
-            if (!supabase) {
-                toast.error("Image uploads are not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.");
-                return;
-            }
-
             setIsUploading(true);
             const file = e.target.files[0];
-            const fileExt = file.name.split(".").pop();
-            const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-            const filePath = `${fileName}`;
+            const formData = new FormData();
+            formData.append("file", file);
 
-            const { error: uploadError } = await supabase.storage
-                .from("bitgard-images")
-                .upload(filePath, file);
+            const res = await fetch("/api/upload", {
+                method: "POST",
+                body: formData,
+            });
+            const data = await res.json();
 
-            if (uploadError) {
-                throw uploadError;
+            if (!res.ok || !data?.url) {
+                throw new Error(data?.error || "Failed to upload image.");
             }
 
-            const { data: publicUrlData } = supabase.storage
-                .from("bitgard-images")
-                .getPublicUrl(filePath);
-
-            onChange(publicUrlData.publicUrl);
+            onChange(data.url);
             toast.success("Image uploaded successfully!");
         } catch (error: any) {
             console.error(error);

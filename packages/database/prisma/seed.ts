@@ -1,9 +1,38 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('Seeding database with default Products and Services...');
+  console.log('Seeding database with default Products, Services, and optional Super Admin...');
+
+  const adminEmail = process.env.CMS_ADMIN_EMAIL?.trim().toLowerCase();
+  const adminPassword = process.env.CMS_ADMIN_PASSWORD?.trim();
+  const adminName = process.env.CMS_ADMIN_NAME?.trim() || 'Bitgard Super Admin';
+
+  if (adminEmail && adminPassword) {
+    if (adminPassword.length < 8) {
+      throw new Error('CMS_ADMIN_PASSWORD must be at least 8 characters long.');
+    }
+    const passwordHash = await bcrypt.hash(adminPassword, 12);
+    await prisma.admin.upsert({
+      where: { email: adminEmail },
+      update: {
+        name: adminName,
+        passwordHash,
+        role: 'SUPER_ADMIN',
+      },
+      create: {
+        email: adminEmail,
+        name: adminName,
+        passwordHash,
+        role: 'SUPER_ADMIN',
+      },
+    });
+    console.log(`✅ CMS SUPER_ADMIN seeded for ${adminEmail}`);
+  } else {
+    console.log('ℹ️  Skipping CMS Admin seed (set CMS_ADMIN_EMAIL and CMS_ADMIN_PASSWORD to seed SUPER_ADMIN).');
+  }
 
   // Remove the old 'Cloud Migration' service since we don't offer it
   try {

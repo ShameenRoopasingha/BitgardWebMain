@@ -11,19 +11,90 @@ datasource db {
 
 // ==================== AUTH ====================
 model Admin {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  name         String
-  role         Role     @default(EDITOR)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id              String              @id @default(cuid())
+  email           String              @unique
+  passwordHash    String
+  name            String
+  role            Role                @default(EDITOR)
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  grantedLicenses VigilSubscription[]
 }
 
 enum Role {
   SUPER_ADMIN
   ADMIN
   EDITOR
+}
+
+// ==================== VIGIL COMMERCIAL LICENSING ====================
+enum SubscriptionTier {
+  STARTER
+  PROFESSIONAL
+  ENTERPRISE
+}
+
+enum BillingCycle {
+  MONTHLY
+  ANNUAL
+  LIFETIME
+}
+
+enum SubscriptionStatus {
+  TRIALING
+  ACTIVE
+  LIFETIME
+  PAST_DUE
+  EXPIRED
+  CANCELLED
+  REVOKED
+}
+
+enum LicenseSource {
+  DODO_PAYMENTS
+  MANUAL_ADMIN
+}
+
+model VigilSubscription {
+  id                 String             @id @default(cuid())
+  email              String             @unique
+  companyName        String
+  tier               SubscriptionTier   @default(STARTER)
+  billingCycle       BillingCycle       @default(MONTHLY)
+  status             SubscriptionStatus @default(ACTIVE)
+  source             LicenseSource      @default(DODO_PAYMENTS)
+  dodoCustomerId     String?
+  dodoSubscriptionId String?            @unique
+  dodoLastPaymentId  String?
+  licenseKey         String             @unique
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+  grantedByAdminId   String?
+  grantedByAdmin     Admin?             @relation(fields: [grantedByAdminId], references: [id], onDelete: SetNull)
+  grantNote          String?
+  lastSyncedAt       DateTime?
+  lastSyncStatus     String?            @default("PENDING") // PENDING | SYNCED | FAILED
+  lastSyncError      String?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  events VigilSubscriptionEvent[]
+
+  @@index([status])
+  @@index([tier])
+}
+
+model VigilSubscriptionEvent {
+  id              String            @id @default(cuid())
+  subscriptionId  String
+  eventType       String
+  externalEventId String?           @unique
+  actorEmail      String?
+  payload         Json?
+  createdAt       DateTime          @default(now())
+  subscription    VigilSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@index([subscriptionId, createdAt])
 }
 
 // ==================== HERO SECTION ====================

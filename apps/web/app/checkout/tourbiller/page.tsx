@@ -69,7 +69,12 @@ function CheckoutContent() {
       </div>
 
       {/* Dodo Payments Component */}
-      <DodoCheckout planName={planName} price={price} currency="LKR" />
+      <DodoCheckout
+        planName={planName}
+        price={price}
+        currency="LKR"
+        billingCycle={isAnnual ? 'ANNUAL' : 'MONTHLY'}
+      />
 
       {/* What happens next */}
       <div className="mt-8 p-6 rounded-2xl bg-white/[0.02] border border-white/5">

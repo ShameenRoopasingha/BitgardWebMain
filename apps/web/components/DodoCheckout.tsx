@@ -7,13 +7,20 @@ interface DodoCheckoutProps {
   planName: string;
   price: number;
   currency?: string;
+  billingCycle?: 'MONTHLY' | 'ANNUAL';
 }
 
-export function DodoCheckout({ planName, price, currency = 'LKR' }: DodoCheckoutProps) {
+export function DodoCheckout({
+  planName,
+  price,
+  currency = 'LKR',
+  billingCycle = 'MONTHLY',
+}: DodoCheckoutProps) {
   const [loading, setLoading] = useState(false);
   const [companyName, setCompanyName] = useState('');
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const isAnnual = billingCycle === 'ANNUAL';
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,8 +33,7 @@ export function DodoCheckout({ planName, price, currency = 'LKR' }: DodoCheckout
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           planName,
-          price,
-          currency,
+          billingCycle,
           email,
           companyName,
         }),
@@ -69,10 +75,14 @@ export function DodoCheckout({ planName, price, currency = 'LKR' }: DodoCheckout
           </div>
         </div>
         <div className="text-right">
-          <div className="text-xs text-neutral-400">Monthly Plan</div>
+          <div className="text-xs text-neutral-400">
+            {isAnnual ? 'Annual Plan' : 'Monthly Plan'}
+          </div>
           <div className="text-white font-bold text-lg">
             {currency} {price.toLocaleString()}
-            <span className="text-neutral-500 text-xs font-normal">/mo</span>
+            <span className="text-neutral-500 text-xs font-normal">
+              {isAnnual ? '/yr' : '/mo'}
+            </span>
           </div>
         </div>
       </div>
@@ -128,7 +138,11 @@ export function DodoCheckout({ planName, price, currency = 'LKR' }: DodoCheckout
           </div>
           <div className="flex items-center gap-2 text-xs text-neutral-300">
             <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
-            <span>Recurring monthly billing, cancel anytime</span>
+            <span>
+              {isAnnual
+                ? 'Recurring annual billing (2 months free), cancel anytime'
+                : 'Recurring monthly billing, cancel anytime'}
+            </span>
           </div>
         </div>
 
@@ -163,6 +177,3 @@ export function DodoCheckout({ planName, price, currency = 'LKR' }: DodoCheckout
     </div>
   );
 }
-
-// Re-export as PayHereCheckout for backward compatibility with any other callers
-export const PayHereCheckout = DodoCheckout;

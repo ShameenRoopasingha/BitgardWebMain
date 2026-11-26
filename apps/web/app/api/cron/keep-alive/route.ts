@@ -1,30 +1,23 @@
-/**
- * =============================================================================
- * DATABASE KEEP-ALIVE CRON JOB
- * =============================================================================
- *
- * This endpoint is automatically pinged by Vercel Cron once a day.
- * It executes a lightweight database query to keep the database connection
- * active, preventing the Supabase free tier project from pausing.
- */
-
 import { NextResponse } from "next/server";
-import { prisma } from "@bitgard/database";
+import { prisma, timingSafeEqualStrings } from "@bitgard/database";
 
 export async function GET(request: Request) {
-    // Basic security check: verify the CRON_SECRET matches
-    // Note: Vercel sends the CRON_SECRET as a Bearer token in the Authorization header.
-    const authHeader = request.headers.get("authorization");
-    const secret = process.env.CRON_SECRET;
+    const secret = process.env.CRON_SECRET?.trim();
+    if (!secret) {
+        return NextResponse.json(
+            { error: "CRON_SECRET is not configured" },
+            { status: 500 }
+        );
+    }
 
-    if (secret && authHeader !== `Bearer ${secret}`) {
+    const authHeader = request.headers.get("authorization") || "";
+    const provided = authHeader.startsWith("Bearer ") ? authHeader.slice(7).trim() : "";
+    if (!provided || !timingSafeEqualStrings(provided, secret)) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     try {
-        // Execute a fast, simple query to wake up the database
         await prisma.$queryRaw`SELECT 1`;
-
         return NextResponse.json({
             success: true,
             message: "Database pinged successfully.",

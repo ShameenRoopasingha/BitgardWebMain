@@ -10,6 +10,7 @@
 "use server";
 
 import { prisma } from "./db";
+import { requireCmsAdmin } from "./auth";
 import { revalidatePath } from "next/cache";
 
 
@@ -28,12 +29,14 @@ interface ServiceInput {
 }
 
 export async function getServices() {
+    await requireCmsAdmin();
     return prisma.service.findMany({
         orderBy: { order: "asc" },
     });
 }
 
 export async function createService(data: ServiceInput) {
+    await requireCmsAdmin();
     const service = await prisma.service.create({
         data: {
             name: data.name,
@@ -50,6 +53,7 @@ export async function createService(data: ServiceInput) {
 }
 
 export async function updateService(id: string, data: Partial<ServiceInput>) {
+    await requireCmsAdmin();
     const service = await prisma.service.update({
         where: { id },
         data,
@@ -59,6 +63,7 @@ export async function updateService(id: string, data: Partial<ServiceInput>) {
 }
 
 export async function deleteService(id: string) {
+    await requireCmsAdmin();
     await prisma.service.delete({
         where: { id },
     });
@@ -66,6 +71,7 @@ export async function deleteService(id: string) {
 }
 
 export async function toggleServiceStatus(id: string) {
+    await requireCmsAdmin();
     const service = await prisma.service.findUnique({ where: { id } });
     if (!service) throw new Error("Service not found");
 
@@ -94,12 +100,14 @@ interface TeamMemberInput {
 }
 
 export async function getTeamMembers() {
+    await requireCmsAdmin();
     return prisma.teamMember.findMany({
         orderBy: { order: "asc" },
     });
 }
 
 export async function createTeamMember(data: TeamMemberInput) {
+    await requireCmsAdmin();
     const member = await prisma.teamMember.create({
         data: {
             name: data.name,
@@ -118,6 +126,7 @@ export async function createTeamMember(data: TeamMemberInput) {
 }
 
 export async function updateTeamMember(id: string, data: Partial<TeamMemberInput>) {
+    await requireCmsAdmin();
     const member = await prisma.teamMember.update({
         where: { id },
         data,
@@ -127,6 +136,7 @@ export async function updateTeamMember(id: string, data: Partial<TeamMemberInput
 }
 
 export async function deleteTeamMember(id: string) {
+    await requireCmsAdmin();
     await prisma.teamMember.delete({
         where: { id },
     });
@@ -134,6 +144,7 @@ export async function deleteTeamMember(id: string) {
 }
 
 export async function toggleTeamMemberStatus(id: string) {
+    await requireCmsAdmin();
     const member = await prisma.teamMember.findUnique({ where: { id } });
     if (!member) throw new Error("Team member not found");
 
@@ -160,12 +171,14 @@ interface TestimonialInput {
 }
 
 export async function getTestimonials() {
+    await requireCmsAdmin();
     return prisma.testimonial.findMany({
         orderBy: { createdAt: "desc" },
     });
 }
 
 export async function createTestimonial(data: TestimonialInput) {
+    await requireCmsAdmin();
     const testimonial = await prisma.testimonial.create({
         data: {
             clientName: data.clientName,
@@ -182,6 +195,7 @@ export async function createTestimonial(data: TestimonialInput) {
 }
 
 export async function updateTestimonial(id: string, data: Partial<TestimonialInput>) {
+    await requireCmsAdmin();
     const testimonial = await prisma.testimonial.update({
         where: { id },
         data,
@@ -191,6 +205,7 @@ export async function updateTestimonial(id: string, data: Partial<TestimonialInp
 }
 
 export async function deleteTestimonial(id: string) {
+    await requireCmsAdmin();
     await prisma.testimonial.delete({
         where: { id },
     });
@@ -198,6 +213,7 @@ export async function deleteTestimonial(id: string) {
 }
 
 export async function toggleTestimonialStatus(id: string) {
+    await requireCmsAdmin();
     const testimonial = await prisma.testimonial.findUnique({ where: { id } });
     if (!testimonial) throw new Error("Testimonial not found");
 
@@ -230,12 +246,14 @@ interface ProductInput {
 }
 
 export async function getProducts() {
+    await requireCmsAdmin();
     return prisma.product.findMany({
         orderBy: { order: "asc" },
     });
 }
 
 export async function createProduct(data: ProductInput) {
+    await requireCmsAdmin();
     const product = await prisma.product.create({
         data: {
             name: data.name,
@@ -256,6 +274,7 @@ export async function createProduct(data: ProductInput) {
 }
 
 export async function updateProduct(id: string, data: Partial<ProductInput>) {
+    await requireCmsAdmin();
     const product = await prisma.product.update({
         where: { id },
         data,
@@ -265,6 +284,7 @@ export async function updateProduct(id: string, data: Partial<ProductInput>) {
 }
 
 export async function deleteProduct(id: string) {
+    await requireCmsAdmin();
     await prisma.product.delete({
         where: { id },
     });
@@ -272,6 +292,7 @@ export async function deleteProduct(id: string) {
 }
 
 export async function toggleProductStatus(id: string) {
+    await requireCmsAdmin();
     const product = await prisma.product.findUnique({ where: { id } });
     if (!product) throw new Error("Product not found");
 
@@ -288,12 +309,14 @@ export async function toggleProductStatus(id: string) {
 // =============================================================================
 
 export async function getContactSubmissions() {
+    await requireCmsAdmin();
     return prisma.contactSubmission.findMany({
         orderBy: { createdAt: "desc" },
     });
 }
 
 export async function markContactAsRead(id: string) {
+    await requireCmsAdmin();
     const submission = await prisma.contactSubmission.update({
         where: { id },
         data: { isRead: true },
@@ -303,6 +326,7 @@ export async function markContactAsRead(id: string) {
 }
 
 export async function deleteContactSubmission(id: string) {
+    await requireCmsAdmin();
     await prisma.contactSubmission.delete({
         where: { id },
     });
@@ -325,12 +349,14 @@ interface BlogPostInput {
 }
 
 export async function getBlogPosts() {
+    await requireCmsAdmin();
     return prisma.blogPost.findMany({
         orderBy: { createdAt: "desc" },
     });
 }
 
 export async function createBlogPost(data: BlogPostInput) {
+    await requireCmsAdmin();
     const post = await prisma.blogPost.create({
         data: {
             title: data.title,
@@ -349,6 +375,7 @@ export async function createBlogPost(data: BlogPostInput) {
 }
 
 export async function updateBlogPost(id: string, data: Partial<BlogPostInput>) {
+    await requireCmsAdmin();
     const post = await prisma.blogPost.update({
         where: { id },
         data: {
@@ -363,6 +390,7 @@ export async function updateBlogPost(id: string, data: Partial<BlogPostInput>) {
 }
 
 export async function deleteBlogPost(id: string) {
+    await requireCmsAdmin();
     await prisma.blogPost.delete({
         where: { id },
     });
@@ -370,6 +398,7 @@ export async function deleteBlogPost(id: string) {
 }
 
 export async function toggleBlogPostPublish(id: string) {
+    await requireCmsAdmin();
     const post = await prisma.blogPost.findUnique({ where: { id } });
     if (!post) throw new Error("Blog post not found");
 
@@ -389,6 +418,7 @@ export async function toggleBlogPostPublish(id: string) {
 // =============================================================================
 
 export async function getDashboardStats() {
+    await requireCmsAdmin();
     const [
         productCount,
         serviceCount,
@@ -422,6 +452,7 @@ export async function getDashboardStats() {
 }
 
 export async function getRecentActivity() {
+    await requireCmsAdmin();
     const [recentContacts, recentProducts, recentTeam, recentBlog] = await Promise.all([
         prisma.contactSubmission.findMany({ orderBy: { createdAt: "desc" }, take: 2, select: { id: true, name: true, subject: true, createdAt: true } }),
         prisma.product.findMany({ orderBy: { updatedAt: "desc" }, take: 2, select: { id: true, name: true, updatedAt: true } }),
@@ -447,6 +478,7 @@ export async function getRecentActivity() {
 // =============================================================================
 
 export async function getSiteSettings() {
+    await requireCmsAdmin();
     let settings = await prisma.siteSettings.findUnique({
         where: { id: "main" },
     });
@@ -475,6 +507,7 @@ export async function upsertSiteSettings(data: {
     logo?: string | null;
     logoDark?: string | null;
 }) {
+    await requireCmsAdmin();
     const settings = await prisma.siteSettings.upsert({
         where: { id: "main" },
         update: data,

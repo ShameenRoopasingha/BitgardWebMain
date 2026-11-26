@@ -55,17 +55,21 @@ export default function LoginPage() {
         setIsLoading(true);
 
         try {
-            // TODO: Implement actual authentication with Supabase
-            // For now, simulate login
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+            const res = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: email.trim().toLowerCase(), password }),
+            });
 
-            // Demo credentials check
-            if (email === "admin@bitgard.com" && password === "admin123") {
-                toast.success("Login successful!");
-                router.push("/dashboard");
-            } else {
-                toast.error("Invalid credentials");
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                toast.error(data.error || "Invalid credentials");
+                return;
             }
+
+            toast.success("Login successful!");
+            router.push("/dashboard");
+            router.refresh();
         } catch (error) {
             toast.error("An error occurred. Please try again.");
             console.error("Login error:", error);
@@ -201,14 +205,11 @@ export default function LoginPage() {
                         </button>
                     </form>
 
-                    {/* Demo Credentials Note */}
+                    {/* Security Notice */}
                     <div className="mt-6 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
-                        <p className="text-xs text-gray-500 text-center">
-                            <strong className="text-gray-400">Demo Credentials:</strong>
-                            <br />
-                            Email: admin@bitgard.com
-                            <br />
-                            Password: admin123
+                        <p className="text-xs text-gray-400 text-center">
+                            Protected by Bitgard Admin session authentication. Contact a{" "}
+                            <strong className="text-gray-300">SUPER_ADMIN</strong> for access.
                         </p>
                     </div>
                 </div>

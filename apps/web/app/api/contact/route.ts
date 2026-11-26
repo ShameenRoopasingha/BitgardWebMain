@@ -1,34 +1,34 @@
-/**
- * =============================================================================
- * CONTACT FORM API ROUTE
- * =============================================================================
- * 
- * Handles contact form submissions.
- * Validates form data and saves to database.
- */
-
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@bitgard/database";
+import { checkDistributedRateLimit, prisma } from "@bitgard/database";
 import { z } from "zod";
 
-// Validation schema
 const contactSchema = z.object({
-    name: z.string().min(2, "Name must be at least 2 characters"),
-    email: z.string().email("Invalid email address"),
-    phone: z.string().optional(),
-    company: z.string().optional(),
-    subject: z.string().min(5, "Subject must be at least 5 characters"),
-    message: z.string().min(10, "Message must be at least 10 characters"),
+    name: z.string().trim().min(2, "Name must be at least 2 characters").max(120),
+    email: z.string().trim().email("Invalid email address").max(254),
+    phone: z.string().trim().max(40).optional(),
+    company: z.string().trim().max(120).optional(),
+    subject: z.string().trim().min(5, "Subject must be at least 5 characters").max(200),
+    message: z.string().trim().min(10, "Message must be at least 10 characters").max(4000),
 });
 
 export async function POST(request: NextRequest) {
     try {
-        const body = await request.json();
+        const ip =
+            request.headers.get("x-real-ip")?.trim() ||
+            request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+            "unknown";
 
-        // Validate input
+        const { limited } = await checkDistributedRateLimit(`contact:${ip}`, 5, 15 * 60 * 1000);
+        if (limited) {
+            return NextResponse.json(
+                { success: false, error: "Too many submissions. Please try again later." },
+                { status: 429 }
+            );
+        }
+
+        const body = await request.json();
         const validatedData = contactSchema.parse(body);
 
-        // Save to database
         const submission = await prisma.contactSubmission.create({
             data: {
                 name: validatedData.name,

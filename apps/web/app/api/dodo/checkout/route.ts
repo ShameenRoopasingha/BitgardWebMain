@@ -1,39 +1,72 @@
 import { NextResponse } from 'next/server';
+import { z } from 'zod';
+import { mapBillingCycle, mapPlanToTier, type VigilBillingCycle, type VigilTier } from '@bitgard/database';
+
+const checkoutSchema = z.object({
+  planName: z.string().trim().min(1).max(40),
+  billingCycle: z.enum(['MONTHLY', 'ANNUAL']).optional().default('MONTHLY'),
+  email: z.string().trim().email().max(254),
+  companyName: z.string().trim().min(2).max(120),
+});
+
+function resolveDodoProductId(tier: VigilTier, billingCycle: VigilBillingCycle): string {
+  const isAnnual = billingCycle === 'ANNUAL';
+  if (tier === 'ENTERPRISE') {
+    return (
+      (isAnnual ? process.env.DODO_PRODUCT_ID_ENTERPRISE_ANNUAL : process.env.DODO_PRODUCT_ID_ENTERPRISE_MONTHLY) ||
+      process.env.DODO_PRODUCT_ID_ENTERPRISE ||
+      'pdt_vigil_enterprise'
+    );
+  }
+  if (tier === 'PROFESSIONAL') {
+    return (
+      (isAnnual ? process.env.DODO_PRODUCT_ID_PROFESSIONAL_ANNUAL : process.env.DODO_PRODUCT_ID_PROFESSIONAL_MONTHLY) ||
+      process.env.DODO_PRODUCT_ID_PROFESSIONAL ||
+      'pdt_vigil_professional'
+    );
+  }
+  return (
+    (isAnnual ? process.env.DODO_PRODUCT_ID_STARTER_ANNUAL : process.env.DODO_PRODUCT_ID_STARTER_MONTHLY) ||
+    process.env.DODO_PRODUCT_ID_STARTER ||
+    'pdt_vigil_starter'
+  );
+}
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { planName, price, email, companyName } = body;
-
-    const apiKey = process.env.DODO_PAYMENTS_API_KEY;
-    const environment = process.env.DODO_PAYMENTS_ENVIRONMENT || 'test_mode';
-    const isLive = environment === 'live_mode';
-
-    const baseUrl = isLive
-      ? 'https://live.dodopayments.com'
-      : 'https://test.dodopayments.com';
-
-    // Map plan to product ID from env or fallback product identifiers
-    let productId = process.env.DODO_PRODUCT_ID_STARTER || 'pdt_vigil_starter';
-    const normalizedPlan = (planName || '').toLowerCase();
-    if (normalizedPlan.includes('pro')) {
-      productId = process.env.DODO_PRODUCT_ID_PROFESSIONAL || 'pdt_vigil_professional';
-    } else if (normalizedPlan.includes('ent')) {
-      productId = process.env.DODO_PRODUCT_ID_ENTERPRISE || 'pdt_vigil_enterprise';
+    const rawBody = await request.json();
+    const parsed = checkoutSchema.safeParse(rawBody);
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: parsed.error.issues[0]?.message || 'Invalid checkout payload' },
+        { status: 400 }
+      );
     }
 
-    // Determine the origin URL for return_url
-    const origin =
+    const tier = mapPlanToTier(parsed.data.planName);
+    const billingCycle = mapBillingCycle(parsed.data.billingCycle);
+    const email = parsed.data.email.toLowerCase();
+    const companyName = parsed.data.companyName;
+
+    const apiKey = process.env.DODO_PAYMENTS_API_KEY?.trim();
+    const hasConfiguredApiKey = Boolean(apiKey && apiKey !== 'test_your_dodo_api_key_here');
+    const environment = process.env.DODO_PAYMENTS_ENVIRONMENT || 'test_mode';
+    const baseUrl =
+      environment === 'live_mode'
+        ? 'https://live.dodopayments.com'
+        : 'https://test.dodopayments.com';
+
+    const productId = resolveDodoProductId(tier, billingCycle);
+    const canonicalOrigin =
+      process.env.NEXT_PUBLIC_WEB_URL?.trim() ||
       request.headers.get('origin') ||
-      process.env.NEXT_PUBLIC_WEB_URL ||
       'http://localhost:3000';
 
-    const returnUrl = `${origin}/products/vigil?status=success&plan=${encodeURIComponent(
-      planName || 'Starter'
-    )}&session_id={CHECKOUT_SESSION_ID}`;
+    const returnUrl = `${canonicalOrigin.replace(/\/+$/, '')}/products/vigil?status=success&plan=${encodeURIComponent(
+      tier
+    )}&billing=${encodeURIComponent(billingCycle.toLowerCase())}&session_id={CHECKOUT_SESSION_ID}`;
 
-    // If an API key is provided and not a placeholder, call Dodo Payments API
-    if (apiKey && apiKey !== 'test_your_dodo_api_key_here') {
+    if (hasConfiguredApiKey && apiKey) {
       const dodoRes = await fetch(`${baseUrl}/checkouts`, {
         method: 'POST',
         headers: {
@@ -41,37 +74,25 @@ export async function POST(request: Request) {
           Authorization: `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
-          product_cart: [
-            {
-              product_id: productId,
-              quantity: 1,
-            },
-          ],
-          customer: {
-            email: email,
-            name: companyName,
-          },
-          billing_address: {
-            country: 'LK',
-          },
+          product_cart: [{ product_id: productId, quantity: 1 }],
+          customer: { email, name: companyName },
+          billing_address: { country: 'LK' },
           return_url: returnUrl,
           metadata: {
             company_name: companyName,
-            plan: planName,
+            plan: tier,
+            billing_cycle: billingCycle,
             software: 'Vigil',
           },
         }),
+        signal: AbortSignal.timeout(15000),
       });
 
       if (!dodoRes.ok) {
         const errorData = await dodoRes.json().catch(() => ({}));
         console.error('Dodo Payments Checkout Error:', errorData);
         return NextResponse.json(
-          {
-            error:
-              errorData.message ||
-              `Dodo Payments error: ${dodoRes.statusText}`,
-          },
+          { error: errorData.message || `Dodo Payments error: ${dodoRes.statusText}` },
           { status: dodoRes.status }
         );
       }
@@ -83,20 +104,23 @@ export async function POST(request: Request) {
       });
     }
 
-    // Development / Sandbox Fallback when API key is not yet set
-    // Redirects directly to the success page simulating a completed checkout
-    console.warn(
-      'DODO_PAYMENTS_API_KEY is not set or using placeholder. Simulating Dodo Payments redirect.'
-    );
+    if (process.env.NODE_ENV === 'production') {
+      return NextResponse.json(
+        { error: 'Payment gateway is not configured in production.' },
+        { status: 503 }
+      );
+    }
+
+    console.warn('DODO_PAYMENTS_API_KEY is not configured. Returning sandbox checkout redirect.');
     return NextResponse.json({
       checkoutUrl: returnUrl.replace('{CHECKOUT_SESSION_ID}', `dodo_test_${Date.now()}`),
       sessionId: `dodo_mock_${Date.now()}`,
       isMock: true,
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Checkout error:', err);
     return NextResponse.json(
-      { error: err.message || 'Internal server error' },
+      { error: err instanceof Error ? err.message : 'Internal server error' },
       { status: 500 }
     );
   }
