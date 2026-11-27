@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import {
+  checkDistributedRateLimit,
   computePeriodEnd,
   generateVigilLicenseKey,
   mapBillingCycle,
@@ -11,6 +12,8 @@ import {
   type VigilSubscriptionStatus,
   type VigilTier,
 } from '@bitgard/database';
+
+export const dynamic = 'force-dynamic';
 
 const DEFAULT_EXE_URL =
   'https://zrlsaiygvlgaizedpbdr.supabase.co/storage/v1/object/public/bitgard-releases/vigil/Vigil-Setup-v0.1.0-x64.exe';
@@ -70,6 +73,18 @@ interface DodoPaymentDetailResponse {
 
 export async function GET(request: Request) {
   try {
+    const clientIp =
+      request.headers.get('x-real-ip')?.trim() ||
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      'unknown';
+    const rl = await checkDistributedRateLimit(`dodo-session:${clientIp}`, 30, 15 * 60 * 1000);
+    if (rl.limited) {
+      return NextResponse.json(
+        { verified: false, error: 'Too many verification requests. Please try again shortly.' },
+        { status: 429, headers: { 'Cache-Control': 'no-store' } }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const sessionId = searchParams.get('session_id')?.trim() || '';
     const planParam = searchParams.get('plan')?.trim() || '';
@@ -333,24 +348,27 @@ export async function GET(request: Request) {
       }
     }
 
-    return NextResponse.json({
-      verified: true,
-      paymentStatus: 'succeeded',
-      email: subscription.email,
-      companyName: subscription.companyName,
-      contactName: subscription.contactName,
-      tier: subscription.tier,
-      billingCycle: subscription.billingCycle,
-      licenseKey: subscription.licenseKey,
-      currentPeriodEnd: subscription.currentPeriodEnd?.toISOString() ?? null,
-      setupUrl,
-      portalLoginUrl: `${vigilBaseUrl}/login`,
-      forgotPasswordUrl: `${vigilBaseUrl}/forgot-password`,
-      downloadUrls: {
-        windowsExe: windowsExeUrl,
-        windowsMsi: windowsMsiUrl,
+    return NextResponse.json(
+      {
+        verified: true,
+        paymentStatus: 'succeeded',
+        email: subscription.email,
+        companyName: subscription.companyName,
+        contactName: subscription.contactName,
+        tier: subscription.tier,
+        billingCycle: subscription.billingCycle,
+        licenseKey: subscription.licenseKey,
+        currentPeriodEnd: subscription.currentPeriodEnd?.toISOString() ?? null,
+        setupUrl,
+        portalLoginUrl: `${vigilBaseUrl}/login`,
+        forgotPasswordUrl: `${vigilBaseUrl}/forgot-password`,
+        downloadUrls: {
+          windowsExe: windowsExeUrl,
+          windowsMsi: windowsMsiUrl,
+        },
       },
-    });
+      { headers: { 'Cache-Control': 'no-store' } }
+    );
   } catch (error) {
     console.error('Dodo session verification error:', error);
     return NextResponse.json(
