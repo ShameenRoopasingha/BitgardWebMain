@@ -17,6 +17,10 @@ export interface VigilSyncPayload {
   eventType: string;
   email: string;
   companyName: string;
+  contactName?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  country?: string | null;
   tier: VigilTier;
   billingCycle: VigilBillingCycle;
   status: VigilSubscriptionStatus;
@@ -34,6 +38,9 @@ export interface VigilSyncResult {
   synced: boolean;
   status: "SYNCED" | "FAILED" | "PENDING";
   deliveryId: string;
+  companyId?: string;
+  createdTenant?: boolean;
+  setupUrl?: string | null;
   error?: string;
 }
 
@@ -336,10 +343,19 @@ export async function pushSubscriptionSyncToVigil(
       };
     }
 
+    const data = (await response.json().catch(() => ({}))) as {
+      companyId?: string;
+      createdTenant?: boolean;
+      setupUrl?: string | null;
+    };
+
     return {
       synced: true,
       status: "SYNCED",
       deliveryId: payload.deliveryId,
+      companyId: data.companyId,
+      createdTenant: data.createdTenant,
+      setupUrl: data.setupUrl ?? null,
     };
   } catch (error) {
     const message = error instanceof Error ? error.message : "Network error during Vigil sync";

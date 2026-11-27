@@ -7,6 +7,10 @@ const checkoutSchema = z.object({
   billingCycle: z.enum(['MONTHLY', 'ANNUAL']).optional().default('MONTHLY'),
   email: z.string().trim().email().max(254),
   companyName: z.string().trim().min(2).max(120),
+  contactName: z.string().trim().max(120).optional().default(''),
+  phone: z.string().trim().max(40).optional().default(''),
+  address: z.string().trim().max(240).optional().default(''),
+  country: z.string().trim().min(2).max(2).optional().default('LK'),
 });
 
 function resolveDodoProductId(tier: VigilTier, billingCycle: VigilBillingCycle): string {
@@ -56,6 +60,10 @@ export async function POST(request: Request) {
     const billingCycle = mapBillingCycle(parsed.data.billingCycle);
     const email = parsed.data.email.toLowerCase();
     const companyName = parsed.data.companyName;
+    const contactName = parsed.data.contactName || '';
+    const phone = parsed.data.phone || '';
+    const address = parsed.data.address || '';
+    const country = (parsed.data.country || 'LK').toUpperCase();
 
     const apiKey = process.env.DODO_PAYMENTS_API_KEY?.trim();
     const hasConfiguredApiKey = Boolean(apiKey && apiKey !== 'test_your_dodo_api_key_here');
@@ -84,11 +92,15 @@ export async function POST(request: Request) {
         },
         body: JSON.stringify({
           product_cart: [{ product_id: productId, quantity: 1 }],
-          customer: { email, name: companyName },
-          billing_address: { country: 'LK' },
+          customer: { email, name: contactName || companyName },
+          billing_address: { country },
           return_url: returnUrl,
           metadata: {
             company_name: companyName,
+            contact_name: contactName,
+            phone,
+            address,
+            country,
             plan: tier,
             billing_cycle: billingCycle,
             software: 'Vigil',

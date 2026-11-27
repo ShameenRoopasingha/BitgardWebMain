@@ -28,10 +28,23 @@ interface DodoWebhookPayload {
       customer_id?: string;
       email?: string;
       name?: string;
+      phone_number?: string;
+    };
+    billing?: {
+      street?: string;
+      city?: string;
+      state?: string;
+      zipcode?: string;
+      country?: string;
     };
     metadata?: {
       company_name?: string;
       companyName?: string;
+      contact_name?: string;
+      contactName?: string;
+      phone?: string;
+      address?: string;
+      country?: string;
       plan?: string;
       billing_cycle?: string;
       billingCycle?: string;
@@ -136,6 +149,37 @@ export async function POST(request: Request) {
       data?.customer?.name?.trim() ||
       existingSub?.companyName ||
       '';
+    const contactName =
+      data?.metadata?.contact_name?.trim() ||
+      data?.metadata?.contactName?.trim() ||
+      data?.customer?.name?.trim() ||
+      existingSub?.contactName ||
+      null;
+    const phone =
+      data?.metadata?.phone?.trim() ||
+      data?.customer?.phone_number?.trim() ||
+      existingSub?.phone ||
+      null;
+    const billingFormatted = [
+      data?.billing?.street,
+      data?.billing?.city,
+      data?.billing?.state,
+      data?.billing?.zipcode,
+    ]
+      .filter(Boolean)
+      .join(', ');
+    const address =
+      data?.metadata?.address?.trim() ||
+      (billingFormatted ? billingFormatted : null) ||
+      existingSub?.address ||
+      null;
+    const country =
+      (
+        data?.metadata?.country?.trim() ||
+        data?.billing?.country?.trim() ||
+        existingSub?.country ||
+        'LK'
+      ).toUpperCase();
 
     if (!email || !companyName) {
       return NextResponse.json(
@@ -185,6 +229,10 @@ export async function POST(request: Request) {
       where: { email },
       update: {
         companyName,
+        contactName,
+        phone,
+        address,
+        country,
         tier,
         billingCycle,
         status: effectiveStatus,
@@ -197,6 +245,10 @@ export async function POST(request: Request) {
       create: {
         email,
         companyName,
+        contactName,
+        phone,
+        address,
+        country,
         tier,
         billingCycle,
         status: effectiveStatus,
@@ -226,6 +278,10 @@ export async function POST(request: Request) {
       eventType,
       email: subscription.email,
       companyName: subscription.companyName,
+      contactName: subscription.contactName,
+      phone: subscription.phone,
+      address: subscription.address,
+      country: subscription.country,
       tier: subscription.tier,
       billingCycle: subscription.billingCycle,
       status: subscription.status,

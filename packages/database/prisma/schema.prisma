@@ -59,6 +59,10 @@ model VigilSubscription {
   id                 String             @id @default(cuid())
   email              String             @unique
   companyName        String
+  contactName        String?
+  phone              String?
+  address            String?
+  country            String?
   tier               SubscriptionTier   @default(STARTER)
   billingCycle       BillingCycle       @default(MONTHLY)
   status             SubscriptionStatus @default(ACTIVE)

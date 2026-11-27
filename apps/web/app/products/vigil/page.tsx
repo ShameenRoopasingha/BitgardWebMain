@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, Suspense } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -30,50 +30,206 @@ import {
   Search,
   RefreshCw,
   Compass,
+  ExternalLink,
+  Loader2,
 } from "lucide-react";
+
+const VIGIL_EXE_URL =
+  process.env.NEXT_PUBLIC_VIGIL_WINDOWS_EXE_URL ||
+  "https://zrlsaiygvlgaizedpbdr.supabase.co/storage/v1/object/public/bitgard-releases/vigil/Vigil-Setup-v0.1.0-x64.exe";
+const VIGIL_MSI_URL =
+  process.env.NEXT_PUBLIC_VIGIL_WINDOWS_MSI_URL ||
+  "https://zrlsaiygvlgaizedpbdr.supabase.co/storage/v1/object/public/bitgard-releases/vigil/Vigil-Setup-v0.1.0-x64.msi";
+const VIGIL_PORTAL_BASE = "https://vigil-pos.vercel.app";
+
+interface SessionVerifyState {
+  loading: boolean;
+  verified?: boolean;
+  pending?: boolean;
+  email?: string;
+  companyName?: string;
+  tier?: string;
+  billingCycle?: string;
+  licenseKey?: string;
+  setupUrl?: string | null;
+  portalLoginUrl?: string;
+  windowsExeUrl?: string;
+  windowsMsiUrl?: string;
+  error?: string;
+}
 
 function StatusNotification() {
   const searchParams = useSearchParams();
   const status = searchParams.get("status");
   const plan = searchParams.get("plan");
+  const billing = searchParams.get("billing");
+  const sessionId = searchParams.get("session_id");
+
+  const [verifyState, setVerifyState] = useState<SessionVerifyState>({
+    loading: Boolean(status === "success" && sessionId),
+  });
+
+  useEffect(() => {
+    if (status !== "success" || !sessionId || sessionId === "{CHECKOUT_SESSION_ID}") {
+      setVerifyState({ loading: false });
+      return;
+    }
+
+    let cancelled = false;
+    setVerifyState({ loading: true });
+
+    fetch(
+      `/api/dodo/session-status?session_id=${encodeURIComponent(sessionId)}&plan=${encodeURIComponent(
+        plan || ""
+      )}&billing=${encodeURIComponent(billing || "")}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (cancelled) return;
+        setVerifyState({
+          loading: false,
+          verified: Boolean(data.verified),
+          pending: Boolean(data.pending),
+          email: data.email,
+          companyName: data.companyName,
+          tier: data.tier,
+          billingCycle: data.billingCycle,
+          licenseKey: data.licenseKey,
+          setupUrl: data.setupUrl || null,
+          portalLoginUrl: data.portalLoginUrl || `${VIGIL_PORTAL_BASE}/login`,
+          windowsExeUrl: data.downloadUrls?.windowsExe || VIGIL_EXE_URL,
+          windowsMsiUrl: data.downloadUrls?.windowsMsi || VIGIL_MSI_URL,
+          error: data.error,
+        });
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setVerifyState({
+            loading: false,
+            portalLoginUrl: `${VIGIL_PORTAL_BASE}/login`,
+            windowsExeUrl: VIGIL_EXE_URL,
+            windowsMsiUrl: VIGIL_MSI_URL,
+          });
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [status, sessionId, plan, billing]);
 
   if (!status) return null;
 
   if (status === "success") {
+    const exeHref = verifyState.windowsExeUrl || VIGIL_EXE_URL;
+    const msiHref = verifyState.windowsMsiUrl || VIGIL_MSI_URL;
+    const loginHref = verifyState.portalLoginUrl || `${VIGIL_PORTAL_BASE}/login`;
+
     return (
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="container mx-auto px-6 pt-28 pb-4"
       >
-        <div className="bg-gradient-to-r from-emerald-950/80 via-emerald-900/60 to-black/80 border border-emerald-500/50 rounded-2xl p-6 backdrop-blur-xl shadow-[0_10px_40px_rgba(16,185,129,0.25)] flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center shrink-0">
-              <Check className="w-6 h-6 text-emerald-400" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h3 className="text-white font-heading font-bold text-lg">
-                  Subscription Active! Welcome to Vigil.
-                </h3>
-                {plan && (
-                  <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-                    {plan} Tier
-                  </span>
+        <div className="bg-gradient-to-r from-emerald-950/80 via-emerald-900/60 to-black/80 border border-emerald-500/50 rounded-2xl p-6 backdrop-blur-xl shadow-[0_10px_40px_rgba(16,185,129,0.25)] space-y-5">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-full bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center shrink-0">
+                {verifyState.loading ? (
+                  <Loader2 className="w-6 h-6 text-emerald-400 animate-spin" />
+                ) : (
+                  <Check className="w-6 h-6 text-emerald-400" />
                 )}
               </div>
-              <p className="text-emerald-200/80 text-sm mt-0.5">
-                Your transaction via Dodo Payments was successful. Download your software installer below and activate with your subscriber credentials.
-              </p>
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="text-white font-heading font-bold text-lg">
+                    Subscription Active! Welcome to Vigil.
+                  </h3>
+                  {(verifyState.tier || plan) && (
+                    <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                      {verifyState.tier || plan} Tier
+                      {verifyState.billingCycle ? ` • ${verifyState.billingCycle}` : ""}
+                    </span>
+                  )}
+                </div>
+                <p className="text-emerald-200/80 text-sm mt-1">
+                  {verifyState.loading
+                    ? "Confirming your payment & provisioning your Vigil workspace..."
+                    : verifyState.verified
+                    ? "Your workspace is provisioned. First set your login password, then download the Vigil desktop installer."
+                    : "Your checkout completed. Use the buttons below to set up your Vigil login password and download the installer."}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+              {verifyState.setupUrl ? (
+                <a
+                  href={verifyState.setupUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-primary hover:bg-primary-600 text-white font-bold px-5 py-3 rounded-xl transition-all shadow-[0_0_20px_rgba(232,115,42,0.4)] whitespace-nowrap flex items-center gap-2"
+                >
+                  <Key className="w-4 h-4" />
+                  Set Password &amp; Login
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              ) : (
+                <a
+                  href={loginHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-primary hover:bg-primary-600 text-white font-bold px-5 py-3 rounded-xl transition-all shadow-[0_0_20px_rgba(232,115,42,0.4)] whitespace-nowrap flex items-center gap-2"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Open Vigil Portal
+                </a>
+              )}
+
+              <a
+                href={exeHref}
+                download="Vigil-Setup-v0.1.0-x64.exe"
+                className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-5 py-3 rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] whitespace-nowrap flex items-center gap-2"
+              >
+                <Download className="w-4 h-4" />
+                Download Vigil (.exe)
+              </a>
             </div>
           </div>
-          <a
-            href="#download"
-            className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-6 py-3 rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] whitespace-nowrap flex items-center gap-2"
-          >
-            <Download className="w-4 h-4" />
-            Download Installer Now
-          </a>
+
+          {verifyState.verified && (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-emerald-500/20 text-xs">
+              <div className="rounded-xl bg-black/40 border border-white/10 p-3">
+                <div className="text-neutral-400">Workspace Username (Email)</div>
+                <div className="text-white font-semibold mt-0.5 break-all">{verifyState.email}</div>
+              </div>
+              <div className="rounded-xl bg-black/40 border border-white/10 p-3">
+                <div className="text-neutral-400">License Key</div>
+                <div className="text-emerald-300 font-mono font-semibold mt-0.5">{verifyState.licenseKey}</div>
+              </div>
+              <div className="rounded-xl bg-black/40 border border-white/10 p-3 flex items-center justify-between gap-2">
+                <div>
+                  <div className="text-neutral-400">Alternative Installer</div>
+                  <a
+                    href={msiHref}
+                    download="Vigil-Setup-v0.1.0-x64.msi"
+                    className="text-primary hover:underline font-semibold mt-0.5 inline-block"
+                  >
+                    Windows .MSI (2.7 MB) &rarr;
+                  </a>
+                </div>
+                <a
+                  href={`${VIGIL_PORTAL_BASE}/forgot-password`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-neutral-300 hover:text-white underline text-[11px]"
+                >
+                  Reset Password
+                </a>
+              </div>
+            </div>
+          )}
         </div>
       </motion.div>
     );
@@ -239,7 +395,7 @@ export default function VigilProductPage() {
     e.preventDefault();
     if (!downloadEmail) return;
     setDownloadMsg(
-      `Direct installer link and activation instructions have been dispatched to ${downloadEmail}. Active subscribers can also proceed directly with the desktop download button.`
+      `Ready for ${downloadEmail}: Click "Download Vigil (.exe)" above, then sign in at ${VIGIL_PORTAL_BASE}/login (or set/reset your workspace password at ${VIGIL_PORTAL_BASE}/forgot-password).`
     );
   };
 
@@ -1291,41 +1447,49 @@ export default function VigilProductPage() {
                     Vigil Desktop Suite
                   </h3>
                   <span className="text-xs px-2.5 py-0.5 rounded-full bg-primary/20 text-primary font-semibold border border-primary/30">
-                    v2.4.0 LTS
+                    v0.1.0 LTS
                   </span>
                 </div>
                 <p className="text-neutral-400 text-sm mb-3">
-                  Windows 10 / 11 / Windows Server (64-bit) &bull; Installer Size: ~84.5 MB
+                  Windows 10 / 11 / Windows Server (64-bit) &bull; Setup Size: 1.8 MB (.exe) / 2.7 MB (.msi)
                 </p>
                 <div className="flex items-center gap-4 text-xs text-neutral-500">
-                  <span>SHA-256 Verified</span>
+                  <span>Signed Desktop Launcher</span>
                   <span>&bull;</span>
-                  <span>Direct Offline-First Client</span>
+                  <span>Cloud-Synced Workspace</span>
                   <span>&bull;</span>
-                  <span>Auto-Updater Included</span>
+                  <span>Windows Setup Wizard</span>
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col sm:flex-row md:flex-col gap-3 w-full md:w-auto shrink-0">
               <a
-                href="#download"
-                onClick={() => {
-                  alert(
-                    "Vigil Installer Download:\n\nActive subscribers can download the latest build (Vigil-Setup-v2.4.0-x64.exe). Please ensure you have your subscription email handy for activation."
-                  );
-                }}
+                href={VIGIL_EXE_URL}
+                download="Vigil-Setup-v0.1.0-x64.exe"
                 className="bg-primary hover:bg-primary-600 text-white font-bold px-8 py-4 rounded-xl shadow-[0_0_20px_rgba(232,115,42,0.4)] transition-all flex items-center justify-center gap-2 text-center"
               >
                 <Download className="w-5 h-5" />
                 <span>Download Vigil (.exe)</span>
               </a>
-              <a
-                href="#pricing"
-                className="text-xs text-center text-neutral-400 hover:text-white transition-colors py-1"
-              >
-                Not subscribed yet? View plans &rarr;
-              </a>
+              <div className="flex items-center justify-center gap-3 text-xs text-neutral-400 py-1">
+                <a
+                  href={VIGIL_MSI_URL}
+                  download="Vigil-Setup-v0.1.0-x64.msi"
+                  className="hover:text-white underline transition-colors"
+                >
+                  Download .MSI
+                </a>
+                <span>&bull;</span>
+                <a
+                  href={`${VIGIL_PORTAL_BASE}/login`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white underline transition-colors"
+                >
+                  Launch Web App &rarr;
+                </a>
+              </div>
             </div>
           </div>
 

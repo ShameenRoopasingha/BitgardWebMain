@@ -18,7 +18,11 @@ export function DodoCheckout({
 }: DodoCheckoutProps) {
   const [loading, setLoading] = useState(false);
   const [companyName, setCompanyName] = useState('');
+  const [contactName, setContactName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [country, setCountry] = useState('LK');
   const [error, setError] = useState<string | null>(null);
   const isAnnual = billingCycle === 'ANNUAL';
 
@@ -36,6 +40,10 @@ export function DodoCheckout({
           billingCycle,
           email,
           companyName,
+          contactName,
+          phone,
+          address,
+          country,
         }),
       });
 
@@ -94,37 +102,107 @@ export function DodoCheckout({
         </div>
       )}
 
-      <form onSubmit={handleCheckout} className="space-y-5">
-        <div>
-          <label className="block text-xs font-medium text-neutral-300 mb-1.5">
-            Fleet / Company Name <span className="text-primary">*</span>
-          </label>
-          <input
-            required
-            type="text"
-            value={companyName}
-            onChange={(e) => setCompanyName(e.target.value)}
-            className="w-full bg-black/60 border border-white/15 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl px-4 py-3 text-white placeholder-neutral-600 text-sm transition-all outline-none"
-            placeholder="e.g. Skyline Tour & Car Rentals"
-          />
+      <form onSubmit={handleCheckout} className="space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-xs font-medium text-neutral-300 mb-1.5">
+              Fleet / Company Name <span className="text-primary">*</span>
+            </label>
+            <input
+              required
+              type="text"
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+              className="w-full bg-black/60 border border-white/15 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl px-4 py-3 text-white placeholder-neutral-600 text-sm transition-all outline-none"
+              placeholder="e.g. Skyline Tour & Rentals"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-neutral-300 mb-1.5">
+              Owner / Contact Name <span className="text-primary">*</span>
+            </label>
+            <input
+              required
+              type="text"
+              value={contactName}
+              onChange={(e) => setContactName(e.target.value)}
+              className="w-full bg-black/60 border border-white/15 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl px-4 py-3 text-white placeholder-neutral-600 text-sm transition-all outline-none"
+              placeholder="e.g. Kasun Perera"
+            />
+          </div>
         </div>
 
-        <div>
-          <label className="block text-xs font-medium text-neutral-300 mb-1.5">
-            Business Email (for software license & download) <span className="text-primary">*</span>
-          </label>
-          <input
-            required
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full bg-black/60 border border-white/15 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl px-4 py-3 text-white placeholder-neutral-600 text-sm transition-all outline-none"
-            placeholder="operations@skylinetours.com"
-          />
-          <p className="text-[11px] text-neutral-500 mt-1.5">
-            Your installer link and Vigil activation key will be linked to this email.
-          </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-xs font-medium text-neutral-300 mb-1.5">
+              Business Email (Login Username) <span className="text-primary">*</span>
+            </label>
+            <input
+              required
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full bg-black/60 border border-white/15 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl px-4 py-3 text-white placeholder-neutral-600 text-sm transition-all outline-none"
+              placeholder="operations@skylinetours.com"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-neutral-300 mb-1.5">
+              Phone / WhatsApp Number <span className="text-primary">*</span>
+            </label>
+            <input
+              required
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="w-full bg-black/60 border border-white/15 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl px-4 py-3 text-white placeholder-neutral-600 text-sm transition-all outline-none"
+              placeholder="+94 77 123 4567"
+            />
+          </div>
         </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="sm:col-span-2">
+            <label className="block text-xs font-medium text-neutral-300 mb-1.5">
+              Business Address <span className="text-primary">*</span>
+            </label>
+            <input
+              required
+              type="text"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              className="w-full bg-black/60 border border-white/15 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl px-4 py-3 text-white placeholder-neutral-600 text-sm transition-all outline-none"
+              placeholder="e.g. 125 Galle Road, Colombo 03"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-neutral-300 mb-1.5">
+              Country <span className="text-primary">*</span>
+            </label>
+            <select
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              className="w-full bg-black/60 border border-white/15 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl px-3 py-3 text-white text-sm transition-all outline-none"
+            >
+              <option value="LK">Sri Lanka (LK)</option>
+              <option value="US">United States (US)</option>
+              <option value="GB">United Kingdom (GB)</option>
+              <option value="AU">Australia (AU)</option>
+              <option value="NZ">New Zealand (NZ)</option>
+              <option value="AE">UAE (AE)</option>
+              <option value="SG">Singapore (SG)</option>
+              <option value="IN">India (IN)</option>
+              <option value="MV">Maldives (MV)</option>
+            </select>
+          </div>
+        </div>
+
+        <p className="text-[11px] text-neutral-500">
+          Your company profile, license key, and Vigil workspace login will be set up automatically using these details.
+        </p>
 
         {/* Benefits reminder */}
         <div className="py-3 px-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-2">
