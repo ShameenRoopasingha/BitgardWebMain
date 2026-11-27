@@ -127,7 +127,7 @@ export default function PricingPage() {
                 ))}
               </ul>
               {activeProduct === "vehicle" ? (
-                <a href="/checkout/tourbiller?tier=starter" className="w-full">
+                <a href="/checkout/vigil?tier=starter" className="w-full">
                   <button className="w-full py-4 rounded-xl border border-primary/50 bg-primary/10 hover:bg-primary/20 text-white font-semibold transition-colors mt-auto">
                     Subscribe to Starter
                   </button>
@@ -157,7 +157,7 @@ export default function PricingPage() {
                 ))}
               </ul>
               {activeProduct === "vehicle" ? (
-                <a href="/checkout/tourbiller?tier=professional" className="w-full">
+                <a href="/checkout/vigil?tier=professional" className="w-full">
                   <button className="w-full py-4 rounded-xl bg-primary hover:bg-primary-600 text-white font-bold transition-all transform hover:-translate-y-1 shadow-[0_0_20px_rgba(232,115,42,0.4)] mt-auto">
                     Subscribe to Professional
                   </button>
@@ -189,7 +189,7 @@ export default function PricingPage() {
                 ))}
               </ul>
               {activeProduct === "vehicle" ? (
-                <a href="/checkout/tourbiller?tier=enterprise" className="w-full relative z-10">
+                <a href="/checkout/vigil?tier=enterprise" className="w-full relative z-10">
                   <button className="w-full py-4 rounded-xl bg-white text-black hover:bg-neutral-200 font-semibold transition-colors mt-auto">
                     Subscribe to Enterprise
                   </button>

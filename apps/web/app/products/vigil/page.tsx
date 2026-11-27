@@ -161,7 +161,7 @@ const PRICING_TIERS: PricingTier[] = [
       "Standard Support (Mon–Fri, 9 AM–5 PM)",
     ],
     ctaText: "Subscribe to Starter",
-    ctaHref: (billing) => `/checkout/tourbiller?tier=starter&billing=${billing}`,
+    ctaHref: (billing) => `/checkout/vigil?tier=starter&billing=${billing}`,
   },
   {
     id: "professional",
@@ -194,7 +194,7 @@ const PRICING_TIERS: PricingTier[] = [
       "Priority Ticket Support (Mon–Sat, 8 AM–8 PM)",
     ],
     ctaText: "Subscribe to Professional",
-    ctaHref: (billing) => `/checkout/tourbiller?tier=professional&billing=${billing}`,
+    ctaHref: (billing) => `/checkout/vigil?tier=professional&billing=${billing}`,
   },
   {
     id: "enterprise",
@@ -225,7 +225,7 @@ const PRICING_TIERS: PricingTier[] = [
       "Dedicated Account Manager & Priority Ticket SLA",
     ],
     ctaText: "Subscribe to Enterprise",
-    ctaHref: (billing) => `/checkout/tourbiller?tier=enterprise&billing=${billing}`,
+    ctaHref: (billing) => `/checkout/vigil?tier=enterprise&billing=${billing}`,
   },
 ];
 
