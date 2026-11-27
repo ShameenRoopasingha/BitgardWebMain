@@ -135,6 +135,59 @@ export function signBitgardSyncPayload(
   };
 }
 
+/**
+ * Verifies an inbound signed sync request (from Vigil -> BitgardWeb)
+ * signed with HMAC-SHA256 using `BITGARD_SYNC_SECRET`.
+ */
+export function verifyBitgardSyncSignature(
+  rawBody: string,
+  headers: {
+    deliveryId: string | null;
+    timestamp: string | null;
+    signature: string | null;
+  },
+  syncSecret: string,
+  nowSeconds: number = Math.floor(Date.now() / 1000)
+): { valid: true } | { valid: false; reason: string } {
+  const { deliveryId, timestamp, signature } = headers;
+
+  if (!syncSecret) {
+    return { valid: false, reason: "BITGARD_SYNC_SECRET is not configured" };
+  }
+
+  if (!deliveryId || !timestamp || !signature) {
+    return { valid: false, reason: "Missing required Bitgard sync headers" };
+  }
+
+  const timestampNum = Number(timestamp);
+  if (
+    !Number.isInteger(timestampNum) ||
+    Math.abs(nowSeconds - timestampNum) > STANDARD_WEBHOOK_TOLERANCE_SECONDS
+  ) {
+    return { valid: false, reason: "Sync timestamp outside tolerance window" };
+  }
+
+  const signedContent = `${timestamp}.${deliveryId}.${rawBody}`;
+  const expectedBase64 = crypto
+    .createHmac("sha256", syncSecret)
+    .update(signedContent, "utf8")
+    .digest("base64");
+
+  const trimmed = signature.trim();
+  const commaIdx = trimmed.indexOf(",");
+  if (commaIdx <= 0) {
+    return { valid: false, reason: "Malformed signature header" };
+  }
+
+  const version = trimmed.slice(0, commaIdx);
+  const sig = trimmed.slice(commaIdx + 1);
+  if (version !== "v1" || !timingSafeEqualStrings(expectedBase64, sig)) {
+    return { valid: false, reason: "Invalid Bitgard sync signature" };
+  }
+
+  return { valid: true };
+}
+
 export function generateVigilLicenseKey(): string {
   const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   const bytes = crypto.randomBytes(16);
