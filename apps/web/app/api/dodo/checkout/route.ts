@@ -13,20 +13,29 @@ function resolveDodoProductId(tier: VigilTier, billingCycle: VigilBillingCycle):
   const isAnnual = billingCycle === 'ANNUAL';
   if (tier === 'ENTERPRISE') {
     return (
-      (isAnnual ? process.env.DODO_PRODUCT_ID_ENTERPRISE_ANNUAL : process.env.DODO_PRODUCT_ID_ENTERPRISE_MONTHLY) ||
+      (isAnnual
+        ? process.env.VIGIL_PRODUCT_ID_ENTERPRISE_ANNUAL || process.env.DODO_PRODUCT_ID_ENTERPRISE_ANNUAL
+        : process.env.VIGIL_PRODUCT_ID_ENTERPRISE_MONTHLY || process.env.DODO_PRODUCT_ID_ENTERPRISE_MONTHLY) ||
+      process.env.VIGIL_PRODUCT_ID_ENTERPRISE ||
       process.env.DODO_PRODUCT_ID_ENTERPRISE ||
       'pdt_vigil_enterprise'
     );
   }
   if (tier === 'PROFESSIONAL') {
     return (
-      (isAnnual ? process.env.DODO_PRODUCT_ID_PROFESSIONAL_ANNUAL : process.env.DODO_PRODUCT_ID_PROFESSIONAL_MONTHLY) ||
+      (isAnnual
+        ? process.env.VIGIL_PRODUCT_ID_PROFESSIONAL_ANNUAL || process.env.DODO_PRODUCT_ID_PROFESSIONAL_ANNUAL
+        : process.env.VIGIL_PRODUCT_ID_PROFESSIONAL_MONTHLY || process.env.DODO_PRODUCT_ID_PROFESSIONAL_MONTHLY) ||
+      process.env.VIGIL_PRODUCT_ID_PROFESSIONAL ||
       process.env.DODO_PRODUCT_ID_PROFESSIONAL ||
       'pdt_vigil_professional'
     );
   }
   return (
-    (isAnnual ? process.env.DODO_PRODUCT_ID_STARTER_ANNUAL : process.env.DODO_PRODUCT_ID_STARTER_MONTHLY) ||
+    (isAnnual
+      ? process.env.VIGIL_PRODUCT_ID_STARTER_ANNUAL || process.env.DODO_PRODUCT_ID_STARTER_ANNUAL
+      : process.env.VIGIL_PRODUCT_ID_STARTER_MONTHLY || process.env.DODO_PRODUCT_ID_STARTER_MONTHLY) ||
+    process.env.VIGIL_PRODUCT_ID_STARTER ||
     process.env.DODO_PRODUCT_ID_STARTER ||
     'pdt_vigil_starter'
   );

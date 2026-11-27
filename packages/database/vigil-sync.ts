@@ -150,6 +150,9 @@ export function generateVigilLicenseKey(): string {
 export function mapPlanToTier(input?: string | null): VigilTier {
   const raw = (input || "").trim();
   const enterpriseIds = [
+    process.env.VIGIL_PRODUCT_ID_ENTERPRISE,
+    process.env.VIGIL_PRODUCT_ID_ENTERPRISE_MONTHLY,
+    process.env.VIGIL_PRODUCT_ID_ENTERPRISE_ANNUAL,
     process.env.DODO_PRODUCT_ID_ENTERPRISE,
     process.env.DODO_PRODUCT_ID_ENTERPRISE_MONTHLY,
     process.env.DODO_PRODUCT_ID_ENTERPRISE_ANNUAL,
@@ -159,6 +162,9 @@ export function mapPlanToTier(input?: string | null): VigilTier {
   if (raw && enterpriseIds.includes(raw)) return "ENTERPRISE";
 
   const proIds = [
+    process.env.VIGIL_PRODUCT_ID_PROFESSIONAL,
+    process.env.VIGIL_PRODUCT_ID_PROFESSIONAL_MONTHLY,
+    process.env.VIGIL_PRODUCT_ID_PROFESSIONAL_ANNUAL,
     process.env.DODO_PRODUCT_ID_PROFESSIONAL,
     process.env.DODO_PRODUCT_ID_PROFESSIONAL_MONTHLY,
     process.env.DODO_PRODUCT_ID_PROFESSIONAL_ANNUAL,
@@ -168,6 +174,9 @@ export function mapPlanToTier(input?: string | null): VigilTier {
   if (raw && proIds.includes(raw)) return "PROFESSIONAL";
 
   const starterIds = [
+    process.env.VIGIL_PRODUCT_ID_STARTER,
+    process.env.VIGIL_PRODUCT_ID_STARTER_MONTHLY,
+    process.env.VIGIL_PRODUCT_ID_STARTER_ANNUAL,
     process.env.DODO_PRODUCT_ID_STARTER,
     process.env.DODO_PRODUCT_ID_STARTER_MONTHLY,
     process.env.DODO_PRODUCT_ID_STARTER_ANNUAL,
@@ -185,6 +194,9 @@ export function mapPlanToTier(input?: string | null): VigilTier {
 export function mapBillingCycle(input?: string | null): VigilBillingCycle {
   const raw = (input || "").trim();
   const annualIds = [
+    process.env.VIGIL_PRODUCT_ID_STARTER_ANNUAL,
+    process.env.VIGIL_PRODUCT_ID_PROFESSIONAL_ANNUAL,
+    process.env.VIGIL_PRODUCT_ID_ENTERPRISE_ANNUAL,
     process.env.DODO_PRODUCT_ID_STARTER_ANNUAL,
     process.env.DODO_PRODUCT_ID_PROFESSIONAL_ANNUAL,
     process.env.DODO_PRODUCT_ID_ENTERPRISE_ANNUAL,
