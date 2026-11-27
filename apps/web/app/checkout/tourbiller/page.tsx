@@ -9,7 +9,7 @@ import { ArrowLeft, Shield, Download, CheckCircle2, Package } from 'lucide-react
 function CheckoutContent() {
   const searchParams = useSearchParams();
   const tier = (searchParams.get('tier') || 'starter').toLowerCase();
-  const isAnnual = searchParams.get('billing') === 'annual';
+  const isAnnual = searchParams.get('billing') !== 'monthly';
 
   let planName = 'Starter';
   let price = isAnnual ? 210 : 21;
@@ -96,7 +96,7 @@ function CheckoutContent() {
               2
             </span>
             <span>
-              You will be redirected to the download portal with your Vigil Windows installer (.exe).
+              You will be redirected to activate your Vigil web portal &amp; Windows desktop app (.exe).
             </span>
           </li>
           <li className="flex items-start gap-2.5">

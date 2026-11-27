@@ -122,7 +122,10 @@ interface PricingTier {
     period: string;
     subtext: string;
   };
-  setupFeeNote: string;
+  setupFee: {
+    monthly: string;
+    annual: string;
+  };
   features: string[];
   ctaText: string;
   ctaHref: (billing: "monthly" | "annual") => string;
@@ -143,10 +146,13 @@ const PRICING_TIERS: PricingTier[] = [
       period: "/yr",
       subtext: "$17.50/mo billed annually",
     },
-    setupFeeNote: "$0 self-serve setup (Optional assisted setup: $29)",
+    setupFee: {
+      monthly: "$0 self-serve setup (Optional assisted setup: $29)",
+      annual: "Setup waived ($0) on Annual billing",
+    },
     features: [
-      "Up to 10 Vehicles (+$1.50/extra vehicle)",
-      "1 Office Desktop App (.exe)",
+      "Up to 10 Vehicles (+$2.10/extra vehicle)",
+      "1 Office Desktop App (.exe) + Cloud Web Portal",
       "Precision Invoicing & Quotations Engine",
       "Customer Directory & Travel History",
       "Instant Smart Search Across All Records",
@@ -172,17 +178,20 @@ const PRICING_TIERS: PricingTier[] = [
       period: "/yr",
       subtext: "$37.50/mo billed annually",
     },
-    setupFeeNote: "One-time onboarding & driver training: $44",
+    setupFee: {
+      monthly: "One-time onboarding & driver training: $44",
+      annual: "Onboarding & driver training: $0 (Waived on Annual)",
+    },
     features: [
-      "Up to 25 Vehicles (+$1.35/extra vehicle)",
-      "Up to 3 Office Desktop Apps (.exe)",
+      "Up to 25 Vehicles (+$1.80/extra vehicle)",
+      "Up to 3 Office Desktop Apps (.exe) + Cloud Web Portal",
       "Everything in Starter, plus:",
       "Day-by-Day Tour Itinerary & Landmark Routing",
       "Live GPS Fleet Radar (30-Day Route History)",
       "Companion Mobile Driver App Sync",
       "Preventive Maintenance Milestone Alerts",
       "Trip Cost & Fuel Margin Tracking",
-      "Priority Support (Mon–Sat, 8 AM–8 PM)",
+      "Priority Ticket Support (Mon–Sat, 8 AM–8 PM)",
     ],
     ctaText: "Subscribe to Professional",
     ctaHref: (billing) => `/checkout/tourbiller?tier=professional&billing=${billing}`,
@@ -201,16 +210,19 @@ const PRICING_TIERS: PricingTier[] = [
       period: "/yr",
       subtext: "$97.50/mo billed annually",
     },
-    setupFeeNote: "One-time multi-PC deployment & setup: $104",
+    setupFee: {
+      monthly: "One-time multi-PC deployment & setup: $104",
+      annual: "Multi-PC deployment & setup: $0 (Waived on Annual)",
+    },
     features: [
-      "Up to 75 Vehicles (+$1.05/extra vehicle)",
-      "Up to 10 Multi-Branch Workstations",
+      "Up to 75 Vehicles (+$1.56/extra vehicle)",
+      "Up to 10 Multi-Branch Workstations + Cloud Web Portal",
       "Everything in Professional, plus:",
-      "Multi-Currency Billing (LKR, USD, EUR) & Custom Rates",
+      "Multi-Currency Billing (USD, EUR, GBP, AUD, NZD & Custom)",
       "In-Field Vehicle Swap Audit Logging",
       "Role-Based Access (Managers, Dispatch & Accounts)",
       "90-Day Telemetry Archive & Custom Reports",
-      "Dedicated Account Manager & 4-Hr Critical SLA",
+      "Dedicated Account Manager & Priority Ticket SLA",
     ],
     ctaText: "Subscribe to Enterprise",
     ctaHref: (billing) => `/checkout/tourbiller?tier=enterprise&billing=${billing}`,
@@ -219,7 +231,7 @@ const PRICING_TIERS: PricingTier[] = [
 
 export default function VigilProductPage() {
   const [activeTab, setActiveTab] = useState("overview");
-  const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("monthly");
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("annual");
   const [downloadEmail, setDownloadEmail] = useState("");
   const [downloadMsg, setDownloadMsg] = useState<string | null>(null);
 
@@ -1142,7 +1154,7 @@ export default function VigilProductPage() {
                     <div className="mb-6 pb-5 border-b border-white/10">
                       <div className="text-[11px] text-neutral-400 leading-snug flex items-start gap-1.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-primary/60 shrink-0 mt-1" />
-                        <span>{tier.setupFeeNote}</span>
+                        <span>{billingCycle === "annual" ? tier.setupFee.annual : tier.setupFee.monthly}</span>
                       </div>
                     </div>
 
@@ -1196,9 +1208,8 @@ export default function VigilProductPage() {
                 <Sparkles className="w-4 h-4 text-primary" />
               </div>
               <div className="leading-relaxed">
-                <span className="text-white font-semibold">Optional Add-On:</span>{" "}
-                24/7 Priority Hotline SLA available on Enterprise for{" "}
-                <span className="text-primary font-semibold">+$45/mo</span>. Managing more than 75 vehicles? Contact us for a custom fleet quote.
+                <span className="text-white font-semibold">Custom Fleets &amp; Priority SLA:</span>{" "}
+                Async <span className="text-primary font-semibold">Priority Ticket SLA</span> included on Enterprise. Managing more than 75 vehicles? Contact us for a custom fleet quote.
               </div>
             </div>
             <Link
