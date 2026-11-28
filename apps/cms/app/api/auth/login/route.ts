@@ -61,6 +61,7 @@ export async function POST(request: Request) {
         role: true,
         passwordHash: true,
         mfaEnabled: true,
+        tokenVersion: true,
       },
     });
 
@@ -94,6 +95,7 @@ export async function POST(request: Request) {
       email: admin.email,
       name: admin.name,
       role: admin.role as CmsAdminRole,
+      tokenVersion: admin.tokenVersion ?? 0,
     });
 
     const response = NextResponse.json({

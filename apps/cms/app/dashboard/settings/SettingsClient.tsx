@@ -20,6 +20,9 @@ import {
     FiShield,
     FiKey,
     FiRefreshCw,
+    FiLock,
+    FiEye,
+    FiEyeOff,
 } from "react-icons/fi";
 import { upsertSiteSettings } from "@/lib/actions";
 import toast from "react-hot-toast";
@@ -66,6 +69,52 @@ export default function SettingsClient({ initialSettings, initialMfa }: Props) {
     const [mfaPassword, setMfaPassword] = useState("");
     const [mfaConfirmCode, setMfaConfirmCode] = useState("");
     const [mfaBusy, setMfaBusy] = useState(false);
+
+    const [pwdCurrent, setPwdCurrent] = useState("");
+    const [pwdNew, setPwdNew] = useState("");
+    const [pwdConfirm, setPwdConfirm] = useState("");
+    const [pwdMfaCode, setPwdMfaCode] = useState("");
+    const [showPwdFields, setShowPwdFields] = useState(false);
+    const [pwdBusy, setPwdBusy] = useState(false);
+
+    const handleChangePassword = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (pwdNew !== pwdConfirm) {
+            toast.error("New passwords do not match");
+            return;
+        }
+        if (pwdNew.length < 10) {
+            toast.error("New password must be at least 10 characters");
+            return;
+        }
+        setPwdBusy(true);
+        try {
+            const res = await fetch("/api/auth/password", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    currentPassword: pwdCurrent,
+                    newPassword: pwdNew,
+                    ...(mfaEnabled && pwdMfaCode.trim() ? { mfaCode: pwdMfaCode.trim() } : {}),
+                }),
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok || !data.success) {
+                toast.error(data.error || "Failed to update password");
+                return;
+            }
+            toast.success("Password updated & other sessions revoked!");
+            setPwdCurrent("");
+            setPwdNew("");
+            setPwdConfirm("");
+            setPwdMfaCode("");
+            router.refresh();
+        } catch {
+            toast.error("Unable to update password");
+        } finally {
+            setPwdBusy(false);
+        }
+    };
 
     const startMfaSetup = async () => {
         setMfaBusy(true);
@@ -344,6 +393,104 @@ export default function SettingsClient({ initialSettings, initialMfa }: Props) {
                             <ImageUpload value={settings.favicon} onChange={(url) => handleChange("favicon", url)} disabled={isPending} />
                         </div>
                     </div>
+                </div>
+
+                {/* Admin Password Update */}
+                <div className="dashboard-card space-y-5">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                                <FiLock className="w-5 h-5 text-amber-400" />
+                            </div>
+                            <div>
+                                <h2 className="text-lg font-semibold text-white">Change Admin Password</h2>
+                                <p className="text-sm text-gray-500">
+                                    Update your CMS administrator password (automatically revokes older sessions)
+                                </p>
+                            </div>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={() => setShowPwdFields((prev) => !prev)}
+                            className="text-xs text-gray-400 hover:text-white inline-flex items-center gap-1.5"
+                        >
+                            {showPwdFields ? <FiEyeOff className="w-4 h-4" /> : <FiEye className="w-4 h-4" />}
+                            {showPwdFields ? "Hide Passwords" : "Show Passwords"}
+                        </button>
+                    </div>
+
+                    <form onSubmit={handleChangePassword} className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                    Current Password
+                                </label>
+                                <input
+                                    type={showPwdFields ? "text" : "password"}
+                                    value={pwdCurrent}
+                                    onChange={(e) => setPwdCurrent(e.target.value)}
+                                    placeholder="Current password"
+                                    className="w-full"
+                                    autoComplete="current-password"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                    New Password
+                                </label>
+                                <input
+                                    type={showPwdFields ? "text" : "password"}
+                                    value={pwdNew}
+                                    onChange={(e) => setPwdNew(e.target.value)}
+                                    placeholder="10+ chars, Aa1"
+                                    className="w-full"
+                                    autoComplete="new-password"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                    Confirm New Password
+                                </label>
+                                <input
+                                    type={showPwdFields ? "text" : "password"}
+                                    value={pwdConfirm}
+                                    onChange={(e) => setPwdConfirm(e.target.value)}
+                                    placeholder="Re-enter new password"
+                                    className="w-full"
+                                    autoComplete="new-password"
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        {mfaEnabled && (
+                            <div className="max-w-xs">
+                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                    2FA Authenticator Code
+                                </label>
+                                <input
+                                    type="text"
+                                    value={pwdMfaCode}
+                                    onChange={(e) => setPwdMfaCode(e.target.value)}
+                                    placeholder="123456"
+                                    className="w-full font-mono tracking-widest"
+                                    required
+                                />
+                            </div>
+                        )}
+
+                        <div className="flex items-center justify-between gap-3 pt-1">
+                            <p className="text-xs text-gray-500">
+                                Use at least 10 characters with uppercase, lowercase, and a number.
+                            </p>
+                            <button type="submit" disabled={pwdBusy} className="btn btn-primary">
+                                <FiLock className="w-4 h-4" />
+                                {pwdBusy ? "Updating..." : "Update Password"}
+                            </button>
+                        </div>
+                    </form>
                 </div>
 
                 {/* Admin Account Two-Factor Authentication */}

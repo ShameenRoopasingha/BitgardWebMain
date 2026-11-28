@@ -8,6 +8,7 @@ export interface CmsSessionPayload {
   email: string;
   name: string;
   role: CmsAdminRole;
+  tokenVersion?: number;
   exp: number;
 }
 

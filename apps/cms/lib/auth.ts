@@ -20,10 +20,14 @@ export async function getCmsSession(): Promise<AuthenticatedCmsAdmin | null> {
 
   const admin = await prisma.admin.findUnique({
     where: { id: parsed.id },
-    select: { id: true, email: true, name: true, role: true },
+    select: { id: true, email: true, name: true, role: true, tokenVersion: true },
   });
 
   if (!admin) return null;
+
+  if (typeof parsed.tokenVersion === "number" && admin.tokenVersion !== parsed.tokenVersion) {
+    return null;
+  }
 
   return {
     id: admin.id,
