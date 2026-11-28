@@ -63,6 +63,12 @@ export interface VigilSubscriptionItem {
   status: "TRIALING" | "ACTIVE" | "LIFETIME" | "PAST_DUE" | "EXPIRED" | "CANCELLED" | "REVOKED";
   source: "DODO_PAYMENTS" | "MANUAL_ADMIN";
   licenseKey: string;
+  vehicleCount?: number;
+  includedVehicles?: number;
+  extraVehicles?: number;
+  extraVehicleRateUsd?: number;
+  monthlyOverageUsd?: number;
+  lastUsageReportedAt?: string | null;
   currentPeriodStart: string | null;
   currentPeriodEnd: string | null;
   grantNote: string | null;
@@ -491,6 +497,20 @@ export default function LicensesClient({ initialSubscriptions }: Props) {
                 <div className="text-xs text-gray-400 flex flex-wrap gap-x-4 gap-y-1">
                   <span>Email: <strong className="text-gray-200">{sub.email}</strong></span>
                   <span>Key: <code className="text-amber-300 font-mono">{sub.licenseKey}</code></span>
+                  <span>
+                    Fleet:{" "}
+                    <strong className="text-gray-200">
+                      {sub.vehicleCount ?? 0}/
+                      {sub.includedVehicles ??
+                        (sub.tier === "ENTERPRISE" ? 75 : sub.tier === "PROFESSIONAL" ? 25 : 10)}
+                    </strong>
+                    {sub.status !== "LIFETIME" && (sub.extraVehicles ?? 0) > 0 && (
+                      <span className="ml-1 text-amber-300 font-semibold">
+                        (+{sub.extraVehicles} extra &bull; +${(sub.monthlyOverageUsd ?? 0).toFixed(2)}/mo @ $
+                        {(sub.extraVehicleRateUsd ?? (sub.tier === "ENTERPRISE" ? 1.56 : sub.tier === "PROFESSIONAL" ? 1.8 : 2.1)).toFixed(2)}/veh)
+                      </span>
+                    )}
+                  </span>
                   <span>
                     Expiry:{" "}
                     <strong className="text-gray-200">

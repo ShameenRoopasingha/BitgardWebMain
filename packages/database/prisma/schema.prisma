@@ -71,9 +71,15 @@ model VigilSubscription {
   dodoSubscriptionId String?            @unique
   dodoLastPaymentId  String?
   licenseKey         String             @unique
-  currentPeriodStart DateTime?
-  currentPeriodEnd   DateTime?
-  grantedByAdminId   String?
+  currentPeriodStart  DateTime?
+  currentPeriodEnd    DateTime?
+  vehicleCount        Int                @default(0)
+  includedVehicles    Int                @default(10)
+  extraVehicles       Int                @default(0)
+  extraVehicleRateUsd Float              @default(2.1)
+  monthlyOverageUsd   Float              @default(0)
+  lastUsageReportedAt DateTime?
+  grantedByAdminId    String?
   grantedByAdmin     Admin?             @relation(fields: [grantedByAdminId], references: [id], onDelete: SetNull)
   grantNote          String?
   lastSyncedAt       DateTime?

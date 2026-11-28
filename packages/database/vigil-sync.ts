@@ -12,6 +12,22 @@ export type VigilSubscriptionStatus =
   | "REVOKED";
 export type VigilLicenseSource = "DODO_PAYMENTS" | "MANUAL_ADMIN";
 
+export const VIGIL_VEHICLE_OVERAGE_RATES: Record<
+  VigilTier,
+  { includedVehicles: number; extraVehicleRateUsd: number }
+> = {
+  STARTER: { includedVehicles: 10, extraVehicleRateUsd: 2.1 },
+  PROFESSIONAL: { includedVehicles: 25, extraVehicleRateUsd: 1.8 },
+  ENTERPRISE: { includedVehicles: 75, extraVehicleRateUsd: 1.56 },
+};
+
+export function getVigilTierVehiclePricing(tier: VigilTier): {
+  includedVehicles: number;
+  extraVehicleRateUsd: number;
+} {
+  return VIGIL_VEHICLE_OVERAGE_RATES[tier] || VIGIL_VEHICLE_OVERAGE_RATES.STARTER;
+}
+
 export interface VigilSyncPayload {
   deliveryId: string;
   eventType: string;

@@ -36,6 +36,7 @@ export default async function LicensesPage() {
     ...s,
     currentPeriodStart: s.currentPeriodStart?.toISOString() ?? null,
     currentPeriodEnd: s.currentPeriodEnd?.toISOString() ?? null,
+    lastUsageReportedAt: s.lastUsageReportedAt?.toISOString() ?? null,
     lastSyncedAt: s.lastSyncedAt?.toISOString() ?? null,
     createdAt: s.createdAt.toISOString(),
     updatedAt: s.updatedAt.toISOString(),

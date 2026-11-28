@@ -16,9 +16,9 @@ export default function PricingPage() {
       { name: "Enterprise", price: billingCycle === "monthly" ? "199" : "159", desc: "Unlimited scale and custom needs.", features: ["Unlimited Locations", "API Access", "Custom Integration", "24/7 Phone Support"] }
     ],
     vehicle: [
-      { name: "Starter", price: billingCycle === "monthly" ? "21" : "17.50", desc: "For small operators & independent fleets.", features: ["Up to 10 Vehicles", "1 Office Desktop App", "Precision Billing & Quotes", "Standard Support"] },
-      { name: "Professional", price: billingCycle === "monthly" ? "45" : "37.50", desc: "For growing tour agencies & fleets.", popular: true, features: ["Up to 25 Vehicles", "Tour Itinerary & GPS Radar", "Driver Mobile App Sync", "Priority Support"] },
-      { name: "Enterprise", price: billingCycle === "monthly" ? "117" : "97.50", desc: "For multi-branch fleet companies.", features: ["Up to 75 Vehicles", "10 Workstations & Multi-Currency", "Vehicle Swap Audit Logs", "Dedicated Account Manager"] }
+      { name: "Starter", price: billingCycle === "monthly" ? "21" : "17.50", desc: "For small operators & independent fleets.", features: ["Up to 10 Vehicles (+$2.10/extra)", "1 Office Desktop App", "Precision Billing & Quotes", "Standard Support"] },
+      { name: "Professional", price: billingCycle === "monthly" ? "45" : "37.50", desc: "For growing tour agencies & fleets.", popular: true, features: ["Up to 25 Vehicles (+$1.80/extra)", "Tour Itinerary & GPS Radar", "Driver Mobile App Sync", "Priority Support"] },
+      { name: "Enterprise", price: billingCycle === "monthly" ? "117" : "97.50", desc: "For multi-branch fleet companies.", features: ["Up to 75 Vehicles (+$1.56/extra)", "10 Workstations & Multi-Currency", "Vehicle Swap Audit Logs", "Dedicated Account Manager"] }
     ],
     hrm: [
       { name: "Starter", price: billingCycle === "monthly" ? "2" : "1.60", unit: "/emp/mo", desc: "For small teams.", features: ["Attendance Tracking", "Basic Leave Mgmt", "Employee Directory", "Standard Support"] },
