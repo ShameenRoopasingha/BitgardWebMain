@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import {
+  checkDistributedRateLimit,
   getVigilTierVehiclePricing,
   prisma,
   verifyBitgardSyncSignature,
@@ -40,6 +41,15 @@ function resolveDodoMeterEventName(tier: VigilTier): string {
 
 export async function POST(request: Request) {
   try {
+    const ip =
+      request.headers.get('x-real-ip')?.trim() ||
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      'unknown';
+    const rl = await checkDistributedRateLimit(`web-vehicle-usage:${ip}`, 120, 60 * 1000);
+    if (rl.limited) {
+      return NextResponse.json({ success: false, error: 'Rate limit exceeded' }, { status: 429 });
+    }
+
     const syncSecret = process.env.BITGARD_SYNC_SECRET?.trim();
     if (!syncSecret) {
       return NextResponse.json(

@@ -42,4 +42,5 @@ if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 export * from "@prisma/client";
 export * from "./vigil-sync";
 export * from "./rate-limit";
+export * from "./mfa";
 export default prisma;

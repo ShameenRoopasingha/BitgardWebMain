@@ -21,7 +21,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FiMail, FiLock, FiEye, FiEyeOff, FiLoader } from "react-icons/fi";
+import { FiMail, FiLock, FiEye, FiEyeOff, FiLoader, FiShield } from "react-icons/fi";
 import toast from "react-hot-toast";
 
 // -----------------------------------------------------------------------------
@@ -39,12 +39,46 @@ export default function LoginPage() {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [mfaChallengeToken, setMfaChallengeToken] = useState("");
+    const [mfaCode, setMfaCode] = useState("");
 
     /**
      * Handle form submission
      */
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (mfaChallengeToken) {
+            if (!mfaCode.trim()) {
+                toast.error("Please enter your 6-digit authenticator code");
+                return;
+            }
+            setIsLoading(true);
+            try {
+                const res = await fetch("/api/auth/mfa/verify", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        challengeToken: mfaChallengeToken,
+                        code: mfaCode.trim(),
+                    }),
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    toast.error(data.error || "Invalid authenticator code");
+                    return;
+                }
+                toast.success("MFA verified. Welcome back!");
+                router.push("/dashboard");
+                router.refresh();
+            } catch (error) {
+                toast.error("An error occurred verifying MFA.");
+                console.error("MFA verify error:", error);
+            } finally {
+                setIsLoading(false);
+            }
+            return;
+        }
 
         // Validation
         if (!email || !password) {
@@ -64,6 +98,13 @@ export default function LoginPage() {
             const data = await res.json().catch(() => ({}));
             if (!res.ok) {
                 toast.error(data.error || "Invalid credentials");
+                return;
+            }
+
+            if (data.mfaRequired && data.challengeToken) {
+                setMfaChallengeToken(data.challengeToken);
+                setMfaCode("");
+                toast.success("Password verified. Enter your 2FA code.");
                 return;
             }
 
@@ -113,6 +154,51 @@ export default function LoginPage() {
 
                     {/* Login Form */}
                     <form onSubmit={handleSubmit} className="space-y-5">
+                        {mfaChallengeToken ? (
+                            <div className="space-y-4">
+                                <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-start gap-3">
+                                    <FiShield className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                                    <div className="text-sm text-gray-200">
+                                        <p className="font-semibold text-white">Two-Factor Authentication</p>
+                                        <p className="text-xs text-gray-400 mt-1">
+                                            Enter the 6-digit code from your authenticator app or a backup recovery code.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label
+                                        htmlFor="mfaCode"
+                                        className="block text-sm font-medium text-gray-400 mb-2"
+                                    >
+                                        Authenticator or Backup Code
+                                    </label>
+                                    <input
+                                        id="mfaCode"
+                                        type="text"
+                                        value={mfaCode}
+                                        onChange={(e) => setMfaCode(e.target.value)}
+                                        placeholder="123456 or XXXX-XXXX"
+                                        className="w-full font-mono tracking-widest"
+                                        autoComplete="one-time-code"
+                                        autoFocus
+                                        disabled={isLoading}
+                                    />
+                                </div>
+                                <div className="flex items-center justify-between text-xs">
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setMfaChallengeToken("");
+                                            setMfaCode("");
+                                        }}
+                                        className="text-gray-400 hover:text-white transition-colors"
+                                    >
+                                        ← Back to email &amp; password
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                        <>
                         {/* Email Field */}
                         <div>
                             <label
@@ -187,6 +273,8 @@ export default function LoginPage() {
                                 Forgot password?
                             </Link>
                         </div>
+                        </>
+                        )}
 
                         {/* Submit Button */}
                         <button
@@ -197,10 +285,10 @@ export default function LoginPage() {
                             {isLoading ? (
                                 <>
                                     <FiLoader className="w-5 h-5 animate-spin" />
-                                    Signing in...
+                                    {mfaChallengeToken ? "Verifying..." : "Signing in..."}
                                 </>
                             ) : (
-                                "Sign In"
+                                mfaChallengeToken ? "Verify & Sign In" : "Sign In"
                             )}
                         </button>
                     </form>

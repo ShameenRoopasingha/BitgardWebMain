@@ -7,12 +7,24 @@
  */
 
 import { getSiteSettings } from "@/lib/actions";
+import { getCmsSession } from "@/lib/auth";
+import { prisma } from "@/lib/db";
 import SettingsClient from "./SettingsClient";
 
 export const dynamic = "force-dynamic";
 
 export default async function SettingsPage() {
-    const settings = await getSiteSettings();
+    const [settings, adminSession] = await Promise.all([
+        getSiteSettings(),
+        getCmsSession(),
+    ]);
+
+    const adminSecurity = adminSession
+        ? await prisma.admin.findUnique({
+              where: { id: adminSession.id },
+              select: { mfaEnabled: true, mfaBackupCodes: true },
+          })
+        : null;
 
     const initialSettings = {
         siteName: settings.siteName || "",
@@ -32,5 +44,13 @@ export default async function SettingsPage() {
         logoDark: settings.logoDark || "",
     };
 
-    return <SettingsClient initialSettings={initialSettings} />;
+    return (
+        <SettingsClient
+            initialSettings={initialSettings}
+            initialMfa={{
+                enabled: Boolean(adminSecurity?.mfaEnabled),
+                backupCodesRemaining: adminSecurity?.mfaBackupCodes?.length ?? 0,
+            }}
+        />
+    );
 }

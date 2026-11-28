@@ -1,9 +1,22 @@
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
-import { timingSafeEqualStrings } from "@bitgard/database";
+import { checkDistributedRateLimit, timingSafeEqualStrings } from "@bitgard/database";
 
 export async function POST(request: NextRequest) {
     try {
+        const ip =
+            request.headers.get("x-real-ip")?.trim() ||
+            request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+            "unknown";
+        const { limited } = await checkDistributedRateLimit(
+            `web_revalidate:${ip}`,
+            30,
+            60 * 1000
+        );
+        if (limited) {
+            return NextResponse.json({ message: "Rate limit exceeded" }, { status: 429 });
+        }
+
         const expectedSecret = process.env.REVALIDATION_SECRET?.trim();
         if (!expectedSecret) {
             return NextResponse.json(

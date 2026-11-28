@@ -15,3 +15,4 @@ ALTER TABLE public."Testimonial" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public."VigilSubscription" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public."VigilSubscriptionEvent" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public."PendingCheckoutSetup" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public."rate_limit_buckets" ENABLE ROW LEVEL SECURITY;

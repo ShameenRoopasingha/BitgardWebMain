@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import {
+  checkDistributedRateLimit,
   generateVigilLicenseKey,
   pushSubscriptionSyncToVigil,
   type VigilBillingCycle,
@@ -91,7 +92,15 @@ async function syncAndRecord(
 
 export async function GET() {
   try {
-    await requireCmsSuperAdmin();
+    const admin = await requireCmsSuperAdmin();
+    const { limited } = await checkDistributedRateLimit(
+      `cms_licenses_read:${admin.id}`,
+      60,
+      15 * 60 * 1000
+    );
+    if (limited) {
+      return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
+    }
     const subscriptions = await prisma.vigilSubscription.findMany({
       orderBy: { updatedAt: "desc" },
       include: {
@@ -110,6 +119,14 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const superAdmin = await requireCmsSuperAdmin();
+    const { limited } = await checkDistributedRateLimit(
+      `cms_licenses_write:${superAdmin.id}`,
+      30,
+      15 * 60 * 1000
+    );
+    if (limited) {
+      return NextResponse.json({ success: false, error: "Rate limit exceeded" }, { status: 429 });
+    }
     const rawBody = await request.json().catch(() => null);
     const parsed = createLicenseSchema.safeParse(rawBody);
     if (!parsed.success) {

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { checkDistributedRateLimit } from "@bitgard/database";
 import { requireCmsAdmin } from "@/lib/auth";
 
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB
@@ -33,10 +34,23 @@ function matchesImageMagicBytes(buf: Buffer, ext: string): boolean {
 }
 
 export async function POST(request: Request) {
+    let adminSession;
     try {
-        await requireCmsAdmin();
+        adminSession = await requireCmsAdmin();
     } catch {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { limited } = await checkDistributedRateLimit(
+        `cms_upload:${adminSession.id}`,
+        30,
+        15 * 60 * 1000
+    );
+    if (limited) {
+        return NextResponse.json(
+            { error: "Too many uploads. Please wait before uploading again." },
+            { status: 429 }
+        );
     }
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();

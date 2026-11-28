@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import {
+  checkDistributedRateLimit,
   computePeriodEnd,
   generateVigilLicenseKey,
   mapBillingCycle,
@@ -73,6 +74,15 @@ function mapDodoEventToStatus(eventType: string): VigilSubscriptionStatus | null
 
 export async function POST(request: Request) {
   try {
+    const ip =
+      request.headers.get('x-real-ip')?.trim() ||
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      'unknown';
+    const rl = await checkDistributedRateLimit(`dodo-webhook:${ip}`, 120, 60 * 1000);
+    if (rl.limited) {
+      return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 });
+    }
+
     const webhookSecret = process.env.DODO_PAYMENTS_WEBHOOK_KEY?.trim();
     if (!webhookSecret || webhookSecret === 'whsec_your_webhook_secret_here') {
       console.error('Dodo webhook rejected: DODO_PAYMENTS_WEBHOOK_KEY is not configured.');

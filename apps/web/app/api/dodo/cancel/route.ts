@@ -1,6 +1,12 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { prisma, verifyBitgardSyncSignature, type Prisma } from '@bitgard/database';
+import {
+  checkDistributedRateLimit,
+  consumeBitgardReplayNonce,
+  prisma,
+  verifyBitgardSyncSignature,
+  type Prisma,
+} from '@bitgard/database';
 
 const cancelPayloadSchema = z.object({
   deliveryId: z.string().trim().min(1).max(160),
@@ -12,6 +18,15 @@ const cancelPayloadSchema = z.object({
 
 export async function POST(request: Request) {
   try {
+    const ip =
+      request.headers.get('x-real-ip')?.trim() ||
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      'unknown';
+    const rl = await checkDistributedRateLimit(`dodo-cancel:${ip}`, 30, 60 * 1000);
+    if (rl.limited) {
+      return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 });
+    }
+
     const syncSecret = process.env.BITGARD_SYNC_SECRET?.trim();
     if (!syncSecret || syncSecret === 'replace-with-shared-hmac-secret') {
       return NextResponse.json(
@@ -20,11 +35,12 @@ export async function POST(request: Request) {
       );
     }
 
+    const deliveryIdHeader = request.headers.get('x-bitgard-delivery-id');
     const rawBody = await request.text();
     const verification = verifyBitgardSyncSignature(
       rawBody,
       {
-        deliveryId: request.headers.get('x-bitgard-delivery-id'),
+        deliveryId: deliveryIdHeader,
         timestamp: request.headers.get('x-bitgard-timestamp'),
         signature: request.headers.get('x-bitgard-signature'),
       },
@@ -33,6 +49,13 @@ export async function POST(request: Request) {
 
     if (!verification.valid) {
       return NextResponse.json({ error: verification.reason }, { status: 401 });
+    }
+
+    if (deliveryIdHeader) {
+      const fresh = await consumeBitgardReplayNonce(`dodo-cancel:${deliveryIdHeader}`);
+      if (!fresh) {
+        return NextResponse.json({ error: 'Duplicate cancellation deliveryId rejected' }, { status: 409 });
+      }
     }
 
     let rawJson: unknown;
