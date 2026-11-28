@@ -1,7 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ShieldCheck, Lock, CreditCard, ArrowRight, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import {
+  ShieldCheck,
+  Lock,
+  CreditCard,
+  ArrowRight,
+  CheckCircle2,
+  AlertCircle,
+  Loader2,
+  Eye,
+  EyeOff,
+} from 'lucide-react';
 
 interface DodoCheckoutProps {
   planName: string;
@@ -20,16 +30,32 @@ export function DodoCheckout({
   const [companyName, setCompanyName] = useState('');
   const [contactName, setContactName] = useState('');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [country, setCountry] = useState('LK');
   const [error, setError] = useState<string | null>(null);
   const isAnnual = billingCycle === 'ANNUAL';
+  const passwordsMismatch = Boolean(confirmPassword && password !== confirmPassword);
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
+
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters long.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError('Password and Confirm Password do not match.');
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const res = await fetch('/api/dodo/checkout', {
@@ -39,6 +65,8 @@ export function DodoCheckout({
           planName,
           billingCycle,
           email,
+          password,
+          confirmPassword,
           companyName,
           contactName,
           phone,
@@ -136,20 +164,6 @@ export function DodoCheckout({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-medium text-neutral-300 mb-1.5">
-              Business Email (Login Username) <span className="text-primary">*</span>
-            </label>
-            <input
-              required
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-black/60 border border-white/15 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl px-4 py-3 text-white placeholder-neutral-600 text-sm transition-all outline-none"
-              placeholder="operations@skylinetours.com"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-medium text-neutral-300 mb-1.5">
               Phone / WhatsApp Number <span className="text-primary">*</span>
             </label>
             <input
@@ -159,22 +173,6 @@ export function DodoCheckout({
               onChange={(e) => setPhone(e.target.value)}
               className="w-full bg-black/60 border border-white/15 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl px-4 py-3 text-white placeholder-neutral-600 text-sm transition-all outline-none"
               placeholder="+94 77 123 4567"
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="sm:col-span-2">
-            <label className="block text-xs font-medium text-neutral-300 mb-1.5">
-              Business Address <span className="text-primary">*</span>
-            </label>
-            <input
-              required
-              type="text"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              className="w-full bg-black/60 border border-white/15 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl px-4 py-3 text-white placeholder-neutral-600 text-sm transition-all outline-none"
-              placeholder="e.g. 125 Galle Road, Colombo 03"
             />
           </div>
 
@@ -200,8 +198,110 @@ export function DodoCheckout({
           </div>
         </div>
 
-        <p className="text-[11px] text-neutral-500">
-          Your company profile, license key, and Vigil workspace login will be set up automatically using these details.
+        <div>
+          <label className="block text-xs font-medium text-neutral-300 mb-1.5">
+            Business Address <span className="text-primary">*</span>
+          </label>
+          <input
+            required
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            className="w-full bg-black/60 border border-white/15 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl px-4 py-3 text-white placeholder-neutral-600 text-sm transition-all outline-none"
+            placeholder="e.g. 125 Galle Road, Colombo 03"
+          />
+        </div>
+
+        {/* Workspace Login Credentials */}
+        <div className="rounded-2xl bg-primary/[0.06] border border-primary/25 p-4 space-y-3.5">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary">
+              <Lock className="w-3.5 h-3.5" />
+              <span>Vigil Login Credentials (Web &amp; Windows App)</span>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-neutral-300 mb-1.5">
+              Login Username (Business Email) <span className="text-primary">*</span>
+            </label>
+            <input
+              required
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full bg-black/70 border border-white/15 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl px-4 py-3 text-white placeholder-neutral-600 text-sm transition-all outline-none"
+              placeholder="operations@skylinetours.com"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div>
+              <label className="block text-xs font-medium text-neutral-300 mb-1.5">
+                Create Password <span className="text-primary">*</span>
+              </label>
+              <div className="relative">
+                <input
+                  required
+                  minLength={8}
+                  type={showPassword ? 'text' : 'password'}
+                  autoComplete="new-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full bg-black/70 border border-white/15 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl pl-4 pr-10 py-3 text-white placeholder-neutral-600 text-sm transition-all outline-none"
+                  placeholder="Min. 8 characters"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-neutral-400 hover:text-white"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-neutral-300 mb-1.5">
+                Confirm Password <span className="text-primary">*</span>
+              </label>
+              <div className="relative">
+                <input
+                  required
+                  minLength={8}
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  autoComplete="new-password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className={`w-full bg-black/70 border rounded-xl pl-4 pr-10 py-3 text-white placeholder-neutral-600 text-sm transition-all outline-none ${
+                    passwordsMismatch
+                      ? 'border-red-500/70 focus:border-red-500 focus:ring-1 focus:ring-red-500'
+                      : 'border-white/15 focus:border-primary focus:ring-1 focus:ring-primary'
+                  }`}
+                  placeholder="Re-enter password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-neutral-400 hover:text-white"
+                  aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
+                >
+                  {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+              {passwordsMismatch && (
+                <p className="text-[11px] text-red-400 mt-1">Passwords do not match.</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <p className="text-[11px] text-neutral-400">
+          After payment, log in to Vigil Web or your installed Windows desktop app (.exe) using this{' '}
+          <span className="text-white font-medium">Business Email</span> and{' '}
+          <span className="text-white font-medium">Password</span>. Your password is hashed immediately and never shared with the payment gateway.
         </p>
 
         {/* Benefits reminder */}

@@ -51,6 +51,7 @@ interface SessionVerifyState {
   tier?: string;
   billingCycle?: string;
   licenseKey?: string;
+  passwordConfigured?: boolean;
   setupUrl?: string | null;
   portalLoginUrl?: string;
   windowsExeUrl?: string;
@@ -95,6 +96,7 @@ function StatusNotification() {
           tier: data.tier,
           billingCycle: data.billingCycle,
           licenseKey: data.licenseKey,
+          passwordConfigured: Boolean(data.passwordConfigured),
           setupUrl: data.setupUrl || null,
           portalLoginUrl: data.portalLoginUrl || `${VIGIL_PORTAL_BASE}/login`,
           windowsExeUrl: data.downloadUrls?.windowsExe || VIGIL_EXE_URL,
@@ -157,8 +159,10 @@ function StatusNotification() {
                   {verifyState.loading
                     ? "Confirming your payment & provisioning your Vigil workspace..."
                     : verifyState.verified
-                    ? "Your workspace is provisioned. First set your login password, then download the Vigil desktop installer."
-                    : "Your checkout completed. Use the buttons below to set up your Vigil login password and download the installer."}
+                    ? verifyState.setupUrl
+                      ? "Your workspace is provisioned. First set your login password, then download the Vigil desktop installer."
+                      : "Your workspace is active! Download the Vigil desktop installer and sign in using the Business Email & Password you entered at checkout."
+                    : "Your checkout completed. Use the buttons below to access your Vigil workspace and download the installer."}
                 </p>
               </div>
             </div>
@@ -183,7 +187,7 @@ function StatusNotification() {
                   className="bg-primary hover:bg-primary-600 text-white font-bold px-5 py-3 rounded-xl transition-all shadow-[0_0_20px_rgba(232,115,42,0.4)] whitespace-nowrap flex items-center gap-2"
                 >
                   <ExternalLink className="w-4 h-4" />
-                  Open Vigil Portal
+                  Login to Vigil Portal
                 </a>
               )}
 

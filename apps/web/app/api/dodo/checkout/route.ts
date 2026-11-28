@@ -1,17 +1,35 @@
 import { NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
 import { z } from 'zod';
-import { mapBillingCycle, mapPlanToTier, type VigilBillingCycle, type VigilTier } from '@bitgard/database';
+import {
+  checkDistributedRateLimit,
+  mapBillingCycle,
+  mapPlanToTier,
+  prisma,
+  type VigilBillingCycle,
+  type VigilTier,
+} from '@bitgard/database';
 
-const checkoutSchema = z.object({
-  planName: z.string().trim().min(1).max(40),
-  billingCycle: z.enum(['MONTHLY', 'ANNUAL']).optional().default('MONTHLY'),
-  email: z.string().trim().email().max(254),
-  companyName: z.string().trim().min(2).max(120),
-  contactName: z.string().trim().max(120).optional().default(''),
-  phone: z.string().trim().max(40).optional().default(''),
-  address: z.string().trim().max(240).optional().default(''),
-  country: z.string().trim().min(2).max(2).optional().default('LK'),
-});
+const checkoutSchema = z
+  .object({
+    planName: z.string().trim().min(1).max(40),
+    billingCycle: z.enum(['MONTHLY', 'ANNUAL']).optional().default('MONTHLY'),
+    email: z.string().trim().email().max(254),
+    password: z
+      .string()
+      .min(8, 'Password must be at least 8 characters long.')
+      .max(128, 'Password is too long.'),
+    confirmPassword: z.string().min(8).max(128),
+    companyName: z.string().trim().min(2).max(120),
+    contactName: z.string().trim().max(120).optional().default(''),
+    phone: z.string().trim().max(40).optional().default(''),
+    address: z.string().trim().max(240).optional().default(''),
+    country: z.string().trim().min(2).max(2).optional().default('LK'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Password and Confirm Password do not match.',
+    path: ['confirmPassword'],
+  });
 
 function resolveDodoProductId(tier: VigilTier, billingCycle: VigilBillingCycle): string {
   const isAnnual = billingCycle === 'ANNUAL';
@@ -47,6 +65,18 @@ function resolveDodoProductId(tier: VigilTier, billingCycle: VigilBillingCycle):
 
 export async function POST(request: Request) {
   try {
+    const clientIp =
+      request.headers.get('x-real-ip')?.trim() ||
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      'unknown';
+    const rl = await checkDistributedRateLimit(`dodo-checkout:${clientIp}`, 30, 15 * 60 * 1000);
+    if (rl.limited) {
+      return NextResponse.json(
+        { error: 'Too many checkout requests. Please try again in a few minutes.' },
+        { status: 429 }
+      );
+    }
+
     const rawBody = await request.json();
     const parsed = checkoutSchema.safeParse(rawBody);
     if (!parsed.success) {
@@ -59,6 +89,7 @@ export async function POST(request: Request) {
     const tier = mapPlanToTier(parsed.data.planName);
     const billingCycle = mapBillingCycle(parsed.data.billingCycle);
     const email = parsed.data.email.toLowerCase();
+    const passwordHash = await bcrypt.hash(parsed.data.password, 10);
     const companyName = parsed.data.companyName;
     const contactName = parsed.data.contactName || '';
     const phone = parsed.data.phone || '';
@@ -119,6 +150,19 @@ export async function POST(request: Request) {
       }
 
       const dodoData = await dodoRes.json();
+      const dodoSessionId = typeof dodoData.session_id === 'string' ? dodoData.session_id.trim() : '';
+      if (dodoSessionId) {
+        const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+        await prisma.pendingCheckoutSetup
+          .deleteMany({ where: { expiresAt: { lt: new Date() } } })
+          .catch(() => {});
+        await prisma.pendingCheckoutSetup.upsert({
+          where: { sessionId: dodoSessionId },
+          update: { email, passwordHash, expiresAt, consumedAt: null },
+          create: { sessionId: dodoSessionId, email, passwordHash, expiresAt },
+        });
+      }
+
       return NextResponse.json({
         checkoutUrl: dodoData.checkout_url,
         sessionId: dodoData.session_id,

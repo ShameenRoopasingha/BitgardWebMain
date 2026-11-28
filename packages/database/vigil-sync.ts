@@ -32,6 +32,7 @@ export interface VigilSyncPayload {
   currentPeriodEnd: string | null;
   note?: string | null;
   initialAdminPassword?: string;
+  initialAdminPasswordHash?: string;
 }
 
 export interface VigilSyncResult {

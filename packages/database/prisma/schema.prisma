@@ -101,6 +101,19 @@ model VigilSubscriptionEvent {
   @@index([subscriptionId, createdAt])
 }
 
+model PendingCheckoutSetup {
+  id           String    @id @default(cuid())
+  sessionId    String    @unique
+  email        String
+  passwordHash String
+  expiresAt    DateTime
+  consumedAt   DateTime?
+  createdAt    DateTime  @default(now())
+
+  @@index([email, createdAt])
+  @@index([expiresAt])
+}
+
 // ==================== HERO SECTION ====================
 model HeroContent {
   id          String   @id @default(cuid())

@@ -96,7 +96,7 @@ function CheckoutContent() {
               2
             </span>
             <span>
-              You will be redirected to activate your Vigil web portal &amp; Windows desktop app (.exe).
+              You will be redirected to download the Windows desktop app (.exe) and log in immediately using the Business Email &amp; Password you entered above.
             </span>
           </li>
           <li className="flex items-start gap-2.5">

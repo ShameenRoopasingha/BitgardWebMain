@@ -273,6 +273,16 @@ export async function GET(request: Request) {
       },
     });
 
+    const pendingSetup = await prisma.pendingCheckoutSetup.findFirst({
+      where: {
+        OR: [{ sessionId }, { email }],
+        consumedAt: null,
+        expiresAt: { gt: new Date() },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+    const pendingPasswordHash = pendingSetup?.passwordHash || undefined;
+
     const deliveryId = `checkout_${sessionId}`;
     await prisma.vigilSubscriptionEvent.upsert({
       where: { externalEventId: deliveryId },
@@ -310,6 +320,7 @@ export async function GET(request: Request) {
       currentPeriodStart: subscription.currentPeriodStart?.toISOString() ?? null,
       currentPeriodEnd: subscription.currentPeriodEnd?.toISOString() ?? null,
       note: subscription.grantNote,
+      initialAdminPasswordHash: pendingPasswordHash,
     });
 
     if (syncResult.synced) {
@@ -321,11 +332,19 @@ export async function GET(request: Request) {
           lastSyncError: null,
         },
       });
+      if (pendingSetup) {
+        await prisma.pendingCheckoutSetup
+          .update({
+            where: { id: pendingSetup.id },
+            data: { consumedAt: new Date(), passwordHash: '' },
+          })
+          .catch(() => {});
+      }
     }
 
     let setupUrl: string | null = syncResult.setupUrl || null;
     const syncSecret = process.env.BITGARD_SYNC_SECRET?.trim();
-    if (!setupUrl && syncSecret) {
+    if (!setupUrl && !pendingPasswordHash && syncSecret) {
       const tokenDeliveryId = `onboard_${sessionId}_${Date.now()}`;
       const rawBody = JSON.stringify({
         email: subscription.email,
@@ -359,6 +378,7 @@ export async function GET(request: Request) {
         billingCycle: subscription.billingCycle,
         licenseKey: subscription.licenseKey,
         currentPeriodEnd: subscription.currentPeriodEnd?.toISOString() ?? null,
+        passwordConfigured: Boolean(pendingPasswordHash) || !setupUrl,
         setupUrl,
         portalLoginUrl: `${vigilBaseUrl}/login`,
         forgotPasswordUrl: `${vigilBaseUrl}/forgot-password`,

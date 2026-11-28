@@ -273,6 +273,18 @@ export async function POST(request: Request) {
       },
     });
 
+    const pendingSetup =
+      mappedStatus === 'ACTIVE'
+        ? await prisma.pendingCheckoutSetup.findFirst({
+            where: {
+              email,
+              consumedAt: null,
+              expiresAt: { gt: new Date() },
+            },
+            orderBy: { createdAt: 'desc' },
+          })
+        : null;
+
     const syncResult = await pushSubscriptionSyncToVigil({
       deliveryId,
       eventType,
@@ -292,7 +304,17 @@ export async function POST(request: Request) {
       currentPeriodStart: subscription.currentPeriodStart?.toISOString() ?? null,
       currentPeriodEnd: subscription.currentPeriodEnd?.toISOString() ?? null,
       note: subscription.grantNote,
+      initialAdminPasswordHash: pendingSetup?.passwordHash || undefined,
     });
+
+    if (syncResult.synced && pendingSetup) {
+      await prisma.pendingCheckoutSetup
+        .update({
+          where: { id: pendingSetup.id },
+          data: { consumedAt: new Date(), passwordHash: '' },
+        })
+        .catch(() => {});
+    }
 
     await prisma.vigilSubscription.update({
       where: { id: subscription.id },
