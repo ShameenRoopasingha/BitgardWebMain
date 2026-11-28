@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { prisma } from "./db";
 import { CMS_SESSION_COOKIE, verifyCmsSessionToken, type CmsAdminRole } from "./session";
@@ -12,8 +13,9 @@ export interface AuthenticatedCmsAdmin {
 /**
  * Resolves the currently authenticated CMS Admin from the signed HttpOnly cookie
  * and verifies that the account still exists in PostgreSQL.
+ * Wrapped in React `cache()` so multiple calls in one request execute at most 1 DB query.
  */
-export async function getCmsSession(): Promise<AuthenticatedCmsAdmin | null> {
+export const getCmsSession = cache(async (): Promise<AuthenticatedCmsAdmin | null> => {
   const token = cookies().get(CMS_SESSION_COOKIE)?.value;
   const parsed = await verifyCmsSessionToken(token);
   if (!parsed) return null;
@@ -35,7 +37,7 @@ export async function getCmsSession(): Promise<AuthenticatedCmsAdmin | null> {
     name: admin.name,
     role: admin.role as CmsAdminRole,
   };
-}
+});
 
 export async function requireCmsAdmin(): Promise<AuthenticatedCmsAdmin> {
   const admin = await getCmsSession();

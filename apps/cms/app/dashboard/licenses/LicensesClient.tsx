@@ -131,16 +131,16 @@ export default function LicensesClient({ initialSubscriptions }: Props) {
   }, []);
 
   useEffect(() => {
+    if (activeTab !== "live") return;
     void fetchLiveUsers(false);
-  }, [fetchLiveUsers]);
-
-  useEffect(() => {
     if (!autoRefresh) return;
     const timer = setInterval(() => {
-      void fetchLiveUsers(true);
+      if (typeof document === "undefined" || !document.hidden) {
+        void fetchLiveUsers(true);
+      }
     }, 15000);
     return () => clearInterval(timer);
-  }, [autoRefresh, fetchLiveUsers]);
+  }, [activeTab, autoRefresh, fetchLiveUsers]);
 
   // Grant Modal state
   const [email, setEmail] = useState("");

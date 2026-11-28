@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     transpilePackages: ["@bitgard/database"],
+    images: {
+        formats: ["image/avif", "image/webp"],
+    },
+    experimental: {
+        optimizePackageImports: ["react-icons", "recharts", "framer-motion"],
+    },
     async headers() {
         return [
             {

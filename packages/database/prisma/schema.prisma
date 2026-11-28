@@ -106,6 +106,7 @@ model VigilSubscription {
 
   @@index([status])
   @@index([tier])
+  @@index([updatedAt])
 }
 
 model VigilSubscriptionEvent {
@@ -163,6 +164,9 @@ model Product {
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@index([order])
+  @@index([updatedAt])
 }
 
 // ==================== SERVICES ====================
@@ -177,6 +181,8 @@ model Service {
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@index([order])
 }
 
 // ==================== TEAM ====================
@@ -193,6 +199,9 @@ model TeamMember {
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@index([order])
+  @@index([createdAt])
 }
 
 // ==================== TESTIMONIALS ====================
@@ -207,6 +216,8 @@ model Testimonial {
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@index([createdAt])
 }
 
 // ==================== BLOG ====================
@@ -223,6 +234,9 @@ model BlogPost {
   publishedAt DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@index([isPublished, createdAt])
+  @@index([createdAt])
 }
 
 // ==================== CONTACT SUBMISSIONS ====================
@@ -236,6 +250,9 @@ model ContactSubmission {
   message   String   @db.Text
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
+
+  @@index([isRead, createdAt])
+  @@index([createdAt])
 }
 
 // ==================== SITE SETTINGS ====================

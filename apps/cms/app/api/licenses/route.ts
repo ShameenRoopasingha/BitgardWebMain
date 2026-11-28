@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { z } from "zod";
 import {
   checkDistributedRateLimit,
@@ -186,6 +187,8 @@ export async function POST(request: Request) {
       parsed.data.initialAdminPassword
     );
 
+    revalidateTag("cms-licenses");
+    revalidatePath("/dashboard/licenses");
     return NextResponse.json({ success: true, data: synced }, { status: 201 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Failed to grant license";
@@ -257,6 +260,8 @@ export async function PATCH(request: Request) {
     });
 
     const synced = await syncAndRecord(existing.id, eventType, superAdmin.email);
+    revalidateTag("cms-licenses");
+    revalidatePath("/dashboard/licenses");
     return NextResponse.json({ success: true, data: synced });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Failed to update license";

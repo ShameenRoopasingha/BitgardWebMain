@@ -1,9 +1,44 @@
 import { redirect } from "next/navigation";
+import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/db";
 import { getCmsSession } from "@/lib/auth";
 import LicensesClient from "./LicensesClient";
 
 export const dynamic = "force-dynamic";
+
+const toIsoStringOrNull = (val: Date | string | null | undefined): string | null => {
+  if (!val) return null;
+  const d = val instanceof Date ? val : new Date(val);
+  return Number.isNaN(d.getTime()) ? null : d.toISOString();
+};
+
+const getCachedLicenses = unstable_cache(
+  async () => {
+    const subscriptions = await prisma.vigilSubscription.findMany({
+      orderBy: { updatedAt: "desc" },
+      include: {
+        grantedByAdmin: { select: { name: true, email: true } },
+        events: { orderBy: { createdAt: "desc" }, take: 5 },
+      },
+    });
+
+    return subscriptions.map((s) => ({
+      ...s,
+      currentPeriodStart: toIsoStringOrNull(s.currentPeriodStart),
+      currentPeriodEnd: toIsoStringOrNull(s.currentPeriodEnd),
+      lastUsageReportedAt: toIsoStringOrNull(s.lastUsageReportedAt),
+      lastSyncedAt: toIsoStringOrNull(s.lastSyncedAt),
+      createdAt: toIsoStringOrNull(s.createdAt) || new Date().toISOString(),
+      updatedAt: toIsoStringOrNull(s.updatedAt) || new Date().toISOString(),
+      events: s.events.map((e) => ({
+        ...e,
+        createdAt: toIsoStringOrNull(e.createdAt) || new Date().toISOString(),
+      })),
+    }));
+  },
+  ["cms:licenses"],
+  { revalidate: 30, tags: ["cms-licenses"] }
+);
 
 export default async function LicensesPage() {
   const admin = await getCmsSession();
@@ -24,27 +59,6 @@ export default async function LicensesPage() {
     );
   }
 
-  const subscriptions = await prisma.vigilSubscription.findMany({
-    orderBy: { updatedAt: "desc" },
-    include: {
-      grantedByAdmin: { select: { name: true, email: true } },
-      events: { orderBy: { createdAt: "desc" }, take: 5 },
-    },
-  });
-
-  const serialized = subscriptions.map((s) => ({
-    ...s,
-    currentPeriodStart: s.currentPeriodStart?.toISOString() ?? null,
-    currentPeriodEnd: s.currentPeriodEnd?.toISOString() ?? null,
-    lastUsageReportedAt: s.lastUsageReportedAt?.toISOString() ?? null,
-    lastSyncedAt: s.lastSyncedAt?.toISOString() ?? null,
-    createdAt: s.createdAt.toISOString(),
-    updatedAt: s.updatedAt.toISOString(),
-    events: s.events.map((e) => ({
-      ...e,
-      createdAt: e.createdAt.toISOString(),
-    })),
-  }));
-
+  const serialized = await getCachedLicenses();
   return <LicensesClient initialSubscriptions={serialized} />;
 }
