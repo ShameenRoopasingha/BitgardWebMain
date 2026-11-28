@@ -21,15 +21,15 @@ import {
 import type { AuthenticatedCmsAdmin } from "@/lib/auth";
 
 const NAV_ITEMS = [
-  { label: "Dashboard", href: "/dashboard", icon: FiHome, superAdminOnly: false },
-  { label: "Vigil Licenses", href: "/dashboard/licenses", icon: FiKey, superAdminOnly: true },
-  { label: "Products", href: "/dashboard/products", icon: FiBox, superAdminOnly: false },
-  { label: "Services", href: "/dashboard/services", icon: FiBriefcase, superAdminOnly: false },
-  { label: "Team", href: "/dashboard/team", icon: FiUsers, superAdminOnly: false },
-  { label: "Testimonials", href: "/dashboard/testimonials", icon: FiMessageSquare, superAdminOnly: false },
-  { label: "Blog", href: "/dashboard/blog", icon: FiFileText, superAdminOnly: false },
-  { label: "Contacts", href: "/dashboard/contacts", icon: FiMail, superAdminOnly: false },
-  { label: "Settings", href: "/dashboard/settings", icon: FiSettings, superAdminOnly: false },
+  { label: "Dashboard", href: "/dashboard", icon: FiHome, superAdminOnly: false, indent: false },
+  { label: "Products", href: "/dashboard/products", icon: FiBox, superAdminOnly: false, indent: false },
+  { label: "Vigil Licenses & Live", href: "/dashboard/licenses", icon: FiKey, superAdminOnly: true, indent: true },
+  { label: "Services", href: "/dashboard/services", icon: FiBriefcase, superAdminOnly: false, indent: false },
+  { label: "Team", href: "/dashboard/team", icon: FiUsers, superAdminOnly: false, indent: false },
+  { label: "Testimonials", href: "/dashboard/testimonials", icon: FiMessageSquare, superAdminOnly: false, indent: false },
+  { label: "Blog", href: "/dashboard/blog", icon: FiFileText, superAdminOnly: false, indent: false },
+  { label: "Contacts", href: "/dashboard/contacts", icon: FiMail, superAdminOnly: false, indent: false },
+  { label: "Settings", href: "/dashboard/settings", icon: FiSettings, superAdminOnly: false, indent: false },
 ] as const;
 
 interface SidebarProps {
@@ -127,14 +127,15 @@ export function Sidebar({
                 <Link
                   href={item.href}
                   className={`
-                    relative flex items-center gap-3 px-4 py-3 rounded-lg
+                    relative flex items-center gap-3 py-3 rounded-lg
                     transition-all duration-200
+                    ${item.indent && !isCollapsed ? "pl-8 pr-4 text-sm" : "px-4"}
                     ${
                       active
                         ? "text-primary-400 bg-primary-500/10"
                         : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                     }
-                    ${isCollapsed ? "justify-center" : ""}
+                    ${isCollapsed ? "justify-center px-4" : ""}
                   `}
                   title={isCollapsed ? item.label : undefined}
                 >
@@ -142,7 +143,11 @@ export function Sidebar({
                     <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary-500 rounded-r" />
                   )}
                   <Icon className="w-5 h-5 flex-shrink-0" />
-                  {!isCollapsed && <span className="font-medium">{item.label}</span>}
+                  {!isCollapsed && (
+                    <span className="font-medium truncate">
+                      {item.indent ? `↳ ${item.label}` : item.label}
+                    </span>
+                  )}
                 </Link>
               </li>
             );

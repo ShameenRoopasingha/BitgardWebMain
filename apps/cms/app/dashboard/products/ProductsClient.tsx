@@ -1,11 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardHeader } from "@/components/dashboard/Header";
 import { ImageUpload } from "@/components/ui/ImageUpload";
 import {
-    FiPlus, FiSearch, FiEdit2, FiTrash2, FiEye, FiBox,
+    FiPlus, FiSearch, FiEdit2, FiTrash2, FiEye, FiBox, FiKey, FiActivity, FiArrowRight,
 } from "react-icons/fi";
 import {
     createProduct, updateProduct, deleteProduct, toggleProductStatus,
@@ -136,6 +137,28 @@ export default function ProductsClient({ initialProducts }: Props) {
             />
 
             <div className="p-6 space-y-6">
+                <div className="dashboard-card p-5 border border-primary-500/30 bg-gradient-to-r from-primary-500/10 via-gray-900 to-gray-900 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="flex items-start gap-3">
+                        <div className="w-11 h-11 rounded-xl bg-primary-500/20 border border-primary-500/30 flex items-center justify-center shrink-0">
+                            <FiKey className="w-5 h-5 text-primary-400" />
+                        </div>
+                        <div>
+                            <h2 className="text-base font-semibold text-white">Vigil Licensing &amp; Live User Monitor</h2>
+                            <p className="text-xs text-gray-400 mt-0.5">
+                                Issue Lifetime / Subscription licenses and monitor currently active Vigil users &amp; workstations in real time.
+                            </p>
+                        </div>
+                    </div>
+                    <Link
+                        href="/dashboard/licenses"
+                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary-500 hover:bg-primary-600 text-white text-xs font-semibold shrink-0 transition-colors"
+                    >
+                        <FiActivity className="w-4 h-4" />
+                        <span>Open Licenses &amp; Live Users</span>
+                        <FiArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                </div>
+
                 <div className="flex flex-col sm:flex-row gap-4 justify-between">
                     <div className="relative flex-1 max-w-md">
                         <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />

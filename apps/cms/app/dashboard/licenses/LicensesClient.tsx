@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { DashboardHeader } from "@/components/dashboard/Header";
@@ -13,7 +13,39 @@ import {
   FiSlash,
   FiCheckCircle,
   FiStar,
+  FiActivity,
+  FiMonitor,
 } from "react-icons/fi";
+
+interface LiveUserSession {
+  id: string;
+  kind: "WORKSTATION" | "DRIVER_GPS";
+  isLiveNow: boolean;
+  isDesktopApp: boolean;
+  userId: string;
+  userName: string;
+  userEmail: string;
+  userRole: string;
+  companyId: string;
+  companyName: string;
+  tier: string;
+  subscriptionStatus: string;
+  billingCycle: string | null;
+  deviceLabel: string;
+  platform: string | null;
+  lastSeenAt: string;
+}
+
+interface LiveUsersPayload {
+  fetchedAt: string;
+  summary: {
+    liveNowCount: number;
+    activeWorkstationCount: number;
+    liveDriverCount: number;
+    liveCompanyCount: number;
+  };
+  sessions: LiveUserSession[];
+}
 
 interface SubscriptionEventItem {
   id: string;
@@ -58,11 +90,51 @@ const STATUS_BADGES: Record<string, string> = {
 export default function LicensesClient({ initialSubscriptions }: Props) {
   const router = useRouter();
   const [subscriptions, setSubscriptions] = useState<VigilSubscriptionItem[]>(initialSubscriptions);
+  const [activeTab, setActiveTab] = useState<"licenses" | "live">("licenses");
   const [search, setSearch] = useState("");
+  const [liveSearch, setLiveSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [liveData, setLiveData] = useState<LiveUsersPayload | null>(null);
+  const [liveLoading, setLiveLoading] = useState(true);
+  const [liveError, setLiveError] = useState<string | null>(null);
+  const [autoRefresh, setAutoRefresh] = useState(true);
+
+  const fetchLiveUsers = useCallback(async (quiet = false) => {
+    if (!quiet) setLiveLoading(true);
+    try {
+      const res = await fetch("/api/live-users", { cache: "no-store" });
+      const json = await res.json();
+      if (!res.ok || !json.success) {
+        setLiveError(json.error || "Unable to fetch live user telemetry");
+        return;
+      }
+      setLiveData({
+        fetchedAt: json.fetchedAt,
+        summary: json.summary,
+        sessions: json.sessions || [],
+      });
+      setLiveError(null);
+    } catch {
+      setLiveError("Network error while reaching Vigil telemetry");
+    } finally {
+      setLiveLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void fetchLiveUsers(false);
+  }, [fetchLiveUsers]);
+
+  useEffect(() => {
+    if (!autoRefresh) return;
+    const timer = setInterval(() => {
+      void fetchLiveUsers(true);
+    }, 15000);
+    return () => clearInterval(timer);
+  }, [autoRefresh, fetchLiveUsers]);
 
   // Grant Modal state
   const [email, setEmail] = useState("");
@@ -180,7 +252,7 @@ export default function LicensesClient({ initialSubscriptions }: Props) {
       />
 
       <div className="p-6 space-y-6">
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           <div className="dashboard-card p-4">
             <p className="text-xs text-gray-400">Total Licenses</p>
             <p className="text-2xl font-bold text-white mt-1">{subscriptions.length}</p>
@@ -203,7 +275,166 @@ export default function LicensesClient({ initialSubscriptions }: Props) {
               {subscriptions.filter((s) => s.lastSyncStatus !== "SYNCED").length}
             </p>
           </div>
+          <button
+            type="button"
+            onClick={() => setActiveTab("live")}
+            className="dashboard-card p-4 text-left border border-emerald-500/30 hover:border-emerald-400/60 transition-colors"
+          >
+            <div className="flex items-center justify-between">
+              <p className="text-xs text-gray-400">Live Users Now</p>
+              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse" />
+            </div>
+            <p className="text-2xl font-bold text-emerald-400 mt-1">
+              {liveLoading && !liveData ? "..." : liveData?.summary.liveNowCount ?? 0}
+            </p>
+            <p className="text-[11px] text-gray-500 mt-0.5">
+              {liveData ? `${liveData.summary.activeWorkstationCount} sessions • ${liveData.summary.liveCompanyCount} companies` : "Click to inspect"}
+            </p>
+          </button>
         </div>
+
+        {/* View Switcher Tabs */}
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-800 pb-3">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setActiveTab("licenses")}
+              className={`px-4 py-2 rounded-lg text-sm font-semibold inline-flex items-center gap-2 transition-colors ${
+                activeTab === "licenses"
+                  ? "bg-primary-500 text-white"
+                  : "bg-gray-900 text-gray-400 hover:text-white border border-gray-800"
+              }`}
+            >
+              <FiKey className="w-4 h-4" />
+              <span>Licenses ({subscriptions.length})</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab("live")}
+              className={`px-4 py-2 rounded-lg text-sm font-semibold inline-flex items-center gap-2 transition-colors ${
+                activeTab === "live"
+                  ? "bg-emerald-600 text-white"
+                  : "bg-gray-900 text-gray-400 hover:text-white border border-gray-800"
+              }`}
+            >
+              <FiActivity className="w-4 h-4" />
+              <span>Live Users Monitor</span>
+              <span className="px-1.5 py-0.5 text-[11px] rounded-full bg-black/30">
+                {liveData?.summary.liveNowCount ?? 0}
+              </span>
+            </button>
+          </div>
+
+          {activeTab === "live" && (
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setAutoRefresh((prev) => !prev)}
+                className={`px-3 py-1.5 rounded-lg text-xs border ${
+                  autoRefresh
+                    ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/40"
+                    : "bg-gray-900 text-gray-400 border-gray-800"
+                }`}
+              >
+                Auto-refresh (15s): {autoRefresh ? "ON" : "OFF"}
+              </button>
+              <button
+                type="button"
+                onClick={() => void fetchLiveUsers(false)}
+                disabled={liveLoading}
+                className="px-3 py-1.5 rounded-lg text-xs bg-gray-900 hover:bg-gray-800 text-gray-200 border border-gray-800 inline-flex items-center gap-1.5 disabled:opacity-50"
+              >
+                <FiRefreshCw className={`w-3.5 h-3.5 ${liveLoading ? "animate-spin" : ""}`} />
+                <span>Refresh</span>
+              </button>
+            </div>
+          )}
+        </div>
+
+        {activeTab === "live" ? (
+          <div className="space-y-4">
+            <div className="relative max-w-md">
+              <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+              <input
+                type="text"
+                value={liveSearch}
+                onChange={(e) => setLiveSearch(e.target.value)}
+                placeholder="Search user name, email, company, or device..."
+                className="w-full pl-9 pr-4 py-2 bg-gray-900 border border-gray-800 rounded-lg text-sm text-white"
+              />
+            </div>
+
+            {liveError ? (
+              <div className="dashboard-card p-6 text-sm text-red-300 border border-red-500/30">
+                {liveError}
+              </div>
+            ) : (
+              <div className="space-y-2.5">
+                {(liveData?.sessions || [])
+                  .filter((s) => {
+                    const q = liveSearch.trim().toLowerCase();
+                    if (!q) return true;
+                    return (
+                      s.userName.toLowerCase().includes(q) ||
+                      s.userEmail.toLowerCase().includes(q) ||
+                      s.companyName.toLowerCase().includes(q) ||
+                      s.deviceLabel.toLowerCase().includes(q)
+                    );
+                  })
+                  .map((s) => (
+                    <div
+                      key={s.id}
+                      className="dashboard-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                    >
+                      <div className="space-y-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span
+                            className={`inline-flex items-center gap-1.5 px-2 py-0.5 text-[11px] font-mono font-semibold rounded-full border ${
+                              s.isLiveNow
+                                ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
+                                : "bg-gray-800 text-gray-300 border-gray-700"
+                            }`}
+                          >
+                            <span
+                              className={`w-1.5 h-1.5 rounded-full ${
+                                s.isLiveNow ? "bg-emerald-400 animate-pulse" : "bg-gray-400"
+                              }`}
+                            />
+                            {s.isLiveNow ? "LIVE NOW" : "ACTIVE SESSION"}
+                          </span>
+                          <span className="text-sm font-semibold text-white">{s.userName}</span>
+                          <span className="text-xs text-gray-400">({s.userEmail})</span>
+                          <span className="px-2 py-0.5 text-[11px] font-mono rounded bg-gray-800 text-gray-300">
+                            {s.userRole}
+                          </span>
+                        </div>
+                        <div className="text-xs text-gray-400 flex flex-wrap items-center gap-x-3 gap-y-1">
+                          <span>Company: <strong className="text-gray-200">{s.companyName}</strong></span>
+                          <span>Tier: <strong className="text-primary-300">{s.tier}</strong> ({s.subscriptionStatus})</span>
+                          <span className="inline-flex items-center gap-1">
+                            <FiMonitor className="w-3.5 h-3.5 text-gray-500" />
+                            {s.deviceLabel}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="text-xs text-gray-400 shrink-0 sm:text-right">
+                        <div>Last seen</div>
+                        <div className="text-gray-200 font-mono">
+                          {new Date(s.lastSeenAt).toLocaleString()}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                {!liveLoading && (liveData?.sessions.length || 0) === 0 && (
+                  <div className="dashboard-card p-8 text-center text-sm text-gray-400">
+                    No active workstations or live driver sessions reported right now.
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        ) : (
+          <>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-between">
           <div className="relative flex-1 max-w-md">
@@ -360,6 +591,8 @@ export default function LicensesClient({ initialSubscriptions }: Props) {
             </div>
           )}
         </div>
+          </>
+        )}
       </div>
 
       {isModalOpen && (
